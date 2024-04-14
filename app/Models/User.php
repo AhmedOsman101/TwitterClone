@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use HasFactory, Notifiable;
 
     /**
@@ -17,9 +16,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'full_name',
         'email',
         'password',
+        'username',
+        'bio',
+        'profile_picture',
+        'cover_photo',
+        'followers',
+        'following',
     ];
 
     /**
@@ -37,11 +42,18 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(Comment::class);
     }
 }
