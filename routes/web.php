@@ -12,7 +12,21 @@ Route::get('/', function () {
 
 
 Route::prefix('user')->group(function () {
-    Route::get('/', 'UserController@index');
 
-    Route::post('register', 'UserController@register')->name('register');
+    Route::get('/', [UserController::class, 'index']);
+
+    Route::post(
+        'register',
+        [UserController::class, 'register']
+    )->name('register');
+
+    Route::post(
+        'login',
+        [UserController::class, 'login']
+    )->name('login');
+
+    Route::post(
+        'logout',
+        [UserController::class, 'logout']
+    )->name('logout');
 });
