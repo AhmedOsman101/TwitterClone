@@ -6,7 +6,7 @@
         {
             "label": "run laravel project",
             "type": "shell",
-            "command": "npm run build && npm run dev & art serve"
+            "command": "npm run build && npm run dev & php artisan serve"
         }
     ]
 }
