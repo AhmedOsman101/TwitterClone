@@ -29,4 +29,8 @@ Route::prefix('user')->group(function () {
         'logout',
         [UserController::class, 'logout']
     )->name('logout');
+
+    Route::prefix('post')->group(function () {
+        Route::post('/', [PostController::class, 'create']);
+    });
 });
