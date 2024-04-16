@@ -5,7 +5,7 @@
         <NavLink href="/notifications">🔔 Notifications</NavLink>
         <NavLink href="/profile">🧔🏻 Profile</NavLink>
         <NavLink href="/user/logout" method="post">Logout</NavLink>
-        <NavLink ></NavLink>
+        <NavLink></NavLink>
     </aside>
 </template>
 
