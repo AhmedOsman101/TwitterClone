@@ -1,7 +1,7 @@
 <template>
     <section class="flex gap-4">
         <aside class="px-5 py-4 w-fit h-screen flex flex-col items-start gap-6">
-            <NavLink href="/">🐦</NavLink>
+            <NavLink href="/">🐦 Twitter</NavLink>
             <NavLink href="/">🏠 Home</NavLink>
             <NavLink href="/notifications">🔔 Notifications</NavLink>
             <NavLink href="/profile">🧔🏻 Profile</NavLink>
