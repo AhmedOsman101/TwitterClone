@@ -14,5 +14,5 @@ createInertiaApp({
             .component("Link", Link)
             .mount(el);
     },
-    progress: false
+    progress: { showSpinner: true },
 });
