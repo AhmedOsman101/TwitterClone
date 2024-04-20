@@ -10,20 +10,26 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+Route::post(
+    'register',
+    [UserController::class, 'register']
+)->name('register');
+
+Route::get(
+    'login',
+    function () {
+        return Inertia::render('Login');
+    }
+)->name('login');
+
+Route::post(
+    'login',
+    [UserController::class, 'login']
+);
 
 Route::prefix('user')->group(function () {
 
     Route::get('/', [UserController::class, 'index']);
-
-    Route::post(
-        'register',
-        [UserController::class, 'register']
-    )->name('register');
-
-    Route::post(
-        'login',
-        [UserController::class, 'login']
-    )->name('login');
 
     Route::post(
         'logout',
