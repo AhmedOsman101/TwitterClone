@@ -1,11 +1,14 @@
 <template>
     <section class="flex gap-4">
         <aside class="px-5 py-4 w-fit h-screen flex flex-col items-start gap-6">
-            <NavLink href="/">🐦 Twitter</NavLink>
+            <NavLink href="/"><i class="fa-brands fa-twitter fa-md"></i> Twitter</NavLink>
+            
             <NavLink href="/">🏠 Home</NavLink>
             <NavLink href="/notifications">🔔 Notifications</NavLink>
             <NavLink href="/profile">🧔🏻 Profile</NavLink>
-            <NavLink href="/user/logout" method="post">Logout</NavLink>
+            <NavLink href="/user/logout" method="post" as="button"
+                >Logout</NavLink
+            >
             <NavLink
                 as="button"
                 href="user/post"
