@@ -13,6 +13,7 @@ class PostController extends Controller {
     public function index() {
         try {
             $posts = Post::all();
+            dd($posts);
             return $posts;
         } catch (\Throwable $e) {
             dd($e);

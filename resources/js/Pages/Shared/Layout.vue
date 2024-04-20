@@ -9,7 +9,6 @@
             <NavLink
                 as="button"
                 href="user/post"
-                method="post"
                 class="bg-sky-500 px-5 py-3 rounded-xl"
                 >Tweet</NavLink
             >

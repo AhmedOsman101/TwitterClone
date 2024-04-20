@@ -32,5 +32,6 @@ Route::prefix('user')->group(function () {
 
     Route::prefix('post')->group(function () {
         Route::post('/', [PostController::class, 'create']);
+        Route::get('/', [PostController::class, 'index']);
     });
 });
