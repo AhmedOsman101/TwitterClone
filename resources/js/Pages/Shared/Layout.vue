@@ -17,7 +17,11 @@
                 <i class="fa-solid fa-user"></i>
                 Profile
             </NavLink>
-            <NavLink href="/user/logout" method="post" as="button">
+            <NavLink
+                as="button"
+                href="/user/logout"
+                method="post"
+            >
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 Logout
             </NavLink>
