@@ -51,6 +51,7 @@ const form = reactive({
 });
 
 const login = (event) => {
+    
     router.post("/login", form);
 };
 </script>
