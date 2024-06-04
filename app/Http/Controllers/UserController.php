@@ -27,7 +27,7 @@ class UserController extends Controller {
 
             Auth::loginUsingId($user->id);
 
-            return Inertia::render('Users/register', [
+            return Inertia::render('Home', [
                 'user' => $user,
             ]);
         } catch (\Throwable $e) {

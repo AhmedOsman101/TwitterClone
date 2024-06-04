@@ -4,8 +4,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp, Link } from "@inertiajs/vue3";
 import Layout from "./Pages/Shared/Layout.vue";
 
-// Vuetify
-import "@fortawesome/fontawesome-free/css/all.css"; // Ensure your project is capable of handling css files
+import "@fortawesome/fontawesome-free/css/all.css";
 
 createInertiaApp({
     resolve: (name) => {
