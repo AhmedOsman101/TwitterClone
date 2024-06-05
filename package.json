@@ -22,8 +22,6 @@
         "@fortawesome/free-regular-svg-icons": "^6.5.2",
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@fortawesome/vue-fontawesome": "^3.0.6",
-        "@inertiajs/vue3": "^1.0.15",
-        "childprocess": "^2.0.2",
-        "concurrently": "^8.2.2"
+        "@inertiajs/vue3": "^1.0.15"
     }
 }
