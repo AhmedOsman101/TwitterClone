@@ -1,8 +1,9 @@
 <template>
     <Layout>
-        <div>hello world</div>
+        <Tweet />
     </Layout>
 </template>
 
 <script setup>
+import Tweet from "./Shared/Tweet.vue";
 </script>

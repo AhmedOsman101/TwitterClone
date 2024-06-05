@@ -1,6 +1,6 @@
 <template>
-    <section class="flex gap-4">
-        <aside class="p-10 w-fit h-screen flex flex-col items-start gap-6">
+    <section id="Home">
+        <aside class="p-10 w-fit h-screen flex flex-col items-start gap-8">
             <NavLink href="/">
                 <i class="fa-brands fa-twitter fa-lg mb-2"></i>
             </NavLink>
@@ -17,11 +17,7 @@
                 <i class="fa-solid fa-user"></i>
                 Profile
             </NavLink>
-            <NavLink
-                as="button"
-                href="/user/logout"
-                method="post"
-            >
+            <NavLink as="button" href="/user/logout" method="post">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 Logout
             </NavLink>
@@ -42,3 +38,14 @@
 <script setup>
 import NavLink from "./NavLink.vue";
 </script>
+
+<style scoped>
+section {
+    grid-template-areas:
+        "nav tweet aside"
+        "nav posts aside";
+
+    display: grid;
+    grid-template-columns: 20.1rem 1fr 20.1rem;
+}
+</style>
