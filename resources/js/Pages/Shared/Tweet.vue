@@ -1,6 +1,6 @@
 <template>
     <section
-        class="flex flex-col border border-1 border-slate-300 h-56 max-h-screen"
+        class="flex flex-col h-56 max-h-screen"
         id="Tweet"
     >
         <div class="flex place-items-center p-5 pt-0 mt-9">
@@ -30,6 +30,7 @@
                 :data-value="275 - content.length"
             ></div>
         </div>
+        <hr />
     </section>
 </template>
 

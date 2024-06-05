@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('content');
+            $table->string('content', 280);
             $table->unsignedInteger('likes')->default(0);
             $table->timestamps();
         });
