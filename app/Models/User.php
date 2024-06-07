@@ -19,14 +19,12 @@ class User extends Authenticatable {
      */
     protected $fillable = [
         'full_name',
-        'email',
-        'password',
         'username',
+        'email',
         'bio',
         'profile_picture',
         'cover_photo',
-        'followers',
-        'following',
+        'password',
     ];
 
     /**
@@ -63,7 +61,11 @@ class User extends Authenticatable {
         return $this->hasMany(Like::class);
     }
 
-    public function followed(): HasMany {
-        return $this->hasMany(Followed::class);
+    public function followers(): HasMany {
+        return $this->hasMany(Follower::class);
+    }
+
+    public function notifications(): HasMany {
+        return $this->hasMany(Notification::class);
     }
 }

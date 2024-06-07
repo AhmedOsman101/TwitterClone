@@ -9,11 +9,10 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('tweets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('content', 280);
-            $table->unsignedInteger('likes')->default(0);
+            $table->string('body', 280);
             $table->timestamps();
         });
     }
@@ -22,6 +21,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('tweets');
     }
 };

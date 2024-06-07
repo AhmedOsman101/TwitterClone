@@ -16,18 +16,16 @@ class AuthController extends Controller {
 
             $credentials = $request->validate([
                 'email' => ['required', 'email', 'unique:users'],
-                'password' => ['required', 'min:8'],
+                'password' => ['required', 'min:8', 'confirmed'],
                 'full_name' => ['required', 'min:3'],
-                'username' => ['required', 'unique:users'],
+                'username' => ['required', 'unique:users', 'regex:/^\S+$/'],
             ]);
 
             $user = User::create($request->all());
 
             Auth::loginUsingId($user->id);
 
-            return Inertia::render('Home', [
-                'user' => $user,
-            ]);
+            return redirect()->route('Home');
         } catch (\Throwable $e) {
             dd($e);
         }
@@ -41,7 +39,7 @@ class AuthController extends Controller {
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('home');
+            return redirect()->intended();
         }
 
         return back()->withErrors([
@@ -60,6 +58,6 @@ class AuthController extends Controller {
         $request->session()->regenerateToken();
 
         // redirect the user to the homepage
-        return redirect('/');
+        return redirect()->route('login');
     }
 }
