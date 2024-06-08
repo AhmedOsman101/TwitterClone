@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('tweets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('body', 280);
+            $table->string('body', 300);
             $table->timestamps();
         });
     }

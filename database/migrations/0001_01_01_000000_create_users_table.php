@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->text('bio')->nullable();
-            $table->text('profile_picture')->nullable();
+            $table->text('profile_picture')->default('https://placehold.co/400');
             $table->text('cover_photo')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();

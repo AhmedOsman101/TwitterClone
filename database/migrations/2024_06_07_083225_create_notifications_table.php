@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('body');
             $table->foreignId('comment_id')->nullable();
             $table->foreignId('like_id')->nullable();
             $table->foreignIdFor(Follower::class, 'follow_id')->nullable();
