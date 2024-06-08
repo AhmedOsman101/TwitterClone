@@ -1,6 +1,7 @@
 <template>
     <Layout>
         <Tweet />
+
     </Layout>
 </template>
 

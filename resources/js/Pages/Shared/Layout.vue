@@ -12,10 +12,11 @@ import SideBar from "./SideBar.vue";
 <style scoped>
 section {
 	grid-template-areas:
+    "nav header aside"
 		"nav tweet aside"
 		"nav posts aside";
 
 	display: grid;
-	grid-template-columns: 20.1rem 1fr 20.1rem;
+	grid-template-columns: 20rem 1fr 20rem;
 }
 </style>

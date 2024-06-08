@@ -1,5 +1,5 @@
 <template>
-	<aside class="p-10 w-fit h-screen flex flex-col items-start gap-8 relative">
+	<aside class="p-10 pr-20 w-full h-screen flex flex-col items-start gap-8 relative border-r">
 		<NavLink href="/">
 			<i class="fa-brands fa-twitter fa-lg mb-2"></i>
 		</NavLink>
