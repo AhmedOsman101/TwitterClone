@@ -12,7 +12,7 @@ import SideBar from "./SideBar.vue";
 <style scoped>
 section {
 	grid-template-areas:
-    "nav header aside"
+		"nav header aside"
 		"nav tweet aside"
 		"nav posts aside";
 

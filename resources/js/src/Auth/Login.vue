@@ -57,7 +57,7 @@
 
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import ErrorMessage from "@/Pages/Shared/ErrorMessage.vue";
+import ErrorMessage from "@/src/Components/ErrorMessage.vue";
 
 defineProps({ errors: Object });
 

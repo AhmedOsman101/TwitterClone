@@ -41,7 +41,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
-import ErrorMessage from "@/Pages/Shared/ErrorMessage.vue";
+import ErrorMessage from "@/src/Components/ErrorMessage.vue";
 
 // refs & variables
 const input = ref(null);

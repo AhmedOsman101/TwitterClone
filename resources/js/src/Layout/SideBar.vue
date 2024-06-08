@@ -88,10 +88,20 @@ const links = reactive([
 	},
 ]);
 
+const getComponent = (page) => {
+	let component = page.component;
+	component = component.split("/");
+	const index = component.length - 1;
+	component = component[index];
+	console.log(component);
+	return component;
+};
+
 // Function to update active status based on the current page component
 const updateActiveLinks = () => {
 	links.forEach((link) => {
-		link.active = page.component === link.label;
+		const component = getComponent(page);
+		link.active = component === link.label;
 	});
 };
 

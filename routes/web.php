@@ -13,7 +13,7 @@ use Inertia\Inertia;
 Route::middleware('auth')->group(
     function () {
         Route::get('/', function () {
-            return Inertia::render('Home');
+            return Inertia::render('Pages/Home');
         })->name('Home');
     }
 );
