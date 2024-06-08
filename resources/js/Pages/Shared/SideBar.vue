@@ -1,40 +1,37 @@
 <template>
-	<aside class="p-10 pr-20 w-full h-screen flex flex-col items-start gap-8 relative border-r">
+	<aside
+		class="p-10 pr-20 w-full h-screen flex flex-col items-start gap-8 relative border-r-[0.5px]">
 		<NavLink href="/">
-			<i class="fa-brands fa-twitter fa-lg mb-2"></i>
+			<i class="fa-brands fa-twitter fa-lg mb-2" />
 		</NavLink>
-
-		<NavLink href="/">
-			<i class="fa-solid fa-house"></i>
-			Home
-		</NavLink>
-		<NavLink href="/notifications">
-			<i class="fa-solid fa-bell"></i>
-			Notifications
-		</NavLink>
-		<NavLink href="/profile">
-			<i class="fa-solid fa-user"></i>
-			Profile
-		</NavLink>
-		<NavLink as="button" href="/user/logout" method="post">
-			<i class="fa-solid fa-arrow-right-from-bracket"></i>
+		<div v-for="link in links" :key="link.label">
+			<NavLink
+				:class="{
+					active: link.active,
+					navLink: !link.active,
+				}"
+				:href="link.href">
+				<i :class="link.icon" />
+				{{ link.label }}
+			</NavLink>
+		</div>
+		<NavLink as="button" class="navLink" href="/user/logout" method="post">
+			<i class="fa-solid fa-arrow-right-from-bracket" />
 			Logout
 		</NavLink>
 		<NavLink
 			as="button"
-			href="user/post"
-			class="bg-sky-500 px-5 py-3 rounded-xl">
-			<i class="fa-solid fa-feather"></i>
+			class="bg-sky-500 px-5 py-3 rounded-xl"
+			href="user/post">
+			<i class="fa-solid fa-feather" />
 			Tweet
 		</NavLink>
-		<div class="flex items-center p-2 mt-12 space-x-4 absolute bottom-8 w-full">
+		<div
+			class="flex items-center p-2 mt-12 space-x-4 absolute bottom-8 w-full">
 			<Link :href="`/profile/${user.username}`">
 				<img
-					:src="
-						user.profile_picture ||
-						'https://source.unsplash.com/100x100/?portrait'
-					"
 					:alt="user.fullname"
+					:src="user.profile_picture"
 					class="w-14 h-14 rounded-full bg-gray-500" />
 			</Link>
 			<div class="space-y-1">
@@ -51,9 +48,9 @@
 
 				<span class="flex items-center space-x-1">
 					<Link
-						rel="noopener noreferrer"
 						:href="`/profile/${user.username}`"
 						class="text-xs hover:underline text-gray-600"
+						rel="noopener noreferrer"
 						>View profile</Link
 					>
 				</span>
@@ -63,10 +60,54 @@
 </template>
 <script setup>
 import NavLink from "./NavLink.vue";
-import { computed } from "vue";
+import { computed, reactive, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 const page = usePage();
 
 const user = computed(() => page.props.auth.user);
+
+const links = reactive([
+	{
+		href: "/",
+		label: "Home",
+		icon: "fa-solid fa-house",
+		active: false,
+	},
+	{
+		href: "/notifications",
+		label: "Notifications",
+		icon: "fa-solid fa-bell",
+		active: false,
+	},
+	{
+		href: `/profile/${user.value.username}`,
+		label: "Profile",
+		icon: "fa-solid fa-user",
+		active: false,
+	},
+]);
+
+// Function to update active status based on the current page component
+const updateActiveLinks = () => {
+	links.forEach((link) => {
+		link.active = page.component === link.label;
+	});
+};
+
+// Call the function initially to set the active link
+updateActiveLinks();
+
+// Watch for changes in the page component and update active links
+watch(() => page.component, updateActiveLinks);
 </script>
+
+<style scoped>
+.active {
+	@apply text-sky-500 hover:text-sky-300 transition duration-[400ms] ease-in-out;
+}
+
+.navLink {
+	@apply text-white hover:text-sky-500 transition duration-[400ms] ease-in-out;
+}
+</style>

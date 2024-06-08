@@ -1,5 +1,6 @@
 <template>
-    <Link class="text-white text-xl font-bold text-capitalize flex items-center gap-4">
-        <slot />
-    </Link>
+	<Link
+		class="text-white text-xl font-bold text-capitalize flex items-center gap-4">
+		<slot />
+	</Link>
 </template>
