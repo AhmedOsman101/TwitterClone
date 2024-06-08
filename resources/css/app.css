@@ -5,4 +5,39 @@
 html,
 body {
     @apply h-full bg-black text-gray-200;
+    scroll-behavior: smooth;
+    scrollbar-base-color: #0ea5e9;
+    scrollbar-color: #0ea5e9 #000000;
+    scrollbar-width: thin;
 }
+
+.thinBorder {
+    border-width: 0.02rem;
+}
+
+.thinBorder-r {
+    border-right-width: 0.02rem;
+}
+
+.thinBorder-l {
+    border-left-width: 0.02rem;
+}
+
+.thinBorder-t {
+    border-top-width: 0.02rem;
+}
+
+.thinBorder-b {
+    border-bottom-width: 0.02rem;
+}
+
+.thinBorder-x {
+    border-left-width: 0.02rem;
+    border-right-width: 0.02rem;
+}
+
+.thinBorder-y {
+    border-bottom-width: 0.02rem;
+    border-top-width: 0.02rem;
+}
+

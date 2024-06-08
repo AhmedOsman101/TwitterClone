@@ -15,7 +15,7 @@ section {
 	grid-template-areas:
 		"nav header followBar"
 		"nav tweet followBar"
-		"nav posts followBar";
+		"nav feed followBar";
 
 	display: grid;
 	grid-template-columns: 20rem 1fr 20rem;
