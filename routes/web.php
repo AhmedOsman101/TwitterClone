@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\UserController;
@@ -9,12 +9,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-
 Route::middleware('auth')->group(
     function () {
-        Route::get('/', function () {
-            return Inertia::render('Pages/Home');
-        })->name('Home');
+        Route::get('/', [FeedController::class, 'HomeFeed'])->name('Home');
     }
 );
 
