@@ -3,41 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Throwable;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
     /**
      * Register a newly created user in storage.
      */
-    public function register(Request $request) {
-        try {
+    public function register(Request $request)
+    {
 
-            $credentials = $request->validate([
-                'email' => ['required', 'email', 'unique:users'],
-                'password' => ['required', 'min:8', 'confirmed'],
-                'full_name' => ['required', 'min:3'],
-                'username' => ['required', 'unique:users', 'regex:/^\S+$/'],
-            ]);
 
-            $user = User::create($request->all());
+        $credentials = $request->validate([
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min:8', 'confirmed'],
+            'full_name' => ['required', 'min:3'],
+            'username' => ['required', 'min:3', 'unique:users', 'regex:/^\S+$/', 'lowercase'],
+        ]);
 
-            Auth::loginUsingId($user->id);
+        User::create($credentials);
 
-            return redirect()->route('Home');
-        } catch (\Throwable $e) {
-            dd($e);
-        }
+        $this->login($request);
+
+        return redirect()->route('Home');
+
     }
 
-    public function login(Request $request) {
+    public function login(Request $request): RedirectResponse
+    {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended();
         }
@@ -47,7 +49,8 @@ class AuthController extends Controller {
         ])->onlyInput('email');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request): RedirectResponse
+    {
         // logout the user
         Auth::logout();
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TweetController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,7 +52,7 @@ Route::prefix('user')->group(function () {
     )->name('logout');
 });
 
-Route::prefix('post')->group(function () {
-    Route::post('/', [PostController::class, 'create']);
-    Route::get('/', [PostController::class, 'index']);
+Route::prefix('tweet')->group(function () {
+    Route::post('/', [TweetController::class, 'store']);
+    Route::get('/', [TweetController::class, 'index']);
 });
