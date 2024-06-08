@@ -21,7 +21,7 @@
 		</NavLink>
 		<NavLink
 			as="button"
-			class="bg-sky-500 px-5 py-3 rounded-xl"
+			class="bg-sky-500 px-5 py-3 rounded-3xl w-full flex justify-center ml-[-1rem]"
 			href="user/post">
 			<i class="fa-solid fa-feather" />
 			Tweet
@@ -90,10 +90,13 @@ const links = reactive([
 
 const getComponent = (page) => {
 	let component = page.component;
+
 	component = component.split("/");
+
 	const index = component.length - 1;
+
 	component = component[index];
-	console.log(component);
+
 	return component;
 };
 
@@ -113,6 +116,10 @@ watch(() => page.component, updateActiveLinks);
 </script>
 
 <style scoped>
+aside {
+	grid-area: nav;
+}
+
 .active {
 	@apply text-sky-500 hover:text-sky-300 transition duration-[400ms] ease-in-out;
 }

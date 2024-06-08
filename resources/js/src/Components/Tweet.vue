@@ -86,6 +86,11 @@ const autoResize = () => {
 </script>
 
 <style>
+
+section{
+	grid-area: tweet;
+}
+
 textarea:focus {
 	outline: none;
 }

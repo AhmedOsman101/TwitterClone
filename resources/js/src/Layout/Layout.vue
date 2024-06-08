@@ -7,16 +7,18 @@
 
 <script setup>
 import SideBar from "./SideBar.vue";
+import Header from "../Components/Header.vue";
 </script>
 
 <style scoped>
 section {
 	grid-template-areas:
-		"nav header aside"
-		"nav tweet aside"
-		"nav posts aside";
+		"nav header followBar"
+		"nav tweet followBar"
+		"nav posts followBar";
 
 	display: grid;
 	grid-template-columns: 20rem 1fr 20rem;
+	grid-template-rows: auto auto 1fr;
 }
 </style>
