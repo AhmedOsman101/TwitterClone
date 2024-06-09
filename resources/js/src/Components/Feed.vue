@@ -3,13 +3,14 @@
 		<div
 			v-for="tweet in feed"
 			:key="tweet.id"
+			@click="() => redirectToPost(tweet.id)"
 			class="tweet pl-5 pt-5 thinBorder-b hovered cursor-pointer">
 			<div class="flex align-start gap-3 tweetHead">
 				<Link
 					:href="`/profile/${tweet.user.username}`"
 					class="w-fit h-fit rounded-full">
 					<img
-						:alt="tweet.user.fullname"
+						:alt="tweet.user.full_name"
 						:src="tweet.user.profile_picture"
 						class="w-10 h-10 rounded-full bg-gray-500" />
 				</Link>
@@ -23,7 +24,7 @@
 					v-text="`@${tweet.user.username}`" />
 			</div>
 
-			<Link class="tweetBody" href="#" v-text="tweet.body" />
+			<p class="tweetBody" v-text="tweet.body" />
 		</div>
 	</section>
 </template>
@@ -35,6 +36,10 @@ import { computed, watch } from "vue";
 const page = usePage();
 
 const feed = computed(() => page.props.feed);
+
+const redirectToPost = (id) => {
+	return router.get(`tweets/${id}`);
+};
 
 watch(feed, () => router.reload());
 
@@ -64,13 +69,13 @@ section {
 
 .tweet {
 	display: grid;
-	grid-template-rows: 1fr auto 1fr;
+	grid-template-rows: 3rem auto 3rem;
 	row-gap: 1rem;
 	grid-template-areas:
 		"header"
 		"body"
 		"footer";
-	@apply min-h-full;
+	@apply min-h-fit h-fit;
 }
 
 .tweetHead {
@@ -79,7 +84,7 @@ section {
 
 .tweetBody {
 	grid-area: body;
-	@apply font-semibold text-sm;
+	@apply text-lg font-semibold;
 }
 
 .hovered:hover {

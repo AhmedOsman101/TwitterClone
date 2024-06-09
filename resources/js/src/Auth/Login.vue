@@ -33,16 +33,13 @@
 				</div>
 
 				<div class="flex items-center justify-between flex-wrap">
-					<!--          ToDo: add remember me functionality-->
-					<!--					<Link-->
-					<!--						href="#"-->
-					<!--						class="text-sm text-blue-500 hover:underline"-->
-					<!--						v-text="'Forgot password?'" />-->
+					<!--  ToDo: add remember me functionality-->
+					<!-- <Link href="#" class="text-sm text-blue-500 hover:underline" v-text="'Forgot password?'" /> -->
+
 					<div class="flex items-center">
 						<input
 							id="remember"
 							v-model="form.remember"
-							:checked="false"
 							aria-label="Remember me"
 							class="mr-2 rounded-sm focus:ring-blue-600 focus:border-blue-600 focus:ring-2 accent-blue-600"
 							name="remember"

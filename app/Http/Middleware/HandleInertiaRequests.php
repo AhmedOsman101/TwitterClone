@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware {
             'auth' => Auth::check() ? [
                 'user' => [
                     'id' => $user->id,
-                    'fullname' => $user->full_name,
+                    'full_name' => $user->full_name,
                     'username' => $user->username,
                     'email' => $user->email,
                     'bio' => $user->bio,

@@ -9,7 +9,7 @@
 <script setup>
 import Tweet from "../Components/Tweet.vue";
 import Header from "../Components/Header.vue";
-import Feed from "./Tweets/index.vue";
+import Feed from "../Components/Feed.vue";
 </script>
 
 <style>

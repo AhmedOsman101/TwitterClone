@@ -15,6 +15,8 @@ Route::middleware('auth')->group(
     }
 );
 
+// Route::get('/test', [FeedController::class, 'HomeFeed']);
+
 Route::get(
     'register',
     function () {
