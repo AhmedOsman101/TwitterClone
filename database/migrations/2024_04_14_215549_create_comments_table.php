@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id'); // the user who made the comment
-            $table->foreignId('post_id'); // the post the comment belongs to
+            $table->foreignId('tweet_id'); // the tweet the comment belongs to
             $table->string('body', 255);
             $table->timestamps();
         });

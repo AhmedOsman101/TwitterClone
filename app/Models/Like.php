@@ -11,14 +11,14 @@ class Like extends Model {
 
     protected $fillable = [
         'user_id',
-        'post_id',
+        'tweet_id',
         'comment_id'
     ];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
-    public function post(): BelongsTo {
+    public function tweet(): BelongsTo {
         return $this->belongsTo(Tweet::class);
     }
 }

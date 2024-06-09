@@ -11,7 +11,7 @@ class Comment extends Model {
 
     protected $fillable = [
         'user_id',
-        'post_id',
+        'tweet_id',
         'body',
     ];
 
@@ -19,7 +19,7 @@ class Comment extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public function post(): BelongsTo {
+    public function tweet(): BelongsTo {
         return $this->belongsTo(Tweet::class);
     }
 }
