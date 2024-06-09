@@ -61,7 +61,11 @@ onMounted(() => {
 
 // methods
 const createTweet = () => {
-	router.post("tweet", { user_id: user.value.id, body: body.value });
+	const data = {
+		user_id: user.value.id,
+		body: body.value,
+	};
+	router.post("tweet", data);
 	if (!errors.value.body) body.value = "";
 };
 
@@ -86,8 +90,7 @@ const autoResize = () => {
 </script>
 
 <style>
-
-section{
+section {
 	grid-area: tweet;
 }
 

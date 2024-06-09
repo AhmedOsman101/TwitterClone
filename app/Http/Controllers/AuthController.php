@@ -6,14 +6,13 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Throwable;
 
 class AuthController extends Controller
 {
     /**
      * Register a newly created user in storage.
      */
-    public function register(Request $request)
+    public function register(Request $request): RedirectResponse
     {
 
 
@@ -39,8 +38,10 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        // Get the 'remember' form field
+        $remember = $request->has('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
             return redirect()->intended();
         }
 

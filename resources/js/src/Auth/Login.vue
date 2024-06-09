@@ -7,47 +7,61 @@
 			</h2>
 			<form class="flex flex-col space-y-5" @submit.prevent="login">
 				<div class="space-y-1 text-sm">
-					<label for="email" class="block">Email</label>
+					<label class="block" for="email">Email</label>
 					<input
-						v-model="form.email"
-						@keydown="noSpaces"
-						type="email"
-						name="email"
 						id="email"
+						v-model="form.email"
 						class="w-full px-4 py-3 border-gray-300 transition ease-in-out duration-150 bg-gray-50 text-gray-900 border-0 rounded-md p-2 mb-4"
+						name="email"
 						placeholder="Email address"
-						required />
+						required
+						type="email"
+						@keydown="noSpaces" />
 					<ErrorMessage :error="errors.email" />
 				</div>
 				<div class="space-y-1 text-sm">
-					<label for="password" class="block">Password</label>
+					<label class="block" for="password">Password</label>
 					<input
-						v-model="form.password"
-						type="password"
-						name="password"
 						id="password"
+						v-model="form.password"
 						class="w-full px-4 py-3 border-gray-300 transition ease-in-out duration-150 bg-gray-50 text-gray-900 border-0 rounded-md p-2 mb-4"
+						name="password"
 						placeholder="Password"
-						required />
+						required
+						type="password" />
 					<ErrorMessage :error="errors.password" />
 				</div>
 
 				<div class="flex items-center justify-between flex-wrap">
-					<Link
-						href="#"
-						class="text-sm text-blue-500 hover:underline"
-						v-text="'Forgot password?'" />
+					<!--          ToDo: add remember me functionality-->
+					<!--					<Link-->
+					<!--						href="#"-->
+					<!--						class="text-sm text-blue-500 hover:underline"-->
+					<!--						v-text="'Forgot password?'" />-->
+					<div class="flex items-center">
+						<input
+							id="remember"
+							v-model="form.remember"
+							:checked="false"
+							aria-label="Remember me"
+							class="mr-2 rounded-sm focus:ring-blue-600 focus:border-blue-600 focus:ring-2 accent-blue-600"
+							name="remember"
+							type="checkbox" />
+						<label class="text-sm" for="remember"
+							>Remember me</label
+						>
+					</div>
 					<p class="text-gray-50">
 						Don't have an account?
 						<Link
-							href="/register"
 							class="text-sm text-blue-500 hover:underline mt-4"
+							href="/register"
 							v-text="'Register'" />
 					</p>
 				</div>
 				<button
-					type="submit"
-					class="bg-gradient-to-r from-sky-700 to-sky-400 text-white font-bold py-2 px-4 rounded-md mt-4 hover:from-sky-400 hover:to-sky-700 transition-all delay-1000 ease-in-out">
+					class="bg-gradient-to-r from-sky-700 to-sky-400 text-white font-bold py-2 px-4 rounded-md mt-4 hover:from-sky-400 hover:to-sky-700 transition-all delay-1000 ease-in-out"
+					type="submit">
 					Login
 				</button>
 			</form>
@@ -64,6 +78,7 @@ defineProps({ errors: Object });
 const form = useForm({
 	email: "",
 	password: "",
+	remember: false,
 });
 
 const noSpaces = (e) => {
