@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
-use App\Models\Like;
 use App\Models\Tweet;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class FeedController extends Controller {
-    public function HomeFeed(): \Inertia\Response | null {
-
-        // $tweets = Tweet::withCount(['comments', 'likes'])->get();
-        // dd($tweets->toArray());
-        // fallback if not logged in (testing)
-        if (!Auth::check()) return null;
+class FeedController extends Controller
+{
+    public function HomeFeed(): \Inertia\Response|null
+    {
 
         $userId = Auth::user()->id; // Get the authenticated user's ID
         $oneHourAgo = now()->subHour(); // Get the time for one hour ago
@@ -43,28 +37,11 @@ class FeedController extends Controller {
         return Inertia::render('Pages/Home', compact('feed'));
     }
 
-    public function UserFeed(Request $request): Builder {
-        $userId = $request->user_id; // Get the authenticated user's ID
-
-        $feed = Tweet::with(['user' => function ($query) {
-            $query->select('id', 'full_name', 'username', 'profile_picture');
-        }])
-            ->select('id', 'user_id', 'body', 'created_at') // Select only required columns from the tweets table
-            ->where('id', $userId)
-            ->withCount(['comments', 'likes'])
-            ->orderBy('created_at', 'desc');
-
-        foreach ($feed as $item) {
-            $item->duration = $this->ModifyDate($item->created_at);
-        }
-
-        return $feed;
-    }
-
-    public function ModifyDate($date): string {
+    public function ModifyDate($date): string
+    {
         // calculate the difference, displays in two parts e.g: '1w 2d from now'
         $diff = now()->shortRelativeToNowDiffForHumans($date, 2);
-        // seperate the parts
+        // separate the parts
         $diff = explode(' ', $diff);
         // store the two main parts
         $diffFirst = $diff[0];
@@ -73,9 +50,14 @@ class FeedController extends Controller {
         $month = $date->shortEnglishMonth;
         $day = $date->day;
         $year = $date->year;
-        $monthNumeric = $date->month;
 
-        if (preg_match('/^\d+(s|m|h|d)$/i', $diffFirst)) {
+        if (preg_match('/^\d+(s)$/i', $diffFirst)) {
+
+            if (substr($diffFirst, 0, -1) <= 9) return "Just now";
+            return $diffFirst;
+        }
+
+        if (preg_match('/^\d+([smhd])$/i', $diffFirst)) {
             return $diffFirst;
         }
 
@@ -92,9 +74,28 @@ class FeedController extends Controller {
         }
 
         if (preg_match('/^\d+(yr)$/i', $diffFirst)) {
-            return "$year $monthNumeric";
+            return "$month $day, $year";
         }
 
         return $diffFirst;
+    }
+
+    public function UserFeed(Request $request): Builder
+    {
+        $userId = $request->user_id; // Get the authenticated user's ID
+
+        $feed = Tweet::with(['user' => function ($query) {
+            $query->select('id', 'full_name', 'username', 'profile_picture');
+        }])
+            ->select('id', 'user_id', 'body', 'created_at') // Select only required columns from the tweets table
+            ->where('id', $userId)
+            ->withCount(['comments', 'likes'])
+            ->orderBy('created_at', 'desc');
+
+        foreach ($feed as $item) {
+            $item->duration = $this->ModifyDate($item->created_at);
+        }
+
+        return $feed;
     }
 }
