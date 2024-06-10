@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TweetController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,7 +12,15 @@ use Inertia\Inertia;
 Route::middleware('auth')->group(
     function () {
         Route::get('/', [FeedController::class, 'HomeFeed'])->name('Home');
+        Route::post(
+            'user/logout',
+            [AuthController::class, 'logout']
+        )->name('logout');
+
+        Route::post('tweet', [TweetController::class, 'store']);
+        Route::post('like', [LikeController::class, 'store']);
     }
+
 );
 
 // Route::get('/test', [FeedController::class, 'HomeFeed']);
@@ -40,18 +48,3 @@ Route::post(
     'login',
     [AuthController::class, 'login']
 );
-
-Route::prefix('user')->group(function () {
-
-    Route::get('/', [UserController::class, 'index']);
-
-    Route::post(
-        'logout',
-        [AuthController::class, 'logout']
-    )->name('logout');
-});
-
-Route::prefix('tweet')->group(function () {
-    Route::post('/', [TweetController::class, 'store']);
-    Route::get('/', [TweetController::class, 'index']);
-});

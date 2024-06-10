@@ -1,7 +1,12 @@
 <template>
-	<section id="Tweets" :key="componentKey" class="grid">
-		<FeedTweet v-for="tweet in feed" :key="tweet.id" :tweet="tweet" />
-	</section>
+  <section id="Tweets" :key="componentKey" class="grid">
+    <FeedTweet
+      v-for="tweet in feed"
+      :key="tweet.id"
+      :tweet="tweet"
+      @click="() => redirectToPost(tweet.id)"
+    />
+  </section>
 </template>
 
 <script setup>
@@ -20,12 +25,12 @@ const feedLength = computed(() => page.props.feed.length);
 watch(feedLength, () => componentKey.value++);
 
 const redirectToPost = (id) => {
-	return router.get(`tweets/${id}`);
+  return router.get(`tweets/${id}`);
 };
 </script>
 
 <style scoped>
 section {
-	grid-area: feed;
+  grid-area: feed;
 }
 </style>

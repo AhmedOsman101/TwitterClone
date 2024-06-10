@@ -1,19 +1,16 @@
 <template>
-  <div
-    class="tweet pl-5 pt-5 thinBorder-b hovered cursor-pointer"
-    @click="() => redirectToPost(tweet.id)"
-  >
+  <div class="tweet pl-5 pt-5 thinBorder-b hovered cursor-pointer">
+    <Link
+      :href="`/profile/${tweet.user.username}`"
+      class="w-fit h-fit rounded-full image"
+    >
+      <img
+        :alt="tweet.user.full_name"
+        :src="tweet.user.profile_picture"
+        class="w-10 h-10 rounded-full bg-gray-500"
+      />
+    </Link>
     <div class="flex align-start gap-3 tweetHead">
-      <Link
-        :href="`/profile/${tweet.user.username}`"
-        class="w-fit h-fit rounded-full"
-      >
-        <img
-          :alt="tweet.user.full_name"
-          :src="tweet.user.profile_picture"
-          class="w-10 h-10 rounded-full bg-gray-500"
-        />
-      </Link>
       <Link
         :href="`/profile/${tweet.user.username}`"
         class="font-semibold text-gray-200 hover:underline transition"
@@ -29,21 +26,34 @@
     </div>
 
     <p class="tweetBody" v-text="tweet.body" />
+
+    <TweetFooter
+      :commentsCount="tweet.comments_count"
+      :likesCount="tweet.likes_count"
+      :tweet_id="tweet.id"
+    />
   </div>
 </template>
 <script setup>
+import TweetFooter from "@/src/Components/Feed/TweetFooter.vue";
+
 defineProps({ tweet: Object });
 </script>
 <style scoped>
 .tweet {
   display: grid;
   grid-template-rows: 3rem auto 3rem;
-  row-gap: 1rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
   grid-template-areas:
-    "header"
-    "body"
-    "footer";
+    "image header"
+    "image body"
+    "image footer";
   @apply min-h-fit h-fit;
+}
+
+.image {
+  grid-area: image;
 }
 
 .tweetHead {
