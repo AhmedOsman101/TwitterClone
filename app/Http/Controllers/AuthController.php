@@ -25,13 +25,13 @@ class AuthController extends Controller
 
         User::create($credentials);
 
-        $this->login($request);
+        $this->login($request, true);
 
         return redirect()->route('Home');
 
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(Request $request, $isRemembered = false): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
         // Get the 'remember' form field
-        $remember = $request->has('remember');
+        $remember = $isRemembered || ($request->has('remember') && $request->remember === true);
 
         if (Auth::attempt($credentials, $remember)) {
             return redirect()->intended();
