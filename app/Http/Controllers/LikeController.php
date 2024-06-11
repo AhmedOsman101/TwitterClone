@@ -3,38 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class LikeController extends Controller
-{
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse|JsonResponse
-    {
-        $exists = Like::where('user_id', $request->user_id)
-            ->where('tweet_id', $request->tweet_id)
-            ->exists();
+class LikeController extends Controller {
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store (Request $request) {
+    $like = Like::where('user_id', $request->user_id)
+                ->where('tweet_id', $request->tweet_id)
+                ->first();
 
-        if ($request->has('create') && !$exists) {
-            Like::create($request->only(['user_id', 'tweet_id']));
-            return response()->json(['liked' => true]);
-        }
+    // check if it's liked or not
+    $exists = $like !== null;
 
-        return response()->json(['liked' => $exists]);
+    if ($request->has('create')) {
+      if (!$exists) {
+        Like::create($request->only(['user_id', 'tweet_id']));
+        return response()->json(['liked' => true]);
+      } else {
+        $like->delete();
+        return response()->json(['liked' => false]);
+      }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id): \Illuminate\Http\RedirectResponse
-    {
-        $like = Like::find($id);
+    return response()->json(['liked' => $exists]);
+  }
 
-        $like->destroy();
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy ($id): RedirectResponse {
+    $like = Like::find($id);
 
-        return redirect()->back();
-    }
+    $like->delete();
+
+    return redirect()->back();
+  }
 }

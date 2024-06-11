@@ -8,11 +8,14 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('tweets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->string('body', 300);
+            $table->unsignedInteger('likes_count')->default(0);
+            $table->unsignedInteger('comments_count')->default(0);
             $table->timestamps();
         });
     }
@@ -20,7 +23,8 @@ return new class extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('tweets');
     }
 };
