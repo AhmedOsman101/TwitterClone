@@ -34,11 +34,13 @@
     />
   </div>
 </template>
+
 <script setup>
 import TweetFooter from "@/src/Components/Feed/TweetFooter.vue";
 
 defineProps({ tweet: Object });
 </script>
+
 <style scoped>
 .tweet {
   display: grid;

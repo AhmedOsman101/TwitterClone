@@ -34,7 +34,7 @@ const getComponent = (page) => {
   component = component.split("/");
   const index = component.length - 1;
   component = component[index];
-  console.log(component);
+  // console.log(component);
   return component;
 };
 
