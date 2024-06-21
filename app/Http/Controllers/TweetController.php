@@ -31,14 +31,14 @@ class TweetController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show($id) {
+    public function show($id, Request $request) {
         $tweet = Tweet::where('id', $id)->with('user')->withCount(['likes', 'comments'])->get();
 
         $tweet = TweetResource::collection($tweet);
 
         if ($tweet !== null) {
             $likedTweetsIds = Like::select(['id', 'tweet_id'])
-                ->where('user_id', Auth::user()->id)
+                ->where('user_id', $request->user_id ?? Auth::user()->id)
                 ->where('tweet_id', '!=', null)
                 ->get()->toArray();
 

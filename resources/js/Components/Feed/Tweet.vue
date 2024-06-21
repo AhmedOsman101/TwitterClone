@@ -1,5 +1,6 @@
 <script setup>
 import TweetFooter from "@/Components/Feed/TweetFooter.vue";
+import { watch } from "vue";
 
 const props = defineProps({ tweet: Object });
 </script>

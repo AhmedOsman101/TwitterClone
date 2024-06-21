@@ -91,6 +91,7 @@ const autoResize = () => {
             <button
                 class="bg-sky-500 px-5 py-2 rounded-3xl opacity-100 text-white font-semibold disabled:opacity-80"
                 @click="() => createTweet(user.id)"
+                :disabled="!body.length"
             >
                 Tweet
             </button>
