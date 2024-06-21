@@ -34,7 +34,7 @@
         </div>
 
         <div class="flex items-center justify-between flex-wrap">
-          <!--  ToDo: add remember me functionality-->
+          <!--  ToDo: add forgot password functionality-->
           <!-- <Link href="#" class="text-sm text-blue-500 hover:underline" v-text="'Forgot password?'" /> -->
 
           <div class="flex items-center">

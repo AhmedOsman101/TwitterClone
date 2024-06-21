@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('full_name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->unsignedInteger('followers_count')->default(0);
             $table->text('bio')->nullable();
             $table->text('profile_picture')->default('https://placehold.co/400');
             $table->text('cover_photo')->nullable();

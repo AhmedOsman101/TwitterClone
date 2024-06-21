@@ -31,7 +31,6 @@
         class="progress border"
       />
       <button
-        :disabled="!body.length"
         class="bg-sky-500 px-5 py-2 rounded-3xl opacity-100 text-white font-semibold disabled:opacity-80"
         @click="() => createTweet(user.id)"
       >
@@ -44,22 +43,22 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
-import ErrorMessage from "@/src/Components/ErrorMessage.vue";
+import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
+import { useFeedStore } from "@/stores/feedStore.js";
+import ErrorMessage from "@/src/Components/ErrorMessage.vue";
 
 // hooks
 const page = usePage();
 const authStore = useAuthStore();
-
-onMounted(() => authStore.getAuthenticatedUser());
+const feedStore = useFeedStore();
 
 // refs & variables
+const maxTweetLength = 300;
 const input = ref(null);
 const body = ref("");
 const { user } = storeToRefs(authStore);
-const maxTweetLength = 300;
 
 // computed properties
 const errors = computed(() => page.props.errors);
@@ -74,7 +73,9 @@ const createTweet = (id) => {
     user_id: id,
     body: body.value,
   };
-  router.post("tweet", data);
+
+  feedStore.addNewTweet(data);
+
   if (!errors.value.body) body.value = "";
 };
 

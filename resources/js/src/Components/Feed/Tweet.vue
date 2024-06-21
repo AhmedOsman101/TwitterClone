@@ -27,18 +27,14 @@
 
     <p class="tweetBody" v-text="tweet.body" />
 
-    <TweetFooter
-      :commentsCount="tweet.comments_count"
-      :likesCount="tweet.likes_count"
-      :tweet_id="tweet.id"
-    />
+    <TweetFooter :tweet_id="tweet.id" />
   </div>
 </template>
 
 <script setup>
 import TweetFooter from "@/src/Components/Feed/TweetFooter.vue";
 
-defineProps({ tweet: Object });
+const props = defineProps({ tweet: Object });
 </script>
 
 <style scoped>

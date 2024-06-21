@@ -1,35 +1,41 @@
 <template>
-	<section id="Tweets" :key="componentKey" class="grid">
-		<FeedTweet
-			v-for="tweet in feed"
-			:key="tweet.id"
-			:tweet="tweet"
-			@click="() => redirectToPost(tweet.id)" />
-	</section>
+  <section id="Tweets" class="grid">
+    <FeedTweet
+      v-for="tweet in feed"
+      :key="tweet.id"
+      :tweet="tweet"
+      @click="() => redirectToPost(tweet.id)"
+    />
+  </section>
 </template>
 
 <script setup>
 import { router, usePage } from "@inertiajs/vue3";
-import { computed, ref, watch } from "vue";
+import { useFeedStore } from "@/stores/feedStore.js";
 import FeedTweet from "@/src/Components/Feed/Tweet.vue";
+import { storeToRefs } from "pinia";
+import { watch } from "vue";
 
 const page = usePage();
 
-const componentKey = ref(0);
+const feedStore = useFeedStore();
 
-const feed = computed(() => page.props.feed);
+// Set the feed data from Inertia props to Pinia store
+feedStore.setHomeFeed(page.props.feed.data);
 
-const feedLength = computed(() => page.props.feed.length);
+const { feed } = storeToRefs(feedStore);
 
-watch(feedLength, () => componentKey.value++);
+watch(feed, () => {
+  feedStore.getHomeFeed();
+});
 
 const redirectToPost = (id) => {
-	return router.get(`tweets/${id}`);
+  router.get(`tweets/${id}`);
 };
 </script>
 
 <style scoped>
 section {
-	grid-area: feed;
+  grid-area: feed;
 }
 </style>

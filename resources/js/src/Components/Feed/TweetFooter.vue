@@ -2,76 +2,64 @@
   <div class="tweetFooter">
     <p class="footerItem hover:text-sky-500">
       <i class="fa-regular fa-comment-dots" />
-      <span v-if="commentsCount" v-text="commentsCount" />
+      <span v-if="tweet.comments_count" v-text="tweet.comments_count" />
     </p>
-    <span v-text="{ ...$props, liked }" />
 
     <p
       class="footerItem hover:text-pink-500"
-      @click.stop="addLike(user.id, tweet_id)"
+      @click.stop="addLike(user.id, $props.tweet_id)"
     >
       <i
         :class="{
-          'fa-regular': !liked,
-          'fa-solid': liked,
+          'fa-regular': !tweet.liked,
+          'fa-solid': tweet.liked,
         }"
         class="fa-heart"
       />
-      <span v-if="likesCount" v-text="likesCount" />
+      <span v-if="tweet.likes_count" v-text="tweet.likes_count" />
+      <!--      <p class="bg-white text-black w-full" v-text="{ ...$props }"/>-->
     </p>
   </div>
 </template>
 
 <script setup>
-import axios from "axios";
-import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
+import { router } from "@inertiajs/vue3";
+import { useFeedStore } from "@/stores/feedStore.js";
+import { computed } from "vue";
 
 const props = defineProps({
-  likesCount: Number,
-  commentsCount: Number,
   tweet_id: Number,
 });
 
-const liked = ref(false); // Default to false until verified
-
 const authStore = useAuthStore();
-
-onMounted(() => authStore.getAuthenticatedUser());
+const feedStore = useFeedStore();
 
 const { user } = storeToRefs(authStore);
+const { feed } = storeToRefs(feedStore);
 
-// Simplify the data sent to the server to avoid circular references
-const getNotLiked = async () => {
-  try {
-    const response = await axios.post("http://localhost:8000/like", {
-      user_id: user.id,
-      tweet_id: props.tweet_id,
-    });
-    liked.value = response.data.liked;
-  } catch (error) {
-    console.error("Error fetching like status:", error.message);
-  }
-};
+const tweetIndex = computed(() =>
+  feed.value.findIndex((item) => item.id === props.tweet_id),
+);
 
-// Use Inertia's visit method for Inertia post requests
-const addLike = async (user_id, tweet_id) => {
-  try {
-    const response = await axios.post("http://localhost:8000/like", {
+const tweet = computed(() => feed.value[tweetIndex.value]);
+
+const addLike = (user_id, tweet_id) => {
+  router.post(
+    "/like",
+    {
       user_id,
       tweet_id,
-      create: true,
-    });
-    liked.value = response.data.liked;
-  } catch (error) {
-    console.error("Error adding like:", error.message);
-  }
+    },
+    {
+      preserveScroll: true,
+      onSuccess: async () => {
+        await feedStore.fetchTweet(tweet_id);
+      },
+    },
+  );
 };
-
-onMounted(() => {
-  getNotLiked();
-});
 </script>
 
 <style scoped>
