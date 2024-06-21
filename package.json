@@ -2,30 +2,29 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite --cors",
-        "serve": "npm install && npm run build & npm run dev",
+        "dev": "vite",
+        "serve": "npm run build && npm run dev",
         "build": "vite build"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^5.0.4",
-        "autoprefixer": "^10.4.19",
-        "axios": "^1.7.2",
+        "@inertiajs/vue3": "^1.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4.38",
-        "prettier-plugin-tailwindcss": "^0.6.1",
-        "tailwindcss": "^3.4.3",
-        "vite": "^5.0"
-    },
-    "dependencies": {
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.2.1",
+        "vite": "^5.0",
+        "vue": "^3.4.0",
         "@fortawesome/fontawesome-free": "^6.5.2",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
         "@fortawesome/free-brands-svg-icons": "^6.5.2",
         "@fortawesome/free-regular-svg-icons": "^6.5.2",
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
-        "@fortawesome/vue-fontawesome": "^3.0.6",
-        "@inertiajs/inertia": "^0.11.1",
-        "@inertiajs/vue3": "^1.0.15",
-        "pinia": "^2.1.7",
-        "vue": "^3.4.27"
+        "@fortawesome/vue-fontawesome": "^3.0.6"
+    },
+    "dependencies": {
+        "pinia": "^2.1.7"
     }
 }
