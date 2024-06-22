@@ -14,37 +14,37 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 class RegisteredUserController extends Controller {
-    /**
-     * Display the registration view.
-     */
-    public function create(): Response {
-        return Inertia::render('Auth/Register');
-    }
+  /**
+   * Handle an incoming registration request.
+   *
+   * @throws \Illuminate\Validation\ValidationException
+   */
+  public function store (Request $request): RedirectResponse {
+    $request->validate([
+      'full_name' => 'required|string|max:255|min:3',
+      'email'     => 'required|string|lowercase|email|max:255|unique:' . User::class,
+      'password'  => ['required', 'confirmed', Rules\Password::defaults()],
+      'username'  => ['required', 'min:3', 'unique:users', 'regex:/^[A-Za-z0-9]+$/'],
+    ]);
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse {
-        $request->validate([
-            'full_name' => 'required|string|max:255|min:3',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'username'  => ['required', 'min:3', 'unique:users', 'regex:/^[a-z0-9]+$/', 'lowercase'],
-        ]);
+    $user = User::create([
+      'full_name' => $request->full_name,
+      'username'  => $request->username,
+      'email'     => $request->email,
+      'password'  => Hash::make($request->password),
+    ]);
 
-        $user = User::create([
-            'full_name' => $request->full_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    event(new Registered($user));
 
-        event(new Registered($user));
+    Auth::login($user);
 
-        Auth::login($user);
+    return redirect(route('Home', absolute: false));
+  }
 
-        return redirect(route('Home', absolute: false));
-    }
+  /**
+   * Display the registration view.
+   */
+  public function create (): Response {
+    return Inertia::render('Auth/Register');
+  }
 }
