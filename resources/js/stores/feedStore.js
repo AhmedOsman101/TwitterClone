@@ -2,7 +2,6 @@ import axios from "axios";
 import { isEqualObjects } from "@/Helpers";
 import { defineStore } from "pinia";
 import { router } from "@inertiajs/vue3";
-import { toRaw } from "vue";
 import { useAuthStore } from "./authStore";
 
 export const useFeedStore = defineStore("feed", {
@@ -40,15 +39,15 @@ export const useFeedStore = defineStore("feed", {
      * Sets the home feed with an array of tweets.
      * @param {Tweet[]} feed - An array of tweets.
      */
-    setHomeFeed (feed) {
+    setFeed (feed) {
       this.$patch((state) => (state.feed = feed));
-      console.log(toRaw(this.feed), 'Feed Set');
+      // console.log(toRaw(this.feed), 'Feed Set');
     },
     /**
      * Fetches the home feed from the server.
      * @returns {Promise<void>}
      */
-    async getHomeFeed () {
+    async getFeed () {
       try {
         const authStore = useAuthStore();
 
@@ -56,7 +55,7 @@ export const useFeedStore = defineStore("feed", {
           params: {user_id: authStore.user.id},
         });
         const response = await request.data;
-        await this.setHomeFeed(response);
+        await this.setFeed(response);
       } catch (e) {
         console.error("Error Fetching Home Feed:", e);
       }
@@ -67,7 +66,7 @@ export const useFeedStore = defineStore("feed", {
      */
     addNewTweet (data) {
       router.post(route('tweet.store'), data, {
-        onSuccess: () => this.getHomeFeed(),
+        onSuccess: () => this.getFeed(),
       });
     },
     /**

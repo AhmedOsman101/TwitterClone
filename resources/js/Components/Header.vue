@@ -43,7 +43,9 @@ const back = () => {
 <template>
   <section ref="head" class="pl-5 py-4 border-b sticky top-0 bg-black">
     <div class="flex gap-4 items-center w-full">
-      <button v-if="backable || false" @click="back">
+      <button v-if="backable"
+              class="p-3 aspect-square grid place-items-center rounded-full hover:bg-[#181919]"
+              @click="back">
         <i class="fa-solid fa-arrow-left"/>
       </button>
       <h1 class="text-2xl font-bold">{{ $props.title ?? component }}</h1>

@@ -6,26 +6,26 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
-            $table->string('body');
-            $table->foreignId('comment_id')->nullable();
-            $table->foreignId('like_id')->nullable();
-            $table->foreignIdFor(Follower::class, 'follow_id')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   */
+  public function up (): void {
+    Schema::create('notifications', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('user_id');
+      $table->string('body');
+      $table->foreignId('comment_id')->nullable();
+      $table->foreignId('like_id')->nullable();
+      $table->foreignIdFor(Follower::class, 'follow_id')->nullable();
+      $table->softDeletes();
+      $table->timestamp('created_at')->useCurrent();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void {
-        Schema::dropIfExists('notifications');
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down (): void {
+    Schema::dropIfExists('notifications');
+  }
 };

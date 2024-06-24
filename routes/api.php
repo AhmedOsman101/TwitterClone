@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\TweetController;
@@ -12,6 +13,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('like', [LikeController::class, 'getUserLikedPosts']);
+
+Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
+Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get(
   'tweets/{id}', [TweetController::class, 'ApiShow']

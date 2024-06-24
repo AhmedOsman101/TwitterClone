@@ -10,14 +10,14 @@ const page = usePage();
 const feedStore = useFeedStore();
 
 // Set the feed data from Inertia props to Pinia store
-feedStore.setHomeFeed(page.props.feed.data);
+feedStore.setFeed(page.props.feed.data);
 
 const {feed} = storeToRefs(feedStore);
 
 const feedLength = computed(() => feed.value.length);
 
 watch(feedLength, () => {
-  feedStore.getHomeFeed();
+  feedStore.getFeed();
 });
 
 const redirectToPost = (id) => {

@@ -12,7 +12,7 @@ const tweet = computed(() => toRaw(page.props.tweet.data));
 
 const feedStore = useFeedStore();
 
-feedStore.setHomeFeed(tweet.value);
+feedStore.setFeed(tweet.value);
 
 </script>
 
