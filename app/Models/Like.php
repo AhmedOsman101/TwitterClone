@@ -23,4 +23,8 @@ class Like extends Model {
   public function tweet (): BelongsTo {
     return $this->belongsTo(Tweet::class);
   }
+
+  public function comment (): BelongsTo {
+    return $this->belongsTo(Comment::class);
+  }
 }

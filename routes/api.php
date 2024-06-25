@@ -15,7 +15,7 @@ Route::get('/user', function (Request $request) {
 Route::get('like', [LikeController::class, 'getUserLikedPosts']);
 
 Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
-Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('comments/{id}', [CommentController::class, 'show'])->name('comments.show');
 
 Route::get(
   'tweets/{id}', [TweetController::class, 'ApiShow']

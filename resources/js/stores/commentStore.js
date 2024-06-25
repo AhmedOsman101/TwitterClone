@@ -3,8 +3,9 @@ import { isEqualObjects } from "@/Helpers";
 import { defineStore } from "pinia";
 import { router } from "@inertiajs/vue3";
 import { useAuthStore } from "./authStore";
+import { useFeedStore } from "@/stores/feedStore.js";
 
-export const useCommentsStore = defineStore("comments", {
+export const useCommentStore = defineStore("comments", {
   state: () => {
     return {
       /**
@@ -47,8 +48,10 @@ export const useCommentsStore = defineStore("comments", {
      */
     async getComments (id) {
       try {
+        console.log(id, "get");
+        const authStore = useAuthStore();
         const request = await axios.get(route('comments.index'), {
-          params: {tweet_id: id},
+          params: {tweet_id: id, user_id: authStore.user.id},
         });
         const response = await request.data;
         await this.setComments(response);
@@ -56,20 +59,22 @@ export const useCommentsStore = defineStore("comments", {
         console.error("Error Fetching Home Comments:", e);
       }
     },
-    /**
-     * Adds a new comment and refreshes the home comments.
-     * @param {Comment} data - The data for the new comment.
-     */
-    addNewTweet (data) {
+
+    addNewComment (data) {
+      console.log(data.tweet_id, "add");
       router.post(route('comment.store'), data, {
-        onSuccess: () => this.getComments(),
+        onSuccess: () => {
+          this.getComments(data.tweet_id);
+          const feedStore = useFeedStore();
+          feedStore.fetchTweet(data.tweet_id);
+        },
       });
     },
     /**
      * Updates a comment in the comments.
      * @param {Comment[]} comment - The comment to update.
      */
-    updateTweet (comment) {
+    updateComment (comment) {
       /**
        * @type {Comment}
        */
@@ -88,13 +93,13 @@ export const useCommentsStore = defineStore("comments", {
      * @param {number} id - The ID of the comment to fetch.
      * @returns {Promise<void>}
      */
-    async fetchTweet (id) {
+    async fetchComment (id) {
       const authStore = useAuthStore();
-      const request = await axios.get(route('comments.api.show', id), {
+      const request = await axios.get(route('comments.show', id), {
         params: {user_id: authStore.user.id},
       });
       const response = await request.data;
-      this.updateTweet(response);
+      this.updateComment(response);
     },
   },
 });

@@ -11,6 +11,9 @@ class Notification extends Model {
 
   public const null UPDATED_AT = null;
   protected $fillable = [
-    'user_id', 'comment_id', 'like_id', 'follow_id',
+    'user_id',
+    'comment_id',
+    'like_id',
+    'follow_id',
   ];
 }

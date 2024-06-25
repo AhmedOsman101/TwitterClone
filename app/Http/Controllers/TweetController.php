@@ -44,7 +44,10 @@ class TweetController extends Controller {
                             ->get()->toArray();
 
       foreach ($tweet as &$item) {
-        $item->liked = $this->isLiked($item->id, $likedTweetsIds);
+        $item->liked = $this->isLiked(
+          needle    : $item->id,
+          haystack  : $likedTweetsIds,
+          column_key: "tweet_id");
       }
     }
     $tweet = TweetResource::collection($tweet);
@@ -67,10 +70,13 @@ class TweetController extends Controller {
                             ->get()->toArray();
 
       foreach ($tweet as &$item) {
-        $item->liked = $this->isLiked($item->id, $likedTweetsIds);
+        $item->liked = $this->isLiked(
+          needle    : $item->id,
+          haystack  : $likedTweetsIds,
+          column_key: "tweet_id");
       }
     }
-    $tweet = TweetResource::collection($tweet);
+    $tweet = TweetResource::collection($tweet)->resolve();
 
     return Inertia::render('SingleTweet', compact('tweet'));
   }

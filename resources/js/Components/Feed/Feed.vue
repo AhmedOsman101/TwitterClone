@@ -10,7 +10,7 @@ const page = usePage();
 const feedStore = useFeedStore();
 
 // Set the feed data from Inertia props to Pinia store
-feedStore.setFeed(page.props.feed.data);
+feedStore.setFeed(page.props.feed);
 
 const {feed} = storeToRefs(feedStore);
 

@@ -26,6 +26,7 @@ const addLike = (user_id, tweet_id) => {
       {
         user_id,
         tweet_id,
+        isTweet: true
       },
       {
         preserveScroll: true,
@@ -40,7 +41,7 @@ const addLike = (user_id, tweet_id) => {
 <template>
   <div class="tweetFooter">
 
-    <p class="footerItem text-gray-400 hover:text-sky-500">
+    <p class="footerItem text-gray-400 hover:text-sky-500" style="cursor: default">
       <i class="fa-regular fa-comment-dots"/>
       <span v-if="tweet.comments_count" v-text="formatNumber(tweet.comments_count)"/>
     </p>

@@ -8,7 +8,6 @@ use App\Models\Tweet;
 use App\Traits\Helpers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,7 +22,7 @@ class FeedController extends Controller {
     return Inertia::render('Home', compact('feed'));
   }
 
-  public function getHomeFeed (int|null $id = null): AnonymousResourceCollection {
+  public function getHomeFeed (int|null $id = null) {
 
     $tweets = Tweet::with('user')
                    ->orderBy('id', 'desc') // Sort chronologically in descending order
@@ -38,12 +37,16 @@ class FeedController extends Controller {
                             ->where('tweet_id', '!=', null)
                             ->get()->toArray();
 
+      $this->setHaystack($likedTweetsIds);
       foreach ($feed as &$tweet) {
-        $tweet->liked = $this->isLiked($tweet->id, $likedTweetsIds);
+        $tweet->liked = $this->isLiked(
+          needle    : $tweet->id,
+          haystack  : $likedTweetsIds,
+          column_key: "tweet_id");
       }
     }
 
-    return TweetResource::collection($feed);
+    return TweetResource::collection($feed)->resolve();
   }
 
 

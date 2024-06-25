@@ -13,7 +13,6 @@ return new class extends Migration {
       $table->id();
       $table->foreignId('user_id');  // the user who made the comment
       $table->foreignId('tweet_id'); // the tweet the comment belongs to
-      $table->unsignedInteger('likes_count')->default(0);
       $table->string('body', 255);
       $table->timestamp('created_at')->useCurrent();
     });

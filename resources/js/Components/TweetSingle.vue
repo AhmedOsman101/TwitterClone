@@ -1,7 +1,10 @@
 <script setup>
 import TweetFooter from "@/Components/Feed/TweetFooter.vue";
+import { computed } from "vue";
 
 const props = defineProps({tweet: Object});
+
+const tweet = computed(() => props.tweet);
 
 </script>
 

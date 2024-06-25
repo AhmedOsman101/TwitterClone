@@ -2,13 +2,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Header from "@/Components/Header.vue";
 import { Head, usePage } from "@inertiajs/vue3";
-import { computed, toRaw } from "vue";
+import { computed } from "vue";
 import TweetSingle from "@/Components/TweetSingle.vue";
 import { useFeedStore } from "@/stores/feedStore.js";
+import CommentSection from "@/Components/CommentSection.vue";
 
 const page = usePage();
 
-const tweet = computed(() => toRaw(page.props.tweet.data));
+const tweet = computed(() => page.props.tweet);
 
 const feedStore = useFeedStore();
 
@@ -22,6 +23,7 @@ feedStore.setFeed(tweet.value);
     <Header :backable="true" :title="'Post'" class="Header"/>
     <section>
       <TweetSingle :tweet="tweet[0]"/>
+      <CommentSection/>
     </section>
   </AuthenticatedLayout>
 </template>

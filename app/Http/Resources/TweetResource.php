@@ -25,7 +25,7 @@ class TweetResource extends JsonResource {
       "duration"       => $this->getDuration($this->created_at),
       "created_at"     => (new Carbon($this->created_at))->isoFormat('h:mm A • MMM d, Y'),
       "liked"          => $this->liked,
-      "user"           => new TweetUserResource($this->user),
+      "user"           => (new TweetUserResource($this->user))->resolve(),
     ];
   }
 }

@@ -1,8 +1,11 @@
 <?php
+/** @noinspection MissingOrEmptyGroupStatementInspection */
 
 namespace App\Traits;
 
 trait Helpers {
+  public array $haystack = [];
+
   public function getDuration ($date): string {
     // calculate the difference, displays in two parts e.g: '1w 2d from now'
     $diff = now()->shortRelativeToNowDiffForHumans($date, 2);
@@ -44,8 +47,16 @@ trait Helpers {
     return $diffFirst;
   }
 
-  public function isLiked ($needle, $haystack): bool {
-    $haystack = array_column($haystack, 'tweet_id');
+  public function isLiked ($needle, $haystack, $column_key): bool {
+
+    $haystack = array_column($haystack, $column_key);
+
     return in_array($needle, $haystack, true);
+  }
+
+  public function setHaystack ($data): void {
+    if ($this->haystack === $data) return;
+
+    $this->haystack = $data;
   }
 }

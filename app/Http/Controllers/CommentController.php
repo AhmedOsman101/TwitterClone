@@ -4,20 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Like;
+use App\Traits\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller {
+  use Helpers;
+
   /**
    * Display a listing of the resource.
    */
   public function index (Request $request) {
+//    dd($request->all());
     $temp = Comment::where('tweet_id', request('tweet_id'))
-                   ->withCount('likes')
                    ->with('user')
+                   ->withCount('likes')
                    ->orderBy('id', 'desc') // Sort chronologically in descending order
                    ->get();
 
-    $tweets = CommentResource::collection($temp);
+    if ($temp !== null) {
+      $likedCommentsIds = Like::select(['id', 'comment_id'])
+                              ->where('user_id', request('user_id'))
+                              ->where('comment_id', '!=', null)
+                              ->get()
+                              ->toArray();
+
+      foreach ($temp as &$comment) {
+        $comment->liked = $this->isLiked(
+          needle    : $comment->id,
+          haystack  : $likedCommentsIds,
+          column_key: "comment_id");
+      }
+    }
+
+    return (CommentResource::collection($temp)->toJson());
   }
 
 
@@ -25,14 +46,41 @@ class CommentController extends Controller {
    * Store a newly created resource in storage.
    */
   public function store (Request $request) {
-    //
+    $request->validate(['body' => 'required|max:255|string']);
+
+    // user_id, tweet_id, body
+    Comment::create($request->all());
   }
 
   /**
    * Display the specified resource.
    */
-  public function show (string $id) {
-    //
+  public function show (Request $request, int $id) {
+
+    $comment = Comment::where('id', $id)
+                      ->with('user')
+                      ->withCount('likes')
+                      ->get();
+
+    $comment = CommentResource::collection($comment);
+
+    if ($comment !== null) {
+      $likedCommentsIds = Like::select(['id', 'comment_id'])
+                              ->where('user_id', $request->user_id ?? Auth::user()->id)
+                              ->where('comment_id', '!=', null)
+                              ->get()
+                              ->toArray();
+
+      $this->setHaystack($likedCommentsIds);
+      foreach ($comment as &$item) {
+        $item->liked = $this->isLiked(
+          needle    : $item->id,
+          haystack  : $likedCommentsIds,
+          column_key: "comment_id");
+      }
+    }
+    $comment = CommentResource::collection($comment);
+    return ($comment->toJson());
   }
 
   /**

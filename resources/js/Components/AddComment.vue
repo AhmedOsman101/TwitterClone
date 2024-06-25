@@ -3,16 +3,16 @@ import { computed, onMounted, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
-import { useFeedStore } from "@/stores/feedStore.js";
+import { useCommentStore } from "@/stores/commentStore.js";
 import InputError from "./InputError.vue";
 
 // hooks
 const page = usePage();
 const authStore = useAuthStore();
-const feedStore = useFeedStore();
+const commentStore = useCommentStore();
 
 // refs & variables
-const maxTweetLength = 255;
+const maxCommentLength = 255;
 const input = ref(null);
 const body = ref("");
 const {user} = storeToRefs(authStore);
@@ -25,40 +25,45 @@ onMounted(() => {
 });
 
 // methods
-const createComment = (id) => {
+const createComment = (id, tweet_id) => {
   const data = {
     user_id: id,
+    tweet_id,
     body: body.value,
   };
 
-  feedStore.addNewTweet(data);
+  commentStore.addNewComment(data);
 
   if (!errors.value.body) body.value = "";
+
+  input.value.style.height = `auto`;
 };
 
 const autoResize = () => {
   const element = input.value;
   const progressElement = document.querySelector(".progress");
 
+  // Reset the height to auto to calculate the new scroll height
+  element.style.height = 'auto';
   let scHeight = element.scrollHeight;
 
   const progressPercentage =
-      ((maxTweetLength - element.value.length) / maxTweetLength) * 100;
+      ((maxCommentLength - element.value.length) / maxCommentLength) * 100;
   const progress = `${progressPercentage.toFixed(2)}%`;
 
-  // update state
+  // Update state
   body.value = element.value;
 
-  // styles
+  // Update styles
   progressElement.style.setProperty("--progress", progress);
-  element.style.height = `auto`;
   element.style.height = `${scHeight}px`;
 };
+
 </script>
 
 <template>
-  <section id="Tweet" class="flex flex-col w-full h-fit max-h-screen">
-    <div class="flex place-items-center p-5 pt-0 mt-9 wrapper">
+  <section id="Tweet" class="flex flex-col w-full h-fit">
+    <div class="flex place-items-center px-5 pt-2.5 mb-3">
       <div class="rounded-full h-fit mr-4">
         <img
             :src="user.profile_picture"
@@ -69,10 +74,10 @@ const autoResize = () => {
       <textarea
           ref="input"
           v-model="body"
-          :maxlength="maxTweetLength"
-          class="block dark:bg-black text-xl w-full p-4 px-0 disabled:opacity-80 resize-none ring-0 dark:placeholder-neutral-500 dark:text-white"
+          :maxlength="maxCommentLength"
+          class="block dark:bg-black text-xl w-full pt-4 disabled:opacity-80 resize-none dark:placeholder-neutral-500 dark:text-white"
           cols="40"
-          placeholder="Post you reply"
+          placeholder="Post your reply"
           required
           rows="1"
           type="text"
@@ -81,19 +86,19 @@ const autoResize = () => {
       >
             </textarea>
     </div>
-    <div class="flex justify-end p-5 place-items-center space-x-5">
+    <div class="flex justify-end px-5 pb-5 place-items-center space-x-5">
       <InputError :message="errors.body"/>
       <div
           v-show="body.length"
-          :data-value="maxTweetLength - body.length"
+          :data-value="maxCommentLength - body.length"
           class="progress border"
       />
       <button
           :disabled="!body.length"
           class="bg-sky-500 px-5 py-2 rounded-3xl opacity-100 text-white font-semibold disabled:opacity-80"
-          @click="() => createComment(user.id)"
+          @click="() => createComment(user.id, $page.props.tweet[0].id)"
       >
-        Tweet
+        Reply
       </button>
     </div>
     <hr/>

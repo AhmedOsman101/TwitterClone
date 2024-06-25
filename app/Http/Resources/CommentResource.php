@@ -2,10 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource {
+  use Helpers;
+
   /**
    * Transform the resource into an array.
    *
@@ -21,7 +24,7 @@ class CommentResource extends JsonResource {
       "duration"    => $this->getDuration($this->created_at),
       "created_at"  => $this->created_at,
       "liked"       => $this->liked,
-      "user"        => new TweetUserResource($this->user),
+      "user"        => (new TweetUserResource($this->user))->resolve(),
     ];
   }
 }
