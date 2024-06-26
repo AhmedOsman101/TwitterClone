@@ -1,16 +1,15 @@
 <script setup>
 import { useAuthStore } from "@/stores/authStore";
 import { usePage } from "@inertiajs/vue3";
-import { onMounted } from "vue";
 import SideBar from "../Components/SideBar.vue";
 import FollowBar from "@/Components/FollowBar.vue";
 
 const page = usePage();
 
 const authStore = useAuthStore();
-onMounted(() => {
-  authStore.setAuthenticatedUser(page.props.auth.user);
-});
+
+authStore.setAuthenticatedUser(page.props.auth.user);
+
 </script>
 
 <template>

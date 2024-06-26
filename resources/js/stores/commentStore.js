@@ -48,7 +48,6 @@ export const useCommentStore = defineStore("comments", {
      */
     async getComments (id) {
       try {
-        console.log(id, "get");
         const authStore = useAuthStore();
         const request = await axios.get(route('comments.index'), {
           params: {tweet_id: id, user_id: authStore.user.id},

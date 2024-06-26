@@ -1,7 +1,6 @@
 <script setup>
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
-import { router } from "@inertiajs/vue3";
 import { useFeedStore } from "@/stores/feedStore.js";
 import { computed } from "vue";
 import { formatNumber } from "@/Helpers.js";
@@ -21,20 +20,17 @@ const tweetIndex = computed(() =>
 const tweet = computed(() => feed.value[tweetIndex.value]);
 
 const addLike = (user_id, tweet_id) => {
-  router.post(
-      "/like",
+  axios.post(
+      route('like.store'),
       {
         user_id,
         tweet_id,
         isTweet: true
       },
-      {
-        preserveScroll: true,
-        onSuccess: () => {
-          feedStore.fetchTweet(tweet_id);
-        },
-      },
-  );
+      {}
+  ).then(() => {
+    feedStore.fetchTweet(tweet_id);
+  });
 };
 </script>
 

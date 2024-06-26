@@ -20,9 +20,6 @@ watch(feedLength, () => {
   feedStore.getFeed();
 });
 
-const redirectToPost = (id) => {
-  router.get(route('tweet.show', id));
-};
 </script>
 
 <template>
@@ -31,7 +28,7 @@ const redirectToPost = (id) => {
         v-for="tweet in feed"
         :key="tweet.id"
         :tweet="tweet"
-        @click="() => redirectToPost(tweet.id)"/>
+        />
   </section>
 </template>
 

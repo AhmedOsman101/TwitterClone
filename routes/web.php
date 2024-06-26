@@ -23,13 +23,19 @@ Route::middleware('auth')->group(function () {
     [TweetController::class, 'store']
   )->name('tweet.store');
 
-  Route::post('like', [LikeController::class, 'store']);
+  Route::post('like',
+    [LikeController::class, 'store']
+  )->name('like.store');
 
   Route::post('comments',
     [CommentController::class, 'store']
   )->name('comment.store');
 
-  Route::get('/profile',
+  Route::get("/profile/{username}",
+    [ProfileController::class, 'index']
+  )->name('profile.index');
+
+  Route::get("/profile/{username}/edit",
     [ProfileController::class, 'edit']
   )->name('profile.edit');
 
