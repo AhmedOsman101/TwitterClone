@@ -17,6 +17,7 @@ const addFollow = (id) => {
         followed_user_id: id
       },
       {
+        preserveScroll: true,
         onSuccess: () => {
           status.value = !status.value;
         }

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const useAuthStore = defineStore("auth", {
   state: () => {
@@ -43,7 +44,7 @@ export const useAuthStore = defineStore("auth", {
      * @param {User} data The data to update the user
      * @returns {Promise<void>} A promise that resolves when the user data is fetched and updated.
      */
-    async updateAuthenticatedUser (data) {
+    updateAuthenticatedUser (data) {
       this.$patch((state) => state.user = {...state.user, ...data});
     },
 
@@ -56,8 +57,13 @@ export const useAuthStore = defineStore("auth", {
      * @function logout
      * @returns {Promise<void>} A promise that resolves when the user is logged out and the state is reset.
      */
-    async logout () {
+    logout () {
       this.$reset();
     },
+
+    fetchUser () {
+      axios.post(route('auth.get'))
+           .then((res) => this.setAuthenticatedUser(res.data));
+    }
   },
 });
