@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\TweetController;
 use Illuminate\Http\Request;
@@ -24,3 +25,11 @@ Route::get(
 Route::get(
   'feed/home', [FeedController::class, 'ApiHomeFeed']
 )->name('feed.home');
+
+Route::get(
+  'profile/feed', [FeedController::class, 'getUserFeed']
+)->name('profile.feed');
+
+Route::get('follower/suggest/{id}',
+  [FollowerController::class, 'randomFollowers']
+)->name('follower.suggest');

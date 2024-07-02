@@ -30,10 +30,11 @@ class CommentController extends Controller {
                               ->get()
                               ->toArray();
 
+      $this->setHaystack($likedCommentsIds);
+
       foreach ($temp as &$comment) {
         $comment->liked = $this->isLiked(
           needle    : $comment->id,
-          haystack  : $likedCommentsIds,
           column_key: "comment_id");
       }
     }
@@ -62,9 +63,7 @@ class CommentController extends Controller {
                       ->withCount('likes')
                       ->get();
 
-    $comment = CommentResource::collection($comment);
-
-    if ($comment !== null) {
+    if ($comment->isNotEmpty()) {
       $likedCommentsIds = Like::select(['id', 'comment_id'])
                               ->where('user_id', $request->user_id ?? Auth::user()->id)
                               ->where('comment_id', '!=', null)
@@ -72,10 +71,10 @@ class CommentController extends Controller {
                               ->toArray();
 
       $this->setHaystack($likedCommentsIds);
+
       foreach ($comment as &$item) {
         $item->liked = $this->isLiked(
           needle    : $item->id,
-          haystack  : $likedCommentsIds,
           column_key: "comment_id");
       }
     }

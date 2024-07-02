@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
+use App\Models\Follower;
 use App\Models\Like;
 use App\Models\Tweet;
 use App\Models\User;
@@ -18,7 +19,8 @@ class DatabaseSeeder extends Seeder {
     User::factory(10)->create();
     Tweet::factory(10)->create();
     Comment::factory(10)->create();
-    Like::factory(10)->create();
+    Like::factory(40)->create();
+    Follower::factory(40)->create();
 
 
   }

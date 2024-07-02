@@ -14,7 +14,7 @@ authStore.setAuthenticatedUser(page.props.auth.user);
 
 <template>
   <section id="Home">
-    <SideBar :user="authStore.user"/>
+    <SideBar/>
     <slot/>
     <FollowBar/>
   </section>
@@ -28,7 +28,7 @@ section {
         "nav feed followBar";
 
   display: grid;
-  grid-template-columns: 20rem 1fr 23rem;
+  grid-template-columns: 19rem 1fr 24rem;
   grid-template-rows: auto auto 1fr;
 }
 </style>

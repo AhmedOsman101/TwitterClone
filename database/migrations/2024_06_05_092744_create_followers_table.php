@@ -12,9 +12,10 @@ return new class extends Migration {
   public function up (): void {
     Schema::create('followers', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('user_id');                     // the id of the user
-      $table->foreignIdFor(User::class, 'follower_id'); // the id of the followed user
-      $table->timestamp('created_at')->useCurrent();
+      $table->foreignIdFor(User::class, 'follower_id')
+            ->comment("the user who follows");
+      $table->foreignIdFor(User::class, 'followed_user_id')
+            ->comment("the user being followed");
     });
   }
 

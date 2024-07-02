@@ -7,6 +7,8 @@ import TweetSingle from "@/Components/TweetSingle.vue";
 import { useFeedStore } from "@/stores/feedStore.js";
 import CommentSection from "@/Components/CommentSection.vue";
 
+defineOptions({layout: AuthenticatedLayout});
+
 const page = usePage();
 
 const tweet = computed(() => page.props.tweet);
@@ -18,14 +20,14 @@ feedStore.setFeed(tweet.value);
 </script>
 
 <template>
-  <AuthenticatedLayout>
-    <Head :title="`${tweet[0].user.full_name} on Twitter`"/>
-    <Header :backable="true" :title="'Post'" class="Header"/>
-    <section>
-      <TweetSingle :tweet="tweet[0]"/>
-      <CommentSection/>
-    </section>
-  </AuthenticatedLayout>
+
+  <Head :title="`${tweet[0].user.full_name} on Twitter`"/>
+  <Header :backable="true" :title="'Post'" class="Header"/>
+  <section>
+    <TweetSingle :tweet="tweet[0]"/>
+    <CommentSection/>
+  </section>
+
 </template>
 
 <style scoped>

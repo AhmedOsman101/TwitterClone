@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource {
+class ProfileUserResource extends JsonResource {
   /**
    * Transform the resource into an array.
    *
@@ -21,7 +21,8 @@ class UserResource extends JsonResource {
       "bio"             => $this->bio,
       "cover_photo"     => $this->cover_photo,
       "profile_picture" => $this->profile_picture,
-      "notifications"   => NotificationResource::collection($this->notifications)->resolve(),
+      "followers_count" => $this->followers_count,
+      "following_count" => $this->following_count,
       "created_at"      => (new Carbon($this->created_at))->isoFormat('MMMM Y'),
     ];
   }

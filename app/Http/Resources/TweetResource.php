@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources;
 
+use AllowDynamicProperties;
 use App\Traits\Helpers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TweetResource extends JsonResource {
+#[AllowDynamicProperties] class TweetResource extends JsonResource {
   use Helpers;
 
   /**
@@ -24,7 +25,7 @@ class TweetResource extends JsonResource {
       "comments_count" => $this->comments_count,
       "duration"       => $this->getDuration($this->created_at),
       "created_at"     => (new Carbon($this->created_at))->isoFormat('h:mm A • MMM d, Y'),
-      "liked"          => $this->liked,
+      "liked"          => $this->when(isset($this->liked), $this->liked),
       "user"           => (new TweetUserResource($this->user))->resolve(),
     ];
   }

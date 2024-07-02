@@ -9,17 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Follower extends Model {
   use HasFactory;
 
-  public const null UPDATED_AT = null;
-  protected $fillable = [
-    'user_id',
-    'follower_id',
-  ];
-
-  public function user (): BelongsTo {
-    return $this->belongsTo(User::class);
-  }
+  public $timestamps = false;
+  protected $guarded = [];
 
   public function follower (): BelongsTo {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class, 'follower_id');
+  }
+
+  // The user being followed
+  public function followedUser (): BelongsTo {
+    return $this->belongsTo(User::class, 'followed_user_id');
   }
 }

@@ -11,10 +11,7 @@ class Tweet extends Model {
   use HasFactory;
 
   public const null UPDATED_AT = null;
-  protected $fillable = [
-    'user_id',
-    'body',
-  ];
+  protected $guarded = [];
 
   public function user (): BelongsTo {
     return $this->belongsTo(User::class);

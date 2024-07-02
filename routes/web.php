@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
   Route::post('comments',
     [CommentController::class, 'store']
   )->name('comment.store');
+
+  Route::post('follower',
+    [FollowerController::class, 'store']
+  )->name('follower.store');
 
   Route::get("/profile/{username}",
     [ProfileController::class, 'index']

@@ -44,7 +44,7 @@ const addLike = (user_id, tweet_id) => {
 
     <p
         class="footerItem text-gray-400 hover:text-pink-500"
-        @click.stop="addLike(user.id, $props.tweet_id)">
+        @click.prevent="addLike(user.id, $props.tweet_id)">
       <i
           :class="{
 					'fa-regular': !tweet.liked,

@@ -1,9 +1,10 @@
 <script setup>
-import { router, usePage } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
 import { useFeedStore } from "@/stores/feedStore.js";
 import { storeToRefs } from "pinia";
 import { computed, watch } from "vue";
 import FeedTweet from "@/Components/Feed/Tweet.vue";
+import EmptyFeed from "@/Components/EmptyFeed.vue";
 
 const page = usePage();
 
@@ -23,12 +24,14 @@ watch(feedLength, () => {
 </script>
 
 <template>
-  <section id="Tweets" class="grid">
+  <section class="grid">
     <FeedTweet
         v-for="tweet in feed"
+        v-if="feedLength > 0"
         :key="tweet.id"
         :tweet="tweet"
-        />
+    />
+    <EmptyFeed v-else/>
   </section>
 </template>
 

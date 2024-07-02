@@ -48,7 +48,7 @@ const back = () => {
               @click="back">
         <i class="fa-solid fa-arrow-left"/>
       </button>
-      <h1 class="text-2xl font-bold">{{ $props.title ?? component }}</h1>
+      <h1 class="text-xl font-bold">{{ $props.title ?? component }}</h1>
     </div>
   </section>
 </template>

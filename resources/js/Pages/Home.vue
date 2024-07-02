@@ -11,7 +11,10 @@ import { Head } from "@inertiajs/vue3";
 
     <Head title="Twitter"/>
     <Header class="Header"/>
-    <HomeTweet/>
+    <div>
+      <HomeTweet class="pt-4"/>
+      <hr>
+    </div>
     <Feed/>
 
   </Layout>

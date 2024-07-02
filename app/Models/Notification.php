@@ -10,10 +10,5 @@ class Notification extends Model {
   use HasFactory, SoftDeletes;
 
   public const null UPDATED_AT = null;
-  protected $fillable = [
-    'user_id',
-    'comment_id',
-    'like_id',
-    'follow_id',
-  ];
+  protected $guarded = [];
 }

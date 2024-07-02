@@ -9,12 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Like extends Model {
   use HasFactory;
 
-  public const null UPDATED_AT = null;
-  protected $fillable = [
-    'user_id',
-    'tweet_id',
-    'comment_id',
-  ];
+  public $timestamps = false;
+  protected $guarded = [];
 
   public function user (): BelongsTo {
     return $this->belongsTo(User::class);

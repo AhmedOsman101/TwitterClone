@@ -1,14 +1,52 @@
+<script setup>
+import { router } from "@inertiajs/vue3";
+import { useAuthStore } from "@/stores/authStore.js";
+import { ref } from "vue";
+
+defineProps({user: Object});
+
+const authStore = useAuthStore();
+
+const status = ref(false);
+
+const addFollow = (id) => {
+  router.post(
+      route('follower.store'),
+      {
+        follower_id: authStore.user.id,
+        followed_user_id: id
+      },
+      {
+        onSuccess: () => {
+          status.value = !status.value;
+        }
+      });
+};
+</script>
+
 <template>
   <div class="followerGrid">
-    <img alt="image" class="w-9 aspect-square rounded-md bg-gray-500" src="https://placehold.co/400">
+    <img :alt="user.username" :src="user.profile_picture" class="w-9 aspect-square rounded-md bg-gray-500">
     <div class="flex flex-col ml-2">
-      <p class="font-semibold text-sm text-gray-200 hover:underline transition cursor-pointer">full name</p>
-      <p class="font-semibold text-sm text-gray-400 transition cursor-pointer -mt-1">@username</p>
+      <Link :href="route('profile.index', user.username)"
+            class="font-semibold text-sm text-gray-200 hover:underline transition cursor-pointer"
+            v-text="user.full_name"/>
+      <Link :href="route('profile.index', user.username)"
+            class="font-semibold text-sm text-gray-400 transition cursor-pointer -mt-1"
+            v-text="`@${user.username}`"/>
     </div>
     <div class="FollowBtn w-full">
       <button
-          class="bg-white rounded-3xl px-4 py-1.5 grid items-center font-extrabold text-sm text-black w-fit h-fit">
+          v-if="!status"
+          class="bg-gray-100 rounded-3xl px-6 py-1.5 grid items-center font-extrabold text-sm text-black w-fit h-fit border"
+          @click="addFollow(user.id)">
         Follow
+      </button>
+      <button
+          v-if="status"
+          class="bg-black rounded-3xl px-4 py-1.5 grid items-center font-extrabold text-sm text-gray-100 w-fit h-fit border"
+          @click="addFollow(user.id)">
+        Following
       </button>
     </div>
   </div>

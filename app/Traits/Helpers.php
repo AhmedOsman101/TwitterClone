@@ -47,9 +47,9 @@ trait Helpers {
     return $diffFirst;
   }
 
-  public function isLiked ($needle, $haystack, $column_key): bool {
+  public function isLiked ($needle, $column_key): bool {
 
-    $haystack = array_column($haystack, $column_key);
+    $haystack = array_column($this->haystack, $column_key);
 
     return in_array($needle, $haystack, true);
   }

@@ -7,9 +7,11 @@ use App\Models\Like;
 use App\Models\Tweet;
 use App\Traits\Helpers;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TweetController extends Controller {
   use Helpers;
@@ -17,7 +19,7 @@ class TweetController extends Controller {
   /**
    * Store a newly created resource in storage.
    */
-  public function store (Request $request) {
+  public function store (Request $request): RedirectResponse {
 
     $data = $request->validate([
       'body'    => 'required|max:280',
@@ -35,20 +37,21 @@ class TweetController extends Controller {
   public function ApiShow ($id, Request $request): JsonResponse {
     $tweet = Tweet::where('id', $id)->with('user')->withCount(['likes', 'comments'])->get();
 
-    $tweet = TweetResource::collection($tweet);
-
-    if ($tweet !== null) {
+    if ($tweet->isNotEmpty()) {
       $likedTweetsIds = Like::select(['id', 'tweet_id'])
-                            ->where('user_id', $request->user_id ?? Auth::user()->id)
-                            ->where('tweet_id', '!=', null)
+                            ->where('user_id', $request->user_id ?? Auth::id())
+                            ->whereNotNull('tweet_id')
                             ->get()->toArray();
 
-      foreach ($tweet as &$item) {
-        $item->liked = $this->isLiked(
-          needle    : $item->id,
-          haystack  : $likedTweetsIds,
+      $this->setHaystack($likedTweetsIds);
+
+      $tweet = $tweet->map(function ($tweet) {
+        $tweetResource = new TweetResource($tweet);
+        $tweetResource->liked = $this->isLiked(
+          needle    : $tweet->id,
           column_key: "tweet_id");
-      }
+        return $tweetResource;
+      });
     }
     $tweet = TweetResource::collection($tweet);
 
@@ -58,23 +61,26 @@ class TweetController extends Controller {
   /**
    * Send the specified resource.
    */
-  public function show (Request $request): \Inertia\Response {
+  public function show (Request $request): Response {
     $tweet = Tweet::where('id', $request->id)->with('user')->withCount(['likes', 'comments'])->get();
 
-    $tweet = TweetResource::collection($tweet);
-
-    if ($tweet !== null) {
+    if ($tweet->isNotEmpty()) {
       $likedTweetsIds = Like::select(['id', 'tweet_id'])
-                            ->where('user_id', $request->user_id ?? Auth::user()->id)
+                            ->where('user_id', $request->user_id ?? Auth::id())
                             ->where('tweet_id', '!=', null)
                             ->get()->toArray();
 
-      foreach ($tweet as &$item) {
-        $item->liked = $this->isLiked(
-          needle    : $item->id,
-          haystack  : $likedTweetsIds,
+      $this->setHaystack($likedTweetsIds);
+
+      $tweet = $tweet->map(function ($tweet) {
+        $tweetResource = new TweetResource($tweet);
+
+        $tweetResource->liked = $this->isLiked(
+          needle    : $tweet->id,
           column_key: "tweet_id");
-      }
+
+        return $tweetResource;
+      });
     }
     $tweet = TweetResource::collection($tweet)->resolve();
 

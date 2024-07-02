@@ -1,10 +1,11 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
 import { useFeedStore } from "@/stores/feedStore.js";
 import InputError from "./InputError.vue";
+import EmojiPicker from 'vue3-emoji-picker';
 
 // hooks
 const page = usePage();
@@ -16,6 +17,7 @@ const maxTweetLength = 280;
 const input = ref(null);
 const body = ref("");
 const {user} = storeToRefs(authStore);
+const showEmojiPicker = ref(false);
 
 // computed properties
 const errors = computed(() => page.props.errors);
@@ -38,30 +40,45 @@ const createTweet = (id) => {
 };
 
 const autoResize = () => {
-  const element = input.value;
-  const progressElement = document.querySelector(".progress");
+  let element = input.value;
 
   // Reset the height to auto to calculate the new scroll height
   element.style.height = 'auto';
   let scHeight = element.scrollHeight;
 
-  const progressPercentage =
-      ((maxTweetLength - element.value.length) / maxTweetLength) * 100;
-  const progress = `${progressPercentage.toFixed(2)}%`;
-
   // Update state
   body.value = element.value;
 
   // Update styles
-  progressElement.style.setProperty("--progress", progress);
   element.style.height = `${scHeight}px`;
+};
+
+const showProgress = () => {
+  const element = input.value;
+  const progressElement = document.querySelector(".progress");
+
+  const progressPercentage =
+      ((maxTweetLength - element.value.length) / maxTweetLength) * 100;
+  const progress = `${progressPercentage.toFixed(2)}%`;
+  progressElement.style.setProperty("--progress", progress);
+};
+
+watch(body, () => showProgress());
+
+const toggleEmojiPicker = () => {
+  showEmojiPicker.value = !showEmojiPicker.value;
+};
+
+const addEmoji = (emoji) => {
+  body.value += emoji.i;
+  console.log(body.value, body.value.length);
 };
 
 </script>
 
 <template>
   <section id="Tweet" class="flex flex-col w-full h-fit max-h-screen">
-    <div class="flex place-items-center px-5 mt-9">
+    <div class="flex place-items-center px-5">
       <div class="rounded-full h-fit mr-4">
         <img
             :src="user.profile_picture"
@@ -84,7 +101,34 @@ const autoResize = () => {
       >
             </textarea>
     </div>
-    <div class="flex justify-end p-5 place-items-center space-x-5">
+    <div class="flex justify-end p-5 place-items-center space-x-5 w-full relative">
+      <div class="grid place-items-center absolute left-10">
+        <button @click="toggleEmojiPicker">
+          <svg
+              class="stroke-sky-400"
+              fill="none"
+              height="24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" x2="9" y1="9" y2="9"/>
+            <line x1="15" x2="15" y1="9" y2="9"/>
+          </svg>
+        </button>
+        <EmojiPicker
+            v-if="showEmojiPicker"
+            :native="true"
+            :theme="'dark'"
+            class="border absolute top-8 left-0"
+            @select="addEmoji"
+        />
+      </div>
       <InputError :message="errors.body"/>
       <div
           v-show="body.length"
@@ -99,7 +143,7 @@ const autoResize = () => {
         Tweet
       </button>
     </div>
-    <hr/>
+
   </section>
 </template>
 

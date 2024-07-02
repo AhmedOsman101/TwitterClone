@@ -22,13 +22,24 @@ class UserFactory extends Factory {
    */
   public function definition (): array {
     return [
-      'full_name'         => fake()->name(),
+      'full_name'         => $this->generateShortName(),
       'username'          => fake()->unique()->userName(),
       'email'             => fake()->unique()->safeEmail(),
+      'profile_picture'   => "https://picsum.photos/id/" . random_int(1, 100) . "/400",
+      'cover_photo'       => "https://picsum.photos/id/" . random_int(1, 100) . "/640/220",
       'email_verified_at' => now(),
       'password'          => static::$password ??= Hash::make('password'),
       'remember_token'    => Str::random(10),
     ];
+  }
+
+  protected function generateShortName (): string {
+    $faker = $this->faker;
+    do {
+      $fullName = $faker->name();
+    } while (strlen($fullName) > 20);
+
+    return $fullName;
   }
 
   /**
