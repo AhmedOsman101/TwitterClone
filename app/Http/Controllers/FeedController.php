@@ -41,7 +41,6 @@ class FeedController extends Controller {
       foreach ($feed as &$tweet) {
         $tweet->liked = $this->isLiked(
           needle    : $tweet->id,
-          haystack  : $likedTweetsIds,
           column_key: "tweet_id");
       }
     }
@@ -66,10 +65,10 @@ class FeedController extends Controller {
                             ->get()->toArray();
 
       $this->setHaystack($likedTweetsIds);
+      
       foreach ($feed as &$tweet) {
         $tweet->liked = $this->isLiked(
           needle    : $tweet->id,
-          haystack  : $likedTweetsIds,
           column_key: "tweet_id");
       }
     }

@@ -14,6 +14,8 @@ return new class extends Migration {
       $table->foreignId('user_id');
       $table->foreignId('tweet_id')->nullable();
       $table->foreignId('comment_id')->nullable();
+      $table->uuid('notification_id')->nullable()
+            ->comment("UUID of the notification related to this like action");
     });
   }
 

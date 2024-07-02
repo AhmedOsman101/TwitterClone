@@ -1,6 +1,6 @@
 <script setup>
 import NavLink from "../Layouts/NavLink.vue";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
@@ -12,26 +12,27 @@ const authStore = useAuthStore();
 
 const {user} = storeToRefs(authStore);
 
-const links = ref([
-  {
-    href: route("Home"),
-    label: "Home",
-    icon: "fa-solid fa-house",
+// Define links as a reactive object
+const links = reactive({
+  home: {
+    href: route('Home'),
+    label: 'Home',
+    icon: 'fa-solid fa-house',
     active: false,
   },
-  {
-    href: "/notifications",
-    label: "Notifications",
-    icon: "fa-solid fa-bell",
+  notifications: {
+    href: route('notifications'),
+    label: 'Notifications',
+    icon: 'fa-solid fa-bell',
     active: false,
   },
-  {
-    href: route("profile.index", user.value.username),
-    label: "Profile",
-    icon: "fa-solid fa-user",
+  profile: {
+    href: route('profile.index', user.value.username),
+    label: 'Profile',
+    icon: 'fa-solid fa-user',
     active: false,
   },
-]);
+});
 
 const getComponent = (page) => {
   let component = page.component;
@@ -48,13 +49,16 @@ const getComponent = (page) => {
 // Function to update active status based on the current page component
 const updateActiveLinks = () => {
   const component = getComponent(page);
-  links.value.forEach((link) => {
-    if (link.label === 'Profile') {
-      link.active = page.url.startsWith(`/profile/${user.value.username}`);
-    } else {
-      link.active = component === link.label;
+  for (const key in links) {
+    if (Object.hasOwn(links, key)) {
+      const link = links[key];
+      if (link.label === 'Profile') {
+        link.active = page.url.startsWith(`/profile/${user.value.username}`);
+      } else {
+        link.active = component === link.label;
+      }
     }
-  });
+  }
 };
 
 // Call the function initially to set the active link
@@ -74,17 +78,49 @@ watch(() => page.component, updateActiveLinks);
       <i class="fa-brands fa-twitter fa-lg mb-2 text-sky-400"/>
       <p class="-mt-1.5">Twitter</p>
     </NavLink>
-    <div v-for="link in links" :key="link.label">
-      <NavLink
-          :class="{
-					active: link.active,
-					navLink: !link.active,
+
+    <NavLink
+        :class="{
+					active: links.home.active,
+					navLink: !links.home.active,
 				}"
-          :href="link.href">
-        <i :class="link.icon"/>
-        {{ link.label }}
-      </NavLink>
-    </div>
+        :href="links.home.href">
+      <i :class="links.home.icon"/>
+      {{ links.home.label }}
+    </NavLink>
+
+
+    <NavLink
+        :class="{
+					active: links.notifications.active,
+					navLink: !links.notifications.active,
+				}"
+        :href="links.notifications.href">
+      <div class="relative inline-block">
+
+        <i :class="links.notifications.icon"/>
+
+        <div
+            v-show="user.notifications.length !== 0"
+            class="absolute -top-1.5 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+          {{ user.notifications.length < 100 ? user.notifications.length : "99+" }}
+        </div>
+      </div>
+      {{ links.notifications.label }}
+    </NavLink>
+
+
+    <NavLink
+        :class="{
+					active: links.profile.active,
+					navLink: !links.profile.active,
+				}"
+        :href="links.profile.href">
+      <i :class="links.profile.icon"/>
+      {{ links.profile.label }}
+    </NavLink>
+
+
     <Link
         :href="route('logout')"
         as="button"

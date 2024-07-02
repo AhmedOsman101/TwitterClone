@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder {
     User::factory(10)->create();
     Tweet::factory(10)->create();
     Comment::factory(10)->create();
-    Like::factory(40)->create();
+    Like::factory(10)->create();
     Follower::factory(40)->create();
 
 

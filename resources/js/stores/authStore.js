@@ -11,6 +11,7 @@ export const useAuthStore = defineStore("auth", {
      * @property {string|null} bio - The bio of the user
      * @property {string|null} cover_photo - The cover photo URL of the user
      * @property {string|null} profile_picture - The profile picture URL of the user
+     * @property {Array|null} notifications - The notifications the user has
      */
 
     /**
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore("auth", {
         email: null,
         bio: null,
         cover_photo: null,
+        notifications: null,
         profile_picture: null,
       },
     };

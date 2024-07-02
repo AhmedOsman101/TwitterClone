@@ -77,7 +77,9 @@ const addEmoji = (emoji) => {
 </script>
 
 <template>
-  <section id="Tweet" class="flex flex-col w-full h-fit max-h-screen">
+  <section id="Tweet" class="flex flex-col w-full h-fit max-h-screen"
+           @click="()=>{if (showEmojiPicker) showEmojiPicker = false}"
+  >
     <div class="flex place-items-center px-5">
       <div class="rounded-full h-fit mr-4">
         <img
@@ -103,7 +105,7 @@ const addEmoji = (emoji) => {
     </div>
     <div class="flex justify-end p-5 place-items-center space-x-5 w-full relative">
       <div class="grid place-items-center absolute left-10">
-        <button @click="toggleEmojiPicker">
+        <button @click.stop="toggleEmojiPicker">
           <svg
               class="stroke-sky-400"
               fill="none"
@@ -127,6 +129,7 @@ const addEmoji = (emoji) => {
             :theme="'dark'"
             class="border absolute top-8 left-0"
             @select="addEmoji"
+            @click.stop
         />
       </div>
       <InputError :message="errors.body"/>

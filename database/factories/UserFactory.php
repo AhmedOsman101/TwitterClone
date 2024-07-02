@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -22,24 +21,14 @@ class UserFactory extends Factory {
    */
   public function definition (): array {
     return [
-      'full_name'         => $this->generateShortName(),
+      'full_name'         => substr(fake()->name(), 0, 20),
       'username'          => fake()->unique()->userName(),
       'email'             => fake()->unique()->safeEmail(),
-      'profile_picture'   => "https://picsum.photos/id/" . random_int(1, 100) . "/400",
-      'cover_photo'       => "https://picsum.photos/id/" . random_int(1, 100) . "/640/220",
+      'profile_picture'   => "https://picsum.photos/id/" . random_int(1, 95) . "/400",
+      'cover_photo'       => "https://picsum.photos/id/" . random_int(1, 95) . "/640/220",
       'email_verified_at' => now(),
-      'password'          => static::$password ??= Hash::make('password'),
-      'remember_token'    => Str::random(10),
+      'password'          => static::$password ??= Hash::make('123'),
     ];
-  }
-
-  protected function generateShortName (): string {
-    $faker = $this->faker;
-    do {
-      $fullName = $faker->name();
-    } while (strlen($fullName) > 20);
-
-    return $fullName;
   }
 
   /**

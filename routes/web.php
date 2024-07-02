@@ -52,6 +52,10 @@ Route::middleware('auth')->group(function () {
     [ProfileController::class, 'destroy']
   )->name('profile.destroy');
 
+  Route::inertia('notifications',
+    'Notifications'
+  )->name('notifications');
+
 });
 
 require __DIR__ . '/auth.php';
