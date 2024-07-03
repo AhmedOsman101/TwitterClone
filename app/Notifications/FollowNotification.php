@@ -14,7 +14,7 @@ class FollowNotification extends Notification {
   /**
    * Create a new notification instance.
    */
-  public function __construct (int $follower_id) {
+  public function __construct(int $follower_id) {
     $this->follower_id = $follower_id;
   }
 
@@ -23,7 +23,7 @@ class FollowNotification extends Notification {
    *
    * @return array<int, string>
    */
-  public function via (object $notifiable): array {
+  public function via(object $notifiable): array {
     return ['database'];
   }
 
@@ -32,7 +32,7 @@ class FollowNotification extends Notification {
    *
    * @return array<string, mixed>
    */
-  public function toArray (object $notifiable): array {
+  public function toArray(object $notifiable): array {
     $follower = User::find($this->follower_id);
 
     return [

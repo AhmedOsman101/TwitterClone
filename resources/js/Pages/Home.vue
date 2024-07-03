@@ -12,8 +12,7 @@ import { Head } from "@inertiajs/vue3";
     <Head title="Twitter"/>
     <Header class="Header"/>
     <div>
-      <HomeTweet class="pt-4"/>
-      <hr>
+      <HomeTweet class="pt-4 thinBorder-b"/>
     </div>
     <Feed/>
 

@@ -2,21 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
-class CommentNotification extends Notification
-{
+class CommentNotification extends Notification {
     use Queueable;
+
+    public int $tweet_id;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-        //
+    public function __construct($tweet_id) {
+        $this->tweet_id = $tweet_id;
     }
 
     /**
@@ -24,20 +26,8 @@ class CommentNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
-    {
-        return ['mail'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+    public function via(object $notifiable): array {
+        return ['database'];
     }
 
     /**
@@ -45,10 +35,16 @@ class CommentNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
-    {
+    public function toArray(object $notifiable): array {
+        $user = Auth::user();
+
         return [
-            //
+            'message'         => "{$user->full_name} replied to your tweet",
+            'username'        => $user->username,
+            'full_name'       => $user->full_name,
+            'profile_picture' => $user->profile_picture,
+            'tweet_id'        => $this->tweet_id,
+            'type'            => "reply",
         ];
     }
 }
