@@ -12,7 +12,7 @@ class UserResource extends JsonResource {
    *
    * @return array<string, mixed>
    */
-  public function toArray(Request $request): array {
+  public function toArray (Request $request): array {
     $allNotifications = NotificationResource::collection($this->notifications)->resolve();
     $unreadNotifications = NotificationResource::collection($this->unreadNotifications)->resolve();
 
@@ -25,7 +25,7 @@ class UserResource extends JsonResource {
 
     // Filter the $allNotifications array to get only the read notifications
     $readNotifications = array_filter($allNotifications, function ($notification) use ($readNotificationIds) {
-      return in_array($notification['id'], $readNotificationIds);
+      return in_array($notification['id'], $readNotificationIds, true);
     });
     return [
       "id"              => $this->id,
@@ -36,8 +36,9 @@ class UserResource extends JsonResource {
       "cover_photo"     => $this->cover_photo,
       "profile_picture" => $this->profile_picture,
       "notifications"   => [
+        "all"    => $allNotifications,
         "read"   => $readNotifications,
-        "unread" => $unreadNotifications
+        "unread" => $unreadNotifications,
       ],
       "created_at"      => (new Carbon($this->created_at))->isoFormat('MMMM Y'),
     ];

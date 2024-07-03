@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LikeController extends Controller {
 
@@ -19,14 +20,25 @@ class LikeController extends Controller {
         ->first();
       if ($like !== null) $like->delete();
       else Like::create($request->only(['user_id', 'tweet_id']));
-    } elseif ($request->isComment) {
+      return;
+    }
+
+    if ($request->isComment) {
 
       $like = Like::where('user_id', $request->user_id)
         ->where('comment_id', $request->comment_id)
         ->where('comment_id', '!=', null)
         ->first();
-      if ($like !== null) $like->delete();
-      else Like::create($request->only(['user_id', 'comment_id']));
+      if ($like !== null) {
+        $deleted = DB::delete('DELETE FROM notifications WHERE id = ?', [$like->notification_id]);
+        if ($deleted === 1) {
+          $like->delete();
+        }
+      } else {
+        Like::create($request->only(['user_id', 'comment_id']));
+      }
+
+      return;
     }
   }
 

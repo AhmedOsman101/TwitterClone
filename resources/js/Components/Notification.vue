@@ -27,7 +27,7 @@ const formattedMessage = computed(() => {
 	}
 	if (notificationType.value === "like") {
 		startIndex = input.indexOf("liked");
-		let middleIndex = input.indexOf("your tweet");
+		let middleIndex = input.indexOf("your");
 
 		const part1 = input.substring(0, startIndex);
 
@@ -39,7 +39,7 @@ const formattedMessage = computed(() => {
 	}
 	if (notificationType.value === "reply") {
 		startIndex = input.indexOf("replied");
-		let middleIndex = input.indexOf("your tweet");
+		let middleIndex = input.indexOf("your");
 
 		const part1 = input.substring(0, startIndex);
 
@@ -99,7 +99,7 @@ const dismiss = (id) => {
 </script>
 
 <template>
-	<div class="tweet pl-5 pt-5 thinBorder-b">
+	<div class="notification pl-5 pt-5 thinBorder-b">
 		<Link
 			:href="route('profile.index', notification.username)"
 			class="w-fit h-fit rounded-full image cursor-pointer">
@@ -108,14 +108,14 @@ const dismiss = (id) => {
 				:src="notification.profile_picture"
 				class="w-10 h-10 rounded-full bg-gray-500" />
 		</Link>
-		<div class="flex align-start gap-3 tweetHead">
+		<div class="flex align-start gap-3 notificationHead">
 			<Link
 				:href="route('profile.index', notification.username)"
 				class="font-semibold text-gray-200 hover:underline transition cursor-pointer h-fit"
 				v-text="notification.full_name" />
 		</div>
 
-		<p class="tweetBody" v-if="notificationType === 'follow'">
+		<p class="notificationBody" v-if="notificationType === 'follow'">
 			<Link
 				:href="route('profile.index', notification.username)"
 				class="font-semibold hover:underline"
@@ -124,7 +124,7 @@ const dismiss = (id) => {
 		</p>
 
 		<p
-			class="tweetBody"
+			class="notificationBody"
 			v-if="notificationType === 'like' || notificationType === 'reply'">
 			<Link
 				:href="route('profile.index', notification.username)"
@@ -139,7 +139,7 @@ const dismiss = (id) => {
 
 		<div class="actions">
 			<button
-				class="action_button group"
+				class="action_button thinBorder group"
 				@click="markAsRead(notification.id)"
 				@mouseenter="showTooltip(1)"
 				@mouseleave="hideTooltip(1)">
@@ -148,7 +148,7 @@ const dismiss = (id) => {
 			</button>
 
 			<button
-				class="action_button group"
+				class="action_button thinBorder group"
 				@click="dismiss(notification.id)"
 				@mouseenter="showTooltip(2)"
 				@mouseleave="hideTooltip(2)">
@@ -160,7 +160,7 @@ const dismiss = (id) => {
 </template>
 
 <style scoped>
-.tweet {
+.notification {
 	display: grid;
 	grid-template-rows: repeat(2, auto);
 	grid-template-columns: auto 4fr 1fr;
@@ -171,11 +171,11 @@ const dismiss = (id) => {
 	@apply min-h-fit h-fit pr-4;
 }
 
-.tweetHead {
+.notificationHead {
 	grid-area: header;
 }
 
-.tweetBody {
+.notificationBody {
 	grid-area: body;
 	@apply text-lg pr-1 pb-8 whitespace-break-spaces;
 }
@@ -186,6 +186,6 @@ const dismiss = (id) => {
 }
 
 .action_button {
-	@apply rounded-full bg-black thinBorder hover:bg-gray-950 relative aspect-square h-full;
+	@apply rounded-full bg-black hover:bg-gray-950 relative aspect-square h-full;
 }
 </style>
