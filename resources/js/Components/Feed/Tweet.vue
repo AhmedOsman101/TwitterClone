@@ -4,6 +4,7 @@ import { router } from "@inertiajs/vue3";
 
 const props = defineProps({ tweet: Object });
 
+
 const redirectToPost = (id) => {
 	router.get(route("tweet.show", id));
 };
