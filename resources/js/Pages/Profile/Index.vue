@@ -4,7 +4,7 @@ import ProfileMain from "@/Pages/Profile/ProfileMain.vue";
 import Tweet from "@/Components/Feed/Tweet.vue";
 import Header from "@/Components/Header.vue";
 import NoTweets from "@/Components/Placeholders/NoTweets.vue";
-import { usePage } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 import { useFeedStore } from "@/stores/feedStore.js";
 import { storeToRefs } from "pinia";
 
@@ -22,6 +22,7 @@ const {feed} = storeToRefs(feedStore);
 <template>
   <AuthenticatedLayout>
     <Header :backable="true" :title="$page.props.user.full_name"/>
+    <Head :title="`${$page.props.user.full_name} | (@${$page.props.user.username})`"/>
     <ProfileMain/>
     <section class="grid">
       <Tweet

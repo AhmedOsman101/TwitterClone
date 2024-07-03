@@ -23,7 +23,7 @@ const closeModal = () => {
     Tweet
   </button>
 
-  <Modal :show="showModal" class="top-52" padding="py-8" @close="closeModal">
-    <HomeTweet/>
+  <Modal :show="showModal" padding="py-8" @close="closeModal">
+    <HomeTweet @closeModal="closeModal"/>
   </Modal>
 </template>

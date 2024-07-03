@@ -7,6 +7,9 @@ import { useFeedStore } from "@/stores/feedStore.js";
 import InputError from "./InputError.vue";
 import EmojiPicker from 'vue3-emoji-picker';
 
+//events
+const emit = defineEmits(['closeModal']);
+
 // hooks
 const page = usePage();
 const authStore = useAuthStore();
@@ -14,17 +17,19 @@ const feedStore = useFeedStore();
 
 // refs & variables
 const maxTweetLength = 280;
+const {user} = storeToRefs(authStore);
 const input = ref(null);
 const body = ref("");
-const {user} = storeToRefs(authStore);
 const showEmojiPicker = ref(false);
+const progress = ref('');
 
-// computed properties
-const errors = computed(() => page.props.errors);
 
 onMounted(() => {
   input.value.focus();
 });
+
+// computed properties
+const errors = computed(() => page.props.errors);
 
 // methods
 const createTweet = (id) => {
@@ -32,7 +37,9 @@ const createTweet = (id) => {
     user_id: id,
     body: body.value,
   };
+
   feedStore.addNewTweet(data);
+  emit('closeModal');
 
   if (!errors.value.body) body.value = "";
 
@@ -55,15 +62,20 @@ const autoResize = () => {
 
 const showProgress = () => {
   const element = input.value;
-  const progressElement = document.querySelector(".progress");
 
-  const progressPercentage =
-      ((maxTweetLength - element.value.length) / maxTweetLength) * 100;
-  const progress = `${progressPercentage.toFixed(2)}%`;
-  progressElement.style.setProperty("--progress", progress);
+  const progressPercentage = ((maxTweetLength - element.value.length) / maxTweetLength) * 100;
+
+  const progressElements = document.querySelectorAll('.progress');
+
+  progress.value = `${progressPercentage.toFixed(2)}%`;
+
+  if (progressElements.length < 2) {
+    progressElements[0].style.background = `conic-gradient(#0ea5e9 ${progress.value}, #2f3336 0%)`;
+  } else {
+    progressElements[1].style.background = `conic-gradient(#0ea5e9 ${progress.value}, #2f3336 0%)`;
+  }
+
 };
-
-watch(body, () => showProgress());
 
 const toggleEmojiPicker = () => {
   showEmojiPicker.value = !showEmojiPicker.value;
@@ -73,6 +85,8 @@ const addEmoji = (emoji) => {
   body.value += emoji.i;
   console.log(body.value, body.value.length);
 };
+
+watch(body, () => showProgress());
 
 </script>
 
@@ -150,17 +164,18 @@ const addEmoji = (emoji) => {
   </section>
 </template>
 
-<style scoped>
-section {
+<style>
+#Tweet {
   grid-area: tweet;
 }
 
-textarea:focus, textarea:active {
+#Tweet textarea:focus,
+#Tweet textarea:active {
   outline: none !important;
   border: none;
 }
 
-textarea {
+#Tweet textarea {
   resize: none;
   scrollbar-width: none;
   width: 100%;
@@ -172,7 +187,7 @@ textarea {
   --progress: 0%;
   width: var(--size);
   aspect-ratio: 1/1;
-  background: conic-gradient(#0ea5e9 var(--progress), #2f3336 0%);
+  background: conic-gradient(#0ea5e9 0%, #2f3336 0%);
   border-radius: 50%;
   display: grid;
   place-items: center;
