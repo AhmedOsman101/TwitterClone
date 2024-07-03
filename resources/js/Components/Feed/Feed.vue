@@ -4,7 +4,7 @@ import { useFeedStore } from "@/stores/feedStore.js";
 import { storeToRefs } from "pinia";
 import { computed, watch } from "vue";
 import FeedTweet from "@/Components/Feed/Tweet.vue";
-import EmptyFeed from "@/Components/EmptyFeed.vue";
+import EmptyFeed from "@/Components/Placeholders/EmptyFeed.vue";
 
 const page = usePage();
 

@@ -27,6 +27,15 @@ onMounted(() => {
 });
 
 // methods
+
+/**
+ * The `createComment` function is responsible for creating a new comment.
+ *
+ * It re-fetches the user to refresh his notifications.
+ * @param {number} id
+ * @param {number} tweet_id
+ * @param {number} target_id
+ */
 const createComment = (id, tweet_id, target_id) => {
 	const data = {
 		user_id: id,
@@ -43,6 +52,10 @@ const createComment = (id, tweet_id, target_id) => {
 	input.value.style.height = `auto`;
 };
 
+/**
+ * The `autoResize` function is responsible for automatically resizing the textarea element
+ *  as the user types in text.
+ */
 const autoResize = () => {
 	let element = input.value;
 
@@ -57,6 +70,10 @@ const autoResize = () => {
 	element.style.height = `${scHeight}px`;
 };
 
+/**
+ * The `showProgress` function is responsible for updating the visual progress
+ * indicator displayed to the user as they type in the textarea.
+ */
 const showProgress = () => {
 	const element = input.value;
 	const progressElement = document.querySelector(".progress");
@@ -69,10 +86,22 @@ const showProgress = () => {
 
 watch(body, () => showProgress());
 
+/**
+ * The `toggleEmojiPicker` function is toggling the value of the
+ * `showEmojiPicker` ref variable between `true` and `false`.
+ */
 const toggleEmojiPicker = () => {
 	showEmojiPicker.value = !showEmojiPicker.value;
 };
 
+/**
+ * The `addEmoji` function is a callback function that takes an `emoji` object as a parameter.
+ *
+ * Inside the function, it appends the `i` property of the `emoji` object to the
+ * `body.value`, which represents the text content of the textarea where the
+ * user is typing a comment.
+ * @param {object} emoji
+ */
 const addEmoji = (emoji) => {
 	body.value += emoji.i;
 	console.log(body.value, body.value.length);
@@ -111,7 +140,8 @@ const addEmoji = (emoji) => {
 				@input="autoResize">
 			</textarea>
 		</div>
-		<div class="flex justify-end px-5 pb-5 place-items-center space-x-5 thinBorder-b">
+		<div
+			class="flex justify-end px-5 pb-5 place-items-center space-x-5 thinBorder-b">
 			<div class="grid place-items-center absolute left-10">
 				<button @click.stop="toggleEmojiPicker">
 					<svg

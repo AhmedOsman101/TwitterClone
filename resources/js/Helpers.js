@@ -6,7 +6,7 @@
  * @returns {boolean} Returns `true` if the two input objects are equal in terms
  * of their keys and values, and `false` otherwise.
  */
-export function isEqualObjects(firstObject, secondObject) {
+export const isEqualObjects = (firstObject, secondObject) => {
 	// If both are strictly equal, return true
 	if (firstObject === secondObject) return true;
 
@@ -40,7 +40,7 @@ export function isEqualObjects(firstObject, secondObject) {
 
 		return areBothObjects ? isEqualObjects(val1, val2) : val1 === val2;
 	});
-}
+};
 
 /**
  * The `formatNumber` function converts a large number into a more readable
@@ -50,7 +50,7 @@ export function isEqualObjects(firstObject, secondObject) {
  * @returns {string} Returns a formatted string representing the number in a
  * shortened format with a suffix indicating the magnitude.
  */
-export function formatNumber(num) {
+export const formatNumber = (num) => {
 	if (num >= 1000000000) {
 		return (num / 1000000000).toFixed(num % 1000000000 === 0 ? 0 : 1) + "B";
 	} else if (num >= 1000000) {
@@ -60,4 +60,21 @@ export function formatNumber(num) {
 	} else {
 		return num.toString();
 	}
-}
+};
+
+/**
+ * The function `getComponent` extracts the last part of a component path from a
+ * given page object.
+ * @param {object} page - The `page` object contains information the current
+ * page, such as its name and path. The function extracts the component name
+ * from the `page` object and returns it.
+ * @returns Returns the last part of the `component` string after splitting it
+ * by "/".
+ */
+export const getComponent = (page) => {
+	let component = page.component;
+	component = component.split("/");
+	const index = component.length - 1;
+	component = component[index];
+	return component;
+};

@@ -25,8 +25,11 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@volar/vscode-language-client": "^1.0.24",
+        "@volar/vue-language-server": "^1.6.5",
         "@vueuse/core": "^10.11.0",
         "pinia": "^2.1.7",
+        "typescript": "^5.5.3",
         "vue3-emoji-picker": "^1.1.8"
     }
 }

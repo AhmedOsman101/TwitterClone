@@ -1,7 +1,8 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore";
+import { getComponent } from "@/Helpers";
 
 defineProps({ title: String, backable: Boolean });
 
@@ -21,22 +22,18 @@ onUnmounted(() => {
 	window.removeEventListener("scroll", handleScroll);
 });
 
-const getComponent = (page) => {
-	let component = page.component;
-	component = component.split("/");
-	const index = component.length - 1;
-	component = component[index];
-	return component;
-};
-
-const handleScroll = (e) => {
-	// Apply a blur filter along with a transparent background
+/**
+ * Apply a blur filter along with a transparent background on scroll.
+ */
+const handleScroll = () => {
 	head.value.style.background = "rgba(0, 0, 0, 0.5)";
 	head.value.style.backdropFilter = "blur(10px)";
 };
 
+/**
+ * Go back to the previous page and re-fetch user to update notifications.
+ */
 const back = () => {
-	// Go back to the previous page
 	const authStore = useAuthStore();
 	window.history.back();
 	authStore.fetchUser();
