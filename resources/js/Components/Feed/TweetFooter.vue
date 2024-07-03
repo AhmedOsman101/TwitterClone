@@ -13,9 +13,9 @@ const feedStore = useFeedStore();
 const {user} = storeToRefs(authStore);
 const {feed} = storeToRefs(feedStore);
 
-const tweetIndex = computed(() =>
-                                feed.value.findIndex((item) => item.id === props.tweet_id),
-);
+const tweetIndex = computed(() => {
+  return feed.value.findIndex((item) => item.id === props.tweet_id);
+});
 
 const tweet = computed(() => feed.value[tweetIndex.value]);
 
@@ -30,6 +30,7 @@ const addLike = (user_id, tweet_id) => {
       {}
   ).then(() => {
     feedStore.fetchTweet(tweet_id);
+    authStore.fetchUser();
   });
 };
 </script>
