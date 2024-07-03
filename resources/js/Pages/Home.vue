@@ -4,23 +4,30 @@ import Header from "@/Components/Header.vue";
 import Feed from "@/Components/Feed/Feed.vue";
 import Layout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import { useFeedStore } from "@/stores/feedStore.js";
+
+const feedStore = useFeedStore();
+
+const createTweet = (data) => {
+	feedStore.addNewTweet(data);
+};
 </script>
 
 <template>
-  <Layout>
-
-    <Head title="Twitter"/>
-    <Header class="Header"/>
-    <div>
-      <HomeTweet class="pt-4 thinBorder-b"/>
-    </div>
-    <Feed/>
-
-  </Layout>
+	<Layout>
+		<Head title="Twitter" />
+		<Header class="Header" />
+		<div>
+			<HomeTweet
+				:action="createTweet"
+				:maxLength="280" />
+		</div>
+		<Feed />
+	</Layout>
 </template>
 
 <style>
 .Header {
-  grid-area: header !important;
+	grid-area: header !important;
 }
 </style>

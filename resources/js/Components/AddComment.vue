@@ -28,29 +28,7 @@ onMounted(() => {
 
 // methods
 
-/**
- * The `createComment` function is responsible for creating a new comment.
- *
- * It re-fetches the user to refresh his notifications.
- * @param {number} id
- * @param {number} tweet_id
- * @param {number} target_id
- */
-const createComment = (id, tweet_id, target_id) => {
-	const data = {
-		user_id: id,
-		tweet_id,
-		body: body.value,
-		target_id,
-	};
 
-	commentStore.addNewComment(data);
-	authStore.fetchUser();
-
-	if (!errors.value.body) body.value = "";
-
-	input.value.style.height = `auto`;
-};
 
 /**
  * The `autoResize` function is responsible for automatically resizing the textarea element
@@ -74,17 +52,16 @@ const autoResize = () => {
  * The `showProgress` function is responsible for updating the visual progress
  * indicator displayed to the user as they type in the textarea.
  */
-const showProgress = () => {
-	const element = input.value;
+const showProgress = (maxlength, element) => {
 	const progressElement = document.querySelector(".progress");
 
 	const progressPercentage =
-		((maxCommentLength - element.value.length) / maxCommentLength) * 100;
+		((maxlength - element.value.length) / maxlength) * 100;
 	const progress = `${progressPercentage.toFixed(2)}%`;
 	progressElement.style.setProperty("--progress", progress);
 };
 
-watch(body, () => showProgress());
+watch(body, () => showProgress(maxCommentLength, input.value));
 
 /**
  * The `toggleEmojiPicker` function is toggling the value of the

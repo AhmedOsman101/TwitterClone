@@ -3,7 +3,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
-import { useFeedStore } from "@/stores/feedStore.js";
 import InputError from "./InputError.vue";
 import EmojiPicker from "vue3-emoji-picker";
 
@@ -11,15 +10,17 @@ import EmojiPicker from "vue3-emoji-picker";
 const emit = defineEmits(["closeModal"]);
 
 //props
-const props = defineProps({ action });
+const props = defineProps({
+	action: { type: Function, required: true },
+	maxLength: { type: Number, required: true },
+	label: String,
+});
 
 // hooks
 const page = usePage();
 const authStore = useAuthStore();
-const feedStore = useFeedStore();
 
 // refs & variables
-const maxTweetLength = 280;
 const { user } = storeToRefs(authStore);
 const input = ref(null);
 const body = ref("");
@@ -34,13 +35,9 @@ onMounted(() => {
 const errors = computed(() => page.props.errors);
 
 // methods
-const createTweet = (id) => {
-	const data = {
-		user_id: id,
-		body: body.value,
-	};
+const create = (data) => {
+	props.action(data);
 
-	feedStore.addNewTweet(data);
 	emit("closeModal");
 
 	if (!errors.value.body) body.value = "";
@@ -48,11 +45,10 @@ const createTweet = (id) => {
 	input.value.style.height = `auto`;
 };
 
-const autoResize = () => {
-	let element = input.value;
-
+const autoResize = (element) => {
 	// Reset the height to auto to calculate the new scroll height
 	element.style.height = "auto";
+
 	let scHeight = element.scrollHeight;
 
 	// Update state
@@ -62,11 +58,9 @@ const autoResize = () => {
 	element.style.height = `${scHeight}px`;
 };
 
-const showProgress = () => {
-	const element = input.value;
-
+const showProgress = (maxLength, element) => {
 	const progressPercentage =
-		((maxTweetLength - element.value.length) / maxTweetLength) * 100;
+		((maxLength - element.value.length) / maxLength) * 100;
 
 	const progressElements = document.querySelectorAll(".progress");
 
@@ -85,16 +79,15 @@ const toggleEmojiPicker = () => {
 
 const addEmoji = (emoji) => {
 	body.value += emoji.i;
-	console.log(body.value, body.value.length);
 };
 
-watch(body, () => showProgress());
+watch(body, () => showProgress(props.maxLength, input.value));
 </script>
 
 <template>
 	<section
 		id="Tweet"
-		class="flex flex-col w-full h-fit max-h-screen"
+		class="flex flex-col w-full h-fit max-h-screen pt-4 thinBorder-b"
 		@click="
 			() => {
 				if (showEmojiPicker) showEmojiPicker = false;
@@ -110,7 +103,7 @@ watch(body, () => showProgress());
 			<textarea
 				ref="input"
 				v-model="body"
-				:maxlength="maxTweetLength"
+				:maxlength="maxLength"
 				class="block dark:bg-black text-xl w-full p-4 px-0 disabled:opacity-80 resize-none ring-0 dark:placeholder-neutral-500 dark:text-white"
 				cols="40"
 				placeholder="What is happening?!"
@@ -118,7 +111,7 @@ watch(body, () => showProgress());
 				rows="1"
 				type="text"
 				wrap="hard"
-				@input="autoResize">
+				@input="autoResize(input)">
 			</textarea>
 		</div>
 		<div
@@ -152,14 +145,13 @@ watch(body, () => showProgress());
 			<InputError :message="errors.body" />
 			<div
 				v-show="body.length"
-				:data-value="maxTweetLength - body.length"
+				:data-value="maxLength - body.length"
 				class="progress border" />
 			<button
 				:disabled="!body.length"
 				class="bg-sky-500 px-5 py-2 rounded-3xl opacity-100 text-white font-semibold disabled:opacity-80"
-				@click="() => createTweet(user.id)">
-				Tweet
-			</button>
+				@click="() => create({ user_id: user.id, body })"
+				v-text="label ?? 'Tweet'" />
 		</div>
 	</section>
 </template>

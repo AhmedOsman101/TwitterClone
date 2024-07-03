@@ -5,6 +5,7 @@ import { usePage } from "@inertiajs/vue3";
 import { useAuthStore } from "@/stores/authStore.js";
 import { storeToRefs } from "pinia";
 import TweetModal from "@/Components/TweetModal.vue";
+import { getComponent } from "@/Helpers";
 
 const page = usePage();
 
@@ -33,18 +34,6 @@ const links = reactive({
     active: false,
   },
 });
-
-const getComponent = (page) => {
-  let component = page.component;
-
-  component = component.split("/");
-
-  const index = component.length - 1;
-
-  component = component[index];
-
-  return component;
-};
 
 // Function to update active status based on the current page component
 const updateActiveLinks = () => {
