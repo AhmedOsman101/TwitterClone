@@ -19,3 +19,4 @@ yarn-error.log
 /.idea
 /.vscode
 UI-DESIGN-STEPS.md
+*.sql

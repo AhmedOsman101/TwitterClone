@@ -2,6 +2,7 @@
 import { router, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
+import FollowsYouLabel from "@/Pages/Profile/FollowsYouLabel.vue";
 
 const page = usePage();
 
@@ -20,7 +21,7 @@ const addFollow = () => {
 </script>
 
 <template>
-  <section class="overflow-y-scroll thinBorder-b pb-4 mb-2">
+  <section class="overflow-y-scroll thinBorder-b pb-4">
     <div class="cover_container">
       <img :alt="user.username" :src="user.cover_photo"/>
     </div>
@@ -43,9 +44,9 @@ const addFollow = () => {
             <button
                 v-else
                 class="bg-gray-100 text-lg text-black border border-gray-100 rounded-full px-5 py-1 font-bold"
-                @click="addFollow">
-              Follow
-            </button>
+                @click="addFollow"
+                v-text="$page.props.isFollowed ? 'Follow back' : 'Follow'"
+            />
           </div>
           <div v-if="$page.props.canEdit" class="cta-4 mt-1.5">
             <Link
@@ -59,10 +60,10 @@ const addFollow = () => {
         <h2 v-text="user.full_name"/>
         <div class="tab-2-handle">
           <p v-text="`@${user.username}`"/>
-          <span v-if="$page.props.isFollowed" class="text-black">Follows you</span>
+          <FollowsYouLabel v-if="$page.props.isFollowed"/>
         </div>
       </div>
-      <p class="px-5" v-text="user.bio"/>
+      <p class="px-5 mt-3" v-text="user.bio"/>
       <div class="user-tab-3">
         <div class="tab-3-third tab-3-item">
 					<span>

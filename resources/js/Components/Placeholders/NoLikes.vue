@@ -22,7 +22,7 @@ defineProps({full_name: String});
           <path d="m6 6 12 12"/>
         </svg>
       </div>
-      <p class="text-gray-500">{{ $props.full_name }} has no tweets yet</p>
+      <p class="text-gray-500">{{ $props.full_name }} has not liked any tweets yet</p>
     </div>
   </div>
 </template>

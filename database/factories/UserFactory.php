@@ -20,11 +20,12 @@ class UserFactory extends Factory {
    * @return array<string, mixed>
    */
   public function definition (): array {
-    
+
     return [
       'full_name'         => substr(fake()->name(), 0, 15),
       'username'          => fake()->unique()->userName(),
       'email'             => fake()->unique()->safeEmail(),
+      'bio'               => $this->faker->bs(),
       'profile_picture'   => "https://picsum.photos/id/" . random_int(1, 95) . "/400",
       'cover_photo'       => "https://picsum.photos/id/" . random_int(1, 95) . "/640/220",
       'email_verified_at' => now(),
