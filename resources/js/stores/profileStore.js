@@ -1,6 +1,5 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { useAuthStore } from "./authStore";
 
 /**
  * @typedef {Object} User
@@ -24,7 +23,7 @@ import { useAuthStore } from "./authStore";
  */
 
 /**
- * @typedef {'posts'|'liked'|'replied'} Options
+ * @typedef {'posts'|'likes'|'replies'} Options
  * */
 
 export const useProfileStore = defineStore("profile", {
@@ -41,31 +40,48 @@ export const useProfileStore = defineStore("profile", {
       /**
        * @type {Tweet[]}
        */
-      replied: [],
+      replies: [],
     };
   },
   actions: {
     /**
      * Sets the home feed with an array of tweets.
      * @param {Options} type - Which feed to set.
-     * @param {Options} value - The currently selected feed.
+     * @param {Tweet} value - The currently selected feed.
      */
     setFeed (type, value) {
-      this.$patch((state) => (state[type] = value));
+      if (type === "posts") {
+        this.$patch((state) => {
+          state.posts = value;
+        });
+        console.log(value, type);
+      }
+      if (type === "replies") {
+        this.$patch((state) => {
+          state.replies = value;
+        });
+        console.log(value, type);
+      }
+      if (type === "likes") {
+        this.$patch((state) => {
+          state.liked = value;
+        });
+        console.log(value, type);
+      }
     },
 
     /**
      * Fetches the selected feed from the server.
      * @param {Options} type - Which feed to get.
-     * @param {string} username - Which user we want to fetch his feed.
+     * @param {number} target_id - Which user we want to fetch his feed.
+     * @param {number} user_id - Currently authenticated user id.
      * @returns {Promise<void>}
      */
-    async getFeed (type, username) {
+    async getFeed (type, target_id, user_id) {
       try {
-        const authStore = useAuthStore();
-
-        const request = await axios.get(route("feed.home"), {
-          params: {user_id: authStore.user.id},
+        const request = await axios.post(route("profile.feed"), {
+          target_id,
+          user_id
         });
 
         const response = await request.data;

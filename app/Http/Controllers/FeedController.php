@@ -22,7 +22,7 @@ class FeedController extends Controller {
     return Inertia::render('Home', compact('feed'));
   }
 
-  public function getHomeFeed (int|null $id = null): array {
+  public function getHomeFeed (int $id = null): array {
 
     $tweets = Tweet::with('user')
                    ->orderBy('id', 'desc') // Sort chronologically in descending order
@@ -48,7 +48,7 @@ class FeedController extends Controller {
     return TweetResource::collection($feed)->resolve();
   }
 
-  public function getUserFeed ($id): array {
+  public function getUserFeed (int $id): array {
 
     $tweets = Tweet::with('user')
                    ->where('user_id', $id)
@@ -80,5 +80,65 @@ class FeedController extends Controller {
     $feed = $this->getHomeFeed($request->user_id);
 
     return response()->json($feed);
+  }
+
+  public function getLikedPosts ($target_id): array {
+
+    $tweets = Tweet::whereHas('likes', function ($query) use ($target_id) {
+      $query->where('user_id', $target_id);
+    })
+                   ->with('user')
+                   ->orderBy('id', 'desc') // Sort chronologically in descending order
+                   ->withCount(['likes', 'comments'])
+                   ->get();
+
+    $tweets = TweetResource::collection($tweets);
+
+    if ($tweets !== null) {
+      $likedTweetsIds = Like::select(['id', 'tweet_id'])
+                            ->where('user_id', Auth::id())
+                            ->whereNotNull('tweet_id')
+                            ->get()
+                            ->toArray();
+
+      $this->setHaystack($likedTweetsIds);
+
+      foreach ($tweets as &$tweet) {
+        $tweet->liked = $this->isLiked(
+          needle    : $tweet->id,
+          column_key: "tweet_id");
+      }
+    }
+    return TweetResource::collection($tweets)->resolve();
+  }
+
+  public function getReplies ($target_id): array {
+
+    $tweets = Tweet::whereHas('comments', function ($query) use ($target_id) {
+      $query->where('user_id', $target_id);
+    })
+                   ->with('user')
+                   ->orderBy('id', 'desc') // Sort chronologically in descending order
+                   ->withCount(['likes', 'comments'])
+                   ->get();
+
+    $tweets = TweetResource::collection($tweets);
+
+    if ($tweets !== null) {
+      $likedTweetsIds = Like::select(['id', 'tweet_id'])
+                            ->where('user_id', Auth::id())
+                            ->whereNotNull('tweet_id')
+                            ->get()
+                            ->toArray();
+
+      $this->setHaystack($likedTweetsIds);
+
+      foreach ($tweets as &$tweet) {
+        $tweet->liked = $this->isLiked(
+          needle    : $tweet->id,
+          column_key: "tweet_id");
+      }
+    }
+    return TweetResource::collection($tweets)->resolve();
   }
 }

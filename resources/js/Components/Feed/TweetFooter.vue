@@ -5,19 +5,28 @@ import { useFeedStore } from "@/stores/feedStore.js";
 import { computed } from "vue";
 import { formatNumber } from "@/Helpers.js";
 
-const props = defineProps({ tweet_id: Number });
+const props = defineProps({
+  tweet: {
+    type: Object,
+    required: true
+  },
+  isProfile: {
+    type: Boolean,
+    default: false
+  }
+});
 
 const authStore = useAuthStore();
 const feedStore = useFeedStore();
 
-const { user } = storeToRefs(authStore);
-const { feed } = storeToRefs(feedStore);
+const {user} = storeToRefs(authStore);
+const {feed} = storeToRefs(feedStore);
 
 const tweetIndex = computed(() => {
-	return feed.value.findIndex((item) => item.id === props.tweet_id);
+  return feed.value.findIndex((item) => item.id === props.tweet_id);
 });
 
-const tweet = computed(() => feed.value[tweetIndex.value]);
+const tweet = computed(() => feed.value[tweetIndex.value] || props.tweet);
 
 /**
  * The `addLike` function is responsible for sending a POST request to the server to like a tweet.
@@ -27,54 +36,53 @@ const tweet = computed(() => feed.value[tweetIndex.value]);
  * @param {number} tweet_id
  */
 const addLike = (user_id, tweet_id) => {
-	const data = {
-		user_id,
-		tweet_id,
-		isTweet: true,
-	};
+  const data = {
+    user_id,
+    tweet_id,
+    isTweet: true,
+  };
 
-	axios.post(route("like.store"), data).then(() => {
-		feedStore.fetchTweet(tweet_id);
-		authStore.fetchUser();
-	});
+  axios.post(route("like.store"), data).then(() => {
+    feedStore.fetchTweet(tweet_id);
+    authStore.fetchUser();
+  });
 };
 </script>
 
 <template>
-	<div class="tweetFooter">
-		<p
-			class="footerItem text-gray-400 hover:text-sky-500"
-			style="cursor: default">
-			<i class="fa-regular fa-comment-dots" />
-			<span
-				v-if="tweet.comments_count"
-				v-text="formatNumber(tweet.comments_count)" />
-		</p>
+  <div class="tweetFooter">
+    <p
+        class="footerItem text-gray-400 hover:text-sky-500">
+      <i class="fa-regular fa-comment-dots"/>
+      <span
+          v-if="tweet.comments_count"
+          v-text="formatNumber(tweet.comments_count)"/>
+    </p>
 
-		<p
-			class="footerItem text-gray-400 hover:text-pink-500"
-			@click.prevent="addLike(user.id, $props.tweet_id)">
-			<i
-				:class="{
+    <p
+        class="footerItem text-gray-400 hover:text-pink-500"
+        @click.prevent="addLike(user.id, $props.tweet.id)">
+      <i
+          :class="{
 					'fa-regular': !tweet.liked,
 					'fa-solid text-pink-500': tweet.liked,
 				}"
-				class="fa-heart" />
-			<span
-				v-if="tweet.likes_count"
-				v-text="formatNumber(tweet.likes_count)" />
-		</p>
-	</div>
+          class="fa-heart"/>
+      <span
+          v-if="tweet.likes_count"
+          v-text="formatNumber(tweet.likes_count)"/>
+    </p>
+  </div>
 </template>
 
 <style scoped>
 .tweetFooter {
-	grid-area: footer;
-	@apply flex gap-5 items-center;
+  grid-area: footer;
+  @apply flex gap-5 items-center;
 }
 
 .footerItem {
-	@apply flex justify-between items-center gap-2 h-fit transition duration-500 cursor-pointer;
-	font-size: 1rem;
+  @apply flex justify-between items-center gap-2 h-fit transition duration-500 cursor-pointer;
+  font-size: 1rem;
 }
 </style>

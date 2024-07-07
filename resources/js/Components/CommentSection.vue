@@ -5,8 +5,11 @@ import { storeToRefs } from "pinia";
 import { usePage } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import HomeTweet from "@/Components/CustomTextArea.vue";
+import { useAuthStore } from "@/stores/authStore.js";
 
 const commentStore = useCommentStore();
+
+const authStore = useAuthStore();
 
 const page = usePage();
 

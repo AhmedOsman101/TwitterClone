@@ -48,7 +48,13 @@ class ProfileController extends Controller {
       $isFollowing = in_array(Auth::id(), $followingIDs, true);
     }
 
-    $allPosts = (new FeedController)->getUserFeed($user['id']);
+    $feedController = new FeedController();
+
+    $allPosts = $feedController->getUserFeed($user['id']);
+
+    $likedPosts = $feedController->getLikedPosts($user['id']);
+    $replies = (new CommentController())->getProfileReplies($user['id']);
+
 
     return Inertia::render('Profile/Index', [
       "canEdit"     => $isAuthUser,
@@ -56,6 +62,8 @@ class ProfileController extends Controller {
       "isFollowed"  => $isFollowed,
       "isFollowing" => $isFollowing,
       "allPosts"    => $allPosts,
+      "likedPosts"  => $likedPosts,
+      "replies"     => $replies,
     ]);
   }
 
