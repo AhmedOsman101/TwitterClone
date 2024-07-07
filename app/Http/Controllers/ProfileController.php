@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\ProfileUserResource;
-use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -16,12 +15,21 @@ use Inertia\Response;
 
 class ProfileController extends Controller {
   public function index ($username): Response {
-
+    // Retrieve the user with the specified username, including relationships
     $temp = User::where('username', $username)
+                ->with([
+                  'following' => function ($query) {
+                    // Load the followed user details for the following relationship
+                    $query->with('followed');
+                  },
+                  'followers' => function ($query) {
+                    // Load the follower user details for the followers relationship
+                    $query->with('follower');
+                  }])
                 ->withCount(['following', 'followers'])
-                ->get();
+                ->firstOrFail(); // Throw an exception if the user is not found
 
-    $user = ProfileUserResource::collection($temp)->resolve()[0];
+    $user = (new ProfileUserResource($temp))->resolve();
 
     $isAuthUser = $username === Auth::user()->username;
 
@@ -29,27 +37,25 @@ class ProfileController extends Controller {
       $isFollowed = false;
       $isFollowing = false;
     } else {
-      $isFollowed = Follower::where('follower_id', $user['id'])
-                            ->where('followed_user_id', Auth::id())
-                            ->get()
-                            ->toArray();
-      $isFollowed = !empty($isFollowed);
+      // I'm following the user or not
+      $followedIDs = array_column(Auth::user()->following->toArray(), 'followed_user_id');
 
-      $isFollowing = Follower::where('followed_user_id', $user['id'])
-                             ->where('follower_id', Auth::id())
-                             ->get()
-                             ->toArray();
-      $isFollowing = !empty($isFollowing);
+      $isFollowed = in_array($user['id'], $followedIDs, true);
+
+      // is this user following me or not
+      $followingIDs = array_column($user['following'], 'id');
+
+      $isFollowing = in_array(Auth::id(), $followingIDs, true);
     }
 
-    $feed = (new FeedController)->getUserFeed($user['id']);
+    $allPosts = (new FeedController)->getUserFeed($user['id']);
 
     return Inertia::render('Profile/Index', [
       "canEdit"     => $isAuthUser,
       "user"        => $user,
       "isFollowed"  => $isFollowed,
       "isFollowing" => $isFollowing,
-      "feed"        => $feed,
+      "allPosts"    => $allPosts,
     ]);
   }
 

@@ -12,12 +12,17 @@ class Follower extends Model {
   public $timestamps = false;
   protected $guarded = [];
 
+  /**
+   * Get the user who is following.
+   */
   public function follower (): BelongsTo {
     return $this->belongsTo(User::class, 'follower_id');
   }
 
-  // The user being followed
-  public function followedUser (): BelongsTo {
+  /**
+   * Get the user being followed.
+   */
+  public function followed (): BelongsTo {
     return $this->belongsTo(User::class, 'followed_user_id');
   }
 }
