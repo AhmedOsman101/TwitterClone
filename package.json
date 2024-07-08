@@ -29,6 +29,7 @@
         "@volar/vue-language-server": "^1.6.5",
         "@vueuse/core": "^10.11.0",
         "pinia": "^2.1.7",
+        "prettier": "^3.3.2",
         "typescript": "^5.5.3",
         "vue3-emoji-picker": "^1.1.8"
     }

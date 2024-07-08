@@ -17,7 +17,7 @@ class CommentController extends Controller {
   /**
    * Display a listing of the resource.
    */
-  public function index () {
+  public function index (): string {
     $temp = Comment::where('tweet_id', request('tweet_id'))
                    ->with('user')
                    ->withCount('likes')
@@ -77,7 +77,7 @@ class CommentController extends Controller {
   /**
    * Store a newly created resource in storage.
    */
-  public function store (Request $request) {
+  public function store (Request $request): void {
     $request->validate(['body' => 'required|max:255|string']);
 
     // user_id, tweet_id, body
@@ -91,7 +91,7 @@ class CommentController extends Controller {
   /**
    * Display the specified resource.
    */
-  public function show (Request $request, int $id) {
+  public function show (Request $request, int $id): string {
 
     $comment = Comment::where('id', $id)
                       ->with('user')
@@ -121,21 +121,21 @@ class CommentController extends Controller {
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit (string $id) {
+  public function edit (string $id): void {
     //
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update (Request $request, string $id) {
+  public function update (Request $request, string $id): void {
     //
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy (string $id) {
+  public function destroy (string $id): void {
     //
   }
 }
