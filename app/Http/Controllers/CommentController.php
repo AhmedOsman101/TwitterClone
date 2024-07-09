@@ -52,7 +52,6 @@ class CommentController extends Controller {
                    ->orderBy('id', 'desc') // Sort chronologically in descending order
                    ->get();
 
-//    dd($user_id, $temp);
 
     if ($temp !== null) {
       $likedCommentsIds = Like::select(['id', 'comment_id'])
@@ -83,9 +82,9 @@ class CommentController extends Controller {
     // user_id, tweet_id, body
     Comment::create($request->only(['body', 'user_id', 'tweet_id']));
 
-    $targetUser = User::find($request->target_id);
+    $targetUser = User::find($request->only('target_id'));
 
-    $targetUser->notify(new CommentNotification($request->tweet_id));
+    $targetUser->notify(new CommentNotification($request->only('tweet_id')));
   }
 
   /**
@@ -101,7 +100,7 @@ class CommentController extends Controller {
     if ($comment->isNotEmpty()) {
       $likedCommentsIds = Like::select(['id', 'comment_id'])
                               ->where('user_id', $request->user_id ?? Auth::user()->id)
-                              ->where('comment_id', '!=', null)
+                              ->whereNotNull('comment_id')
                               ->get()
                               ->toArray();
 
