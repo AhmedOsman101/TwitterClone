@@ -56,7 +56,7 @@ class ProfileController extends Controller {
     $replies = (new CommentController())->getProfileReplies($user['id']);
 
 
-    return Inertia::render('Profile/Index', [
+    return Inertia::render('Profile/Profile', [
       "canEdit"     => $isAuthUser,
       "user"        => $user,
       "isFollowed"  => $isFollowed,
