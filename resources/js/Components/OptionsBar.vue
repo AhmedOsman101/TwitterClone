@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 	import Option from "@/Components/Option.vue";
 
-	const props = defineProps({ options: Array, type: String });
+	const props = defineProps<{
+		options: Array<string>;
+		type: string;
+	}>();
 </script>
 
 <template>

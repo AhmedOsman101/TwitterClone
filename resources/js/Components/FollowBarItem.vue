@@ -45,7 +45,7 @@
 			<!-- For smaller screens -->
 			<Link
 				:href="route('profile.index', user.username)"
-				class="font-semibold text-xs lg:text-sm text-gray-200 cursor-pointer block lg:hidden"
+				class="font-semibold text-xs lg:text-sm text-gray-200 cursor-pointer block lg:hidden mb-1"
 				v-text="StringLimit(user.full_name, 18)" />
 
 			<Link

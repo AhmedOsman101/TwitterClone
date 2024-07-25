@@ -6,8 +6,9 @@
 	import { Head } from "@inertiajs/vue3";
 	import { useFeedStore } from "@/stores/feedStore.js";
 	import { ITweet } from "@/lib/Interfaces";
+	import { FeedStore } from "@/lib/Types";
 
-	const feedStore = useFeedStore();
+	const feedStore: FeedStore = useFeedStore();
 
 	const createTweet = (data: ITweet) => {
 		feedStore.addNewTweet(data);

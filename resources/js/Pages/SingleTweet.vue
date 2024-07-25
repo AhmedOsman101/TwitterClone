@@ -21,7 +21,7 @@
 </script>
 
 <template>
-	<Head :title="`${tweet[0]?.user?.full_name} on Twitter`" />
+	<Head :title="`${tweet[0].user.full_name} on Twitter`" />
 	<Header
 		:backable="true"
 		:title="'Post'"

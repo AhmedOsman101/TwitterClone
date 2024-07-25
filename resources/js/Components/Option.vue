@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+	import { NotificationOptions, ProfileOptions } from "@/lib/Enums";
 	import { useGlobalState } from "@/stores/globalDataStore.js";
 	import { computed } from "vue";
 
-	const props = defineProps({ option: String, type: String });
+	const props = defineProps<{
+		option: string;
+		type: string;
+	}>();
 
 	const GlobalState = useGlobalState();
 
@@ -11,12 +15,22 @@
 			? GlobalState.activeNotificationOption
 			: GlobalState.activeProfileOption;
 	});
+
+	const handleClick = () => {
+		if (props.type === "notification") {
+			GlobalState.setActiveNotificationOption(
+				props.option as NotificationOptions
+			);
+		} else {
+			GlobalState.setActiveProfileOption(props.option as ProfileOptions);
+		}
+	};
 </script>
 
 <template>
 	<div
 		class="flex justify-center flex-1 p-3 hover:bg-gray-950 transition duration-300 cursor-pointer relative thinBorder-r"
-		@click="GlobalState.setActiveOption(type, option)">
+		@click="handleClick">
 		{{ option }}
 		<div
 			v-if="option === activeOption.value"

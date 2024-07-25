@@ -10,10 +10,12 @@
 	import { useGlobalState } from "@/stores/globalDataStore.js";
 	import { storeToRefs } from "pinia";
 	import { INotifications } from "@/lib/Interfaces";
+	import { AuthStore } from "@/lib/Types";
+	import { NotificationOptions } from "@/lib/Enums";
 
 	defineOptions({ layout: AuthenticatedLayout });
 
-	const authStore = useAuthStore();
+	const authStore: AuthStore = useAuthStore();
 
 	const { user } = storeToRefs(authStore);
 
@@ -38,7 +40,8 @@
 			v-for="notification in notifications.all"
 			v-if="
 				notifications.all.length !== 0 &&
-				globalState.activeNotificationOption.value === 'all'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.All
 			"
 			:key="notification.id">
 			<Notification :notification="notification" />
@@ -48,7 +51,8 @@
 			v-for="notification in notifications.read"
 			v-if="
 				notifications.read.length !== 0 &&
-				globalState.activeNotificationOption.value === 'read'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.Read
 			"
 			:key="notification.id">
 			<Notification :notification="notification" />
@@ -58,7 +62,8 @@
 			v-for="notification in notifications.unread"
 			v-if="
 				notifications.unread.length !== 0 &&
-				globalState.activeNotificationOption.value === 'unread'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.Unread
 			"
 			:key="notification.id">
 			<Notification :notification="notification" />
@@ -67,19 +72,22 @@
 		<NoNotifications
 			v-if="
 				notifications.all.length === 0 &&
-				globalState.activeNotificationOption.value === 'all'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.All
 			"
 			class="mt-16" />
 		<NoNotifications
 			v-if="
 				notifications.read.length === 0 &&
-				globalState.activeNotificationOption.value === 'read'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.Read
 			"
 			class="mt-16" />
 		<NoNotifications
 			v-if="
 				notifications.unread.length === 0 &&
-				globalState.activeNotificationOption.value === 'unread'
+				globalState.activeNotificationOption.value ===
+					NotificationOptions.Unread
 			"
 			class="mt-16" />
 	</section>
