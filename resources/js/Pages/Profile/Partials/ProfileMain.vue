@@ -1,16 +1,17 @@
 <script lang="ts" setup>
+	import axios from "axios";
+	import FollowsYouLabel from "@/Pages/Profile/Partials/FollowsYouLabel.vue";
 	import { router, usePage } from "@inertiajs/vue3";
 	import { computed } from "vue";
 	import { useAuthStore } from "@/stores/authStore.js";
-	import FollowsYouLabel from "@/Pages/Profile/Partials/FollowsYouLabel.vue";
-	import axios from "axios";
-	import { IUser } from "@/lib/Interfaces";
+	import { IProfileUser } from "@/lib/Interfaces";
+	import { AuthStore } from "@/lib/Types";
 
 	const page = usePage();
 
-	const user = computed(() => page.props.user as IUser);
+	const user = computed(() => page.props.user as IProfileUser);
 
-	const authStore = useAuthStore();
+	const authStore: AuthStore = useAuthStore();
 
 	const addFollow = () => {
 		axios
