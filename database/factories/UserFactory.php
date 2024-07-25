@@ -30,8 +30,8 @@ class UserFactory extends Factory {
       'username'          => fake()->unique()->userName(),
       'email'             => fake()->unique()->safeEmail(),
       'bio'               => $this->faker->bs(),
-      'profile_picture'   => $this->faker->randomElement([$profile_picture, null]),
-      'cover_photo'       => $this->faker->randomElement([$cover_photo, null]),
+      'profile_picture'   => $this->faker->randomElement([$profile_picture, "/images/noavatar.png"]),
+      'cover_photo'       => $this->faker->randomElement([$cover_photo, "/images/nocover.png"]),
       'email_verified_at' => now(),
       'password'          => static::$password ??= Hash::make('123'),
     ];
