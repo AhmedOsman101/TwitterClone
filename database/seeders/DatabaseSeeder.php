@@ -15,13 +15,15 @@ class DatabaseSeeder extends Seeder {
   /**
    * Seed the application's database.
    */
-  public function run (): void {
-    User::factory(10)->create();
+  public function run(): void {
+    $this->call(UserSeeder::class);
+
     Tweet::factory(10)->create();
+
     Comment::factory(10)->create();
+
     Like::factory(10)->create();
+
     Follower::factory(40)->create();
-
-
   }
 }
