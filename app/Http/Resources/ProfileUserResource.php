@@ -26,7 +26,7 @@ class ProfileUserResource extends JsonResource {
    *
    * @return array<string, mixed>
    */
-  public function toArray (Request $request): array {
+  public function toArray(Request $request): array {
     return [
       "id"              => $this->id,
       "full_name"       => $this->full_name,
@@ -35,9 +35,9 @@ class ProfileUserResource extends JsonResource {
       "bio"             => $this->bio,
       "cover_photo"     => $this->cover_photo,
       "profile_picture" => $this->profile_picture,
-      "followers"       => TweetUserResource::collection($this->followers->pluck('follower'))->resolve(),
+      "followers"       => ShortUserResource::collection($this->followers->pluck('follower'))->resolve(),
       "followers_count" => $this->followers_count,
-      "following"       => TweetUserResource::collection($this->following->pluck('followed'))->resolve(),
+      "following"       => ShortUserResource::collection($this->following->pluck('followed'))->resolve(),
       "following_count" => $this->following_count,
       "created_at"      => (new Carbon($this->created_at))->isoFormat('MMMM Y'),
     ];

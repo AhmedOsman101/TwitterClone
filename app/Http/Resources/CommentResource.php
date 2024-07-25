@@ -14,7 +14,7 @@ class CommentResource extends JsonResource {
    *
    * @return array<string, mixed>
    */
-  public function toArray (Request $request): array {
+  public function toArray(Request $request): array {
     return [
       "id"          => $this->id,
       "user_id"     => $this->user_id,
@@ -24,7 +24,7 @@ class CommentResource extends JsonResource {
       "likes_count" => $this->likes_count,
       "duration"    => $this->getDuration($this->created_at),
       "created_at"  => $this->created_at,
-      "user"        => (new TweetUserResource($this->user))->resolve(),
+      "user"        => (new ShortUserResource($this->user))->resolve(),
     ];
   }
 }

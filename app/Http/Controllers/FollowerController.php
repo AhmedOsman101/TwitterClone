@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TweetUserResource;
+use App\Http\Resources\ShortUserResource;
 use App\Models\Follower;
 use App\Models\User;
 use App\Notifications\FollowNotification;
@@ -48,7 +48,7 @@ class FollowerController extends Controller {
       ->get();
 
     // Transform the query result into a collection
-    $followSuggestions = TweetUserResource::collection($query)->resolve();
+    $followSuggestions = ShortUserResource::collection($query)->resolve();
 
     return response()->json($followSuggestions);
   }
