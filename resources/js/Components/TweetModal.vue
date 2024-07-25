@@ -1,7 +1,7 @@
-<script setup>
+<script lang="ts" setup>
 	import { ref } from "vue";
-	import Modal from "@/Components/Modal.vue";
-	import HomeTweet from "@/Components/CustomTextArea.vue";
+	import Modal from "./Modal.vue";
+	import HomeTweet from "./CustomTextArea.vue";
 	import { useFeedStore } from "@/stores/feedStore.js";
 
 	const showModal = ref(false);

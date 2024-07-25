@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 	import TweetFooter from "@/Components/Feed/TweetFooter.vue";
 	import { computed } from "vue";
 

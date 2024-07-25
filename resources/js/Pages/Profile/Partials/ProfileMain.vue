@@ -1,12 +1,14 @@
-<script setup>
+<script lang="ts" setup>
 	import { router, usePage } from "@inertiajs/vue3";
 	import { computed } from "vue";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import FollowsYouLabel from "@/Pages/Profile/Partials/FollowsYouLabel.vue";
+	import axios from "axios";
+	import { IUser } from "@/lib/Interfaces";
 
 	const page = usePage();
 
-	const user = computed(() => page.props.user);
+	const user = computed(() => page.props.user as IUser);
 
 	const authStore = useAuthStore();
 

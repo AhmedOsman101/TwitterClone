@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 	import { useAuthStore } from "@/stores/authStore";
 	import { usePage } from "@inertiajs/vue3";
 	import SideBar from "../Components/SideBar.vue";

@@ -1,19 +1,16 @@
-<script setup>
+<script setup lang="ts">
 	import Checkbox from "@/Components/Checkbox.vue";
 	import GuestLayout from "@/Layouts/GuestLayout.vue";
 	import InputError from "@/Components/InputError.vue";
 	import InputLabel from "@/Components/InputLabel.vue";
+	import PrimaryButton from "@/Components/PrimaryButton.vue";
 	import TextInput from "@/Components/TextInput.vue";
-	import { Head, useForm } from "@inertiajs/vue3";
+	import { Head, Link, useForm } from "@inertiajs/vue3";
 
-	defineProps({
-		canResetPassword: {
-			type: Boolean,
-		},
-		status: {
-			type: String,
-		},
-	});
+	defineProps<{
+		canResetPassword?: boolean;
+		status?: string;
+	}>();
 
 	const form = useForm({
 		login: "",
@@ -38,7 +35,7 @@
 
 		<div
 			v-if="status"
-			class="mb-4 font-medium text-sm text-green-600">
+			class="mb-4 font-medium text-sm text-green-600 absolute top-0 left-1/2 transform -translate-x-1/2">
 			{{ status }}
 		</div>
 

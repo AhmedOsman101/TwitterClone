@@ -1,50 +1,50 @@
-<script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { usePage } from "@inertiajs/vue3";
-import { useAuthStore } from "@/stores/authStore";
-import { getComponent } from "@/Helpers";
+<script lang="ts" setup>
+	import { computed, onMounted, onUnmounted, ref } from "vue";
+	import { usePage } from "@inertiajs/vue3";
+	import { useAuthStore } from "@/stores/authStore";
+	import { getComponent } from "@/lib/Helpers";
 
-defineProps({ title: String, backable: Boolean });
+	defineProps({ title: String, backable: Boolean });
 
-const page = usePage();
+	const page = usePage();
 
-const head = ref(null);
-const component = computed(() => getComponent(page));
+	const head = ref(null);
+	const component = computed(() => getComponent(page));
 
-onMounted(() => {
-	head.value.focus();
-	// Attach the scroll event listener when the component is mounted
-	window.addEventListener("scroll", handleScroll);
-});
+	onMounted(() => {
+		head.value.focus();
+		// Attach the scroll event listener when the component is mounted
+		window.addEventListener("scroll", handleScroll);
+	});
 
-onUnmounted(() => {
-	// Remove the scroll event listener when the component is unmounted
-	window.removeEventListener("scroll", handleScroll);
-});
+	onUnmounted(() => {
+		// Remove the scroll event listener when the component is unmounted
+		window.removeEventListener("scroll", handleScroll);
+	});
 
-/**
- * Apply a blur filter along with a transparent background on scroll.
- */
-const handleScroll = () => {
-	const scrollY = window.scrollY; // Get the Y-axis scroll position
+	/**
+	 * Apply a blur filter along with a transparent background on scroll.
+	 */
+	const handleScroll = () => {
+		const scrollY = window.scrollY; // Get the Y-axis scroll position
 
-	if (scrollY !== 0) {
-		head.value.style.background = "rgb(0, 0, 0, 0.5)";
-		head.value.style.backdropFilter = "blur(10px)";
-	} else {
-		head.value.style.background = "rgb(0, 0, 0)";
-		head.value.style.backdropFilter = "none";
-	}
-};
+		if (scrollY !== 0) {
+			head.value.style.background = "rgb(0, 0, 0, 0.5)";
+			head.value.style.backdropFilter = "blur(10px)";
+		} else {
+			head.value.style.background = "rgb(0, 0, 0)";
+			head.value.style.backdropFilter = "none";
+		}
+	};
 
-/**
- * Go back to the previous page and re-fetch user to update notifications.
- */
-const back = () => {
-	const authStore = useAuthStore();
-	window.history.back();
-	authStore.fetchUser();
-};
+	/**
+	 * Go back to the previous page and re-fetch user to update notifications.
+	 */
+	const back = () => {
+		const authStore = useAuthStore();
+		window.history.back();
+		authStore.fetchUser();
+	};
 </script>
 
 <template>

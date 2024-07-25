@@ -1,10 +1,10 @@
 -- Active: 1721839829348@@127.0.0.1@3306
-<script setup>
+<script lang="ts" setup>
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { storeToRefs } from "pinia";
 	import { useFeedStore } from "@/stores/feedStore.js";
 	import { computed } from "vue";
-	import { formatNumber } from "@/Helpers.js";
+	import { formatNumber } from "@/lib/Helpers";
 
 	const props = defineProps({
 		tweet: {

@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 	import { router } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { ref } from "vue";

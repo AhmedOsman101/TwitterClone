@@ -1,11 +1,11 @@
-<script setup>
+<script lang="ts" setup>
 	import NavLink from "../Layouts/NavLink.vue";
 	import { onMounted, reactive, watch } from "vue";
 	import { usePage } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { storeToRefs } from "pinia";
 	import TweetModal from "@/Components/TweetModal.vue";
-	import { getComponent } from "@/Helpers";
+	import { getComponent } from "@/lib/Helpers";
 
 	const page = usePage();
 

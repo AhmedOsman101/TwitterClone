@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 	import { computed, onMounted, ref, watch } from "vue";
 	import { usePage } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";

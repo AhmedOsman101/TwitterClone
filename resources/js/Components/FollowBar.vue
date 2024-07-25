@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 	import FollowBarItem from "@/Components/FollowBarItem.vue";
 	import { onMounted, ref } from "vue";
 	import axios from "axios";

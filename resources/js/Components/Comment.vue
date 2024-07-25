@@ -1,7 +1,7 @@
-<script setup>
+<script lang="ts" setup>
 	import { useCommentStore } from "@/stores/commentStore.js";
 	import { useAuthStore } from "@/stores/authStore.js";
-	import { formatNumber } from "@/Helpers.js";
+	import { formatNumber } from "@/lib/Helpers";
 
 	defineProps({ comment: Object });
 
