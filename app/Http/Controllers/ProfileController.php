@@ -32,21 +32,23 @@ class ProfileController extends Controller {
 
     $user = (new ProfileUserResource($temp))->resolve();
 
-    $isAuthUser = $username === Auth::user()->username;
+    $canEdit = $username === Auth::user()->username;
 
-    if ($isAuthUser) {
-      $isFollowed = false;
-      $isFollowing = false;
+    if ($canEdit) {
+      $targetIsFollowed = false;
+      $targetIsFollowing = false;
     } else {
       // I'm following the user or not
-      $followedIDs = array_column(Auth::user()->following->toArray(), 'followed_user_id');
+      $followedByUserIDs = array_column(Auth::user()->following->toArray(), 'followed_user_id');
 
-      $isFollowed = in_array($user['id'], $followedIDs, true);
+      $targetIsFollowed = in_array($user['id'], $followedByUserIDs, true);
 
       // is this user following me or not
-      $followingIDs = array_column($user['following'], 'id');
+      $followedByTargetIDs = array_column($user['following'], 'id');
 
-      $isFollowing = in_array(Auth::id(), $followingIDs, true);
+      $targetIsFollowing = in_array(Auth::id(), $followedByTargetIDs, true);
+
+      // dd($user, $followedIDs, $targetIsFollowed, $followingIDs, $targetIsFollowing);
     }
 
     $feedController = new FeedController();
@@ -57,15 +59,15 @@ class ProfileController extends Controller {
     $replies = (new CommentController())->getProfileReplies($user['id']);
 
 
-    return Inertia::render('Profile/Profile', [
-      "canEdit"     => $isAuthUser,
-      "user"        => $user,
-      "isFollowed"  => $isFollowed,
-      "isFollowing" => $isFollowing,
-      "allPosts"    => $allPosts,
-      "likedPosts"  => $likedPosts,
-      "replies"     => $replies,
-    ]);
+    return Inertia::render('Profile/Profile', compact(
+      "canEdit",
+      "user",
+      "targetIsFollowed",
+      "targetIsFollowing",
+      "allPosts",
+      "likedPosts",
+      "replies",
+    ));
   }
 
   /**

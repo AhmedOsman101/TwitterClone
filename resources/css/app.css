@@ -11,43 +11,6 @@ body {
 	scrollbar-width: thin;
 }
 
-hr{
-    @apply fill-gray-600;
-}
-
-.thinBorder {
-	border-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-r {
-	border-right-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-l {
-	border-left-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-t {
-	border-top-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-b {
-	border-bottom-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-x {
-	border-left-width: 0.02rem;
-	border-right-width: 0.02rem;
-	@apply border-gray-600;
-}
-
-.thinBorder-y {
-	border-bottom-width: 0.02rem;
-	border-top-width: 0.02rem;
-	@apply border-gray-600;
+hr {
+	@apply fill-gray-600;
 }

@@ -78,3 +78,17 @@ export const getComponent = (page) => {
 	component = component[index];
 	return component;
 };
+
+/**
+ * Truncates a string to a specified limit and appends "..." if the string exceeds the limit.
+ * @param {string} string - The input string that you want to limit in terms of length.
+ * @param {number}  limit - The maximum length that the input `string` should be truncated to. If the length of the input `string` exceeds this `limit`, it will be truncated and "..." will be appended to indicate that it has been shortened.
+ * @returns {string} The truncated string or the original string if length is below limit.
+ */
+export const StringLimit = (string, limit) => {
+	if (string.length > limit) {
+		return `${string.substring(0, limit - 3)}...`;
+	}
+
+	return string;
+};
