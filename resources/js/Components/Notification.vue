@@ -4,29 +4,40 @@
 	import { router } from "@inertiajs/vue3";
 	import axios from "axios";
 	import { useAuthStore } from "@/stores/authStore.js";
+	import { NotificationTypes } from "@/lib/Enums";
+	import { INotification } from "@/lib/Interfaces";
+	import { AuthStore } from "@/lib/Types";
+	import { ParameterValue } from "../../../vendor/tightenco/ziggy/src/js";
 
-	const props = defineProps({ notification: Object });
+	const props = defineProps<{
+		notification: INotification;
+	}>();
 
-	const authStore = useAuthStore();
+	const authStore: AuthStore = useAuthStore();
 
-	const tooltip_1 = ref(false);
-	const tooltip_2 = ref(false);
+	const isTooltipOneOpen = ref(false);
+	const isTooltipTwoOpen = ref(false);
 
 	const notificationType = computed(() => props.notification.type);
 
-	const formattedMessage = computed(() => {
+	const formatMessage = (): Record<string, string> | undefined => {
 		let input = props.notification.message;
+
 		let startIndex = -1;
-		if (notificationType.value === "follow") {
+
+		if (notificationType.value === NotificationTypes.Follow) {
 			startIndex = input.indexOf("started");
 
 			const part1 = input.substring(0, startIndex);
+
 			const part2 = input.substring(startIndex);
 
 			return { part1, part2 };
 		}
-		if (notificationType.value === "like") {
+
+		if (notificationType.value === NotificationTypes.Like) {
 			startIndex = input.indexOf("liked");
+
 			let middleIndex = input.indexOf("your");
 
 			const part1 = input.substring(0, startIndex);
@@ -37,8 +48,10 @@
 
 			return { part1, part2, part3 };
 		}
-		if (notificationType.value === "reply") {
+
+		if (notificationType.value === NotificationTypes.Reply) {
 			startIndex = input.indexOf("replied");
+
 			let middleIndex = input.indexOf("your");
 
 			const part1 = input.substring(0, startIndex);
@@ -49,37 +62,39 @@
 
 			return { part1, part2, part3 };
 		}
-	});
+	};
 
-	const showTooltip = (tooltip) => {
-		switch (tooltip) {
+	const formattedMessage = computed(() => formatMessage());
+
+	const showTooltip = (index: number) => {
+		switch (index) {
 			case 1:
-				tooltip_1.value = true;
+				isTooltipOneOpen.value = true;
 				break;
 			case 2:
-				tooltip_2.value = true;
+				isTooltipTwoOpen.value = true;
 				break;
 			default:
-				tooltip_1.value = tooltip_2.value = false;
+				isTooltipOneOpen.value = isTooltipTwoOpen.value = false;
 				break;
 		}
 	};
 
-	const hideTooltip = (tooltip) => {
-		switch (tooltip) {
+	const hideTooltip = (index: number) => {
+		switch (index) {
 			case 1:
-				tooltip_1.value = false;
+				isTooltipOneOpen.value = false;
 				break;
 			case 2:
-				tooltip_2.value = false;
+				isTooltipTwoOpen.value = false;
 				break;
 			default:
-				tooltip_1.value = tooltip_2.value = false;
+				isTooltipOneOpen.value = isTooltipTwoOpen.value = false;
 				break;
 		}
 	};
 
-	const markAsRead = (id) => {
+	const markAsRead = (id: string) => {
 		router.put(
 			route("notifications.update"),
 			{ id },
@@ -91,7 +106,7 @@
 		);
 	};
 
-	const dismiss = (id) => {
+	const dismiss = (id: string) => {
 		axios
 			.delete(route("notifications.destroy"), { data: { id } })
 			.then(() => authStore.fetchUser());
@@ -124,51 +139,56 @@
 		</div>
 
 		<p
-			v-if="notificationType === 'follow'"
+			v-if="notificationType === NotificationTypes.Follow"
 			class="notificationBody">
 			<Link
 				:href="route('profile.index', notification.username)"
 				class="font-semibold hover:underline"
-				v-text="formattedMessage.part1" />
-			<span v-text="formattedMessage.part2" />
+				v-text="formattedMessage?.part1" />
+			<span v-text="formattedMessage?.part2" />
 		</p>
 
 		<p
-			v-if="notificationType === 'like' || notificationType === 'reply'"
+			v-if="
+				notificationType === NotificationTypes.Like ||
+				notificationType === NotificationTypes.Reply
+			"
 			class="notificationBody">
 			<Link
 				:href="route('profile.index', notification.username)"
 				class="font-semibold hover:underline"
-				v-text="formattedMessage.part1" />
-			<span v-text="formattedMessage.part2" />
+				v-text="formattedMessage?.part1" />
+			<span v-text="formattedMessage?.part2" />
 			<Link
-				:href="route('tweet.show', notification.tweet_id)"
+				:href="
+					route('tweet.show', notification.tweet_id as ParameterValue)
+				"
 				class="hover:underline"
-				v-text="formattedMessage.part3" />
+				v-text="formattedMessage?.part3" />
 		</p>
 
 		<div class="actions">
 			<button
-				class="action_button thinBorder group"
+				class="action_button group"
 				@click="dismiss(notification.id)"
 				@mouseenter="showTooltip(2)"
 				@mouseleave="hideTooltip(2)">
 				<i class="fa-solid fa-xmark" />
 				<Tooltip
 					:message="'Dismiss'"
-					:visible="tooltip_2" />
+					:visible="isTooltipTwoOpen" />
 			</button>
 
 			<button
 				v-show="notification.read_at === null"
-				class="action_button thinBorder group"
+				class="action_button group"
 				@click="markAsRead(notification.id)"
 				@mouseenter="showTooltip(1)"
 				@mouseleave="hideTooltip(1)">
 				<i class="fa-solid fa-check" />
 				<Tooltip
 					:message="'Mark as Read'"
-					:visible="tooltip_1" />
+					:visible="isTooltipOneOpen" />
 			</button>
 		</div>
 	</div>
@@ -197,10 +217,22 @@
 
 	.actions {
 		grid-area: actions;
-		@apply flex flex-row-reverse justify-between items-center h-full w-full;
+		@apply flex 
+		flex-row-reverse 
+		justify-between 
+		items-center 
+		h-full
+		gap-3 
+		w-full;
 	}
 
 	.action_button {
-		@apply rounded-full bg-black hover:bg-gray-950 relative aspect-square h-full;
+		@apply rounded-full 
+		bg-black 
+		hover:bg-gray-950 
+		relative 
+		aspect-square 
+		h-full 
+		thinBorder;
 	}
 </style>

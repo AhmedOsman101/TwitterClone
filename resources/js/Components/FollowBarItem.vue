@@ -2,10 +2,15 @@
 	import { router } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { ref } from "vue";
+	import { IShortUser } from "@/lib/Interfaces";
+	import { AuthStore } from "@/lib/Types";
+	import { StringLimit } from "@/lib/Helpers";
 
-	defineProps({ user: Object });
+	const props = defineProps<{
+		user: IShortUser;
+	}>();
 
-	const authStore = useAuthStore();
+	const authStore: AuthStore = useAuthStore();
 
 	const status = ref(false);
 
@@ -13,9 +18,9 @@
 	 * The `addFollow` function is a method that sends a POST request using the
 	 * `router.post` method to create a new follow.
 	 *
-	 * @param {number} id - The user who's been followed
+	 * @param id - The user who's been followed
 	 */
-	const addFollow = (id) => {
+	const addFollow = (id: number) => {
 		const data = {
 			follower_id: authStore.user.id,
 			followed_user_id: id,
@@ -37,14 +42,27 @@
 			:src="user.profile_picture"
 			class="w-9 aspect-square rounded-md bg-gray-500" />
 		<div class="flex flex-col ml-2">
+			<!-- For smaller screens -->
 			<Link
 				:href="route('profile.index', user.username)"
-				class="font-semibold text-xs lg:text-sm text-gray-200 hover:underline transition cursor-pointer"
-				v-text="user.full_name" />
+				class="font-semibold text-xs lg:text-sm text-gray-200 cursor-pointer block lg:hidden"
+				v-text="StringLimit(user.full_name, 18)" />
+
 			<Link
 				:href="route('profile.index', user.username)"
-				class="font-semibold text-xs lg:text-sm text-gray-400 transition cursor-pointer -mt-1"
-				v-text="`@${user.username}`" />
+				class="font-semibold text-xs lg:text-sm text-gray-400 transition cursor-pointer -mt-1 block lg:hidden"
+				v-text="StringLimit(`@${user.username}`, 18)" />
+
+			<!-- For large screens  -->
+			<Link
+				:href="route('profile.index', user.username)"
+				class="font-semibold text-xs lg:text-sm text-gray-200 cursor-pointer hidden lg:block"
+				v-text="StringLimit(user.full_name, 20)" />
+
+			<Link
+				:href="route('profile.index', user.username)"
+				class="font-semibold text-xs lg:text-sm text-gray-400 transition cursor-pointer -mt-1 hidden lg:block"
+				v-text="StringLimit(`@${user.username}`, 20)" />
 		</div>
 		<div class="FollowBtn w-full">
 			<button

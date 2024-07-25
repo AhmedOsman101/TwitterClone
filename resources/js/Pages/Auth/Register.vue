@@ -14,10 +14,8 @@
 		password_confirmation: "",
 	});
 
-	const noSpaces = (e) => {
-		if (e.key === " ") {
-			e.preventDefault();
-		}
+	const noSpaces = (e: KeyboardEvent) => {
+		if (e.key === " ") e.preventDefault();
 	};
 
 	const submit = () => {

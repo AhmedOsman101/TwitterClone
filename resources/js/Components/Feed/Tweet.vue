@@ -1,16 +1,14 @@
 <script lang="ts" setup>
 	import TweetFooter from "@/Components/Feed/TweetFooter.vue";
+	import { ITweet } from "@/lib/Interfaces";
 
-	const props = defineProps({
-		tweet: {
-			type: Object,
-			required: true,
-		},
-		isProfile: {
-			type: Boolean,
-			default: false,
-		},
-	});
+	const props = withDefaults(
+		defineProps<{
+			tweet: ITweet;
+			isProfile?: boolean;
+		}>(),
+		{ isProfile: false }
+	);
 </script>
 
 <template>
@@ -25,15 +23,17 @@
 				:src="tweet.user.profile_picture"
 				class="w-10 h-10 rounded-full bg-gray-500" />
 		</Link>
-		<div class="flex align-start gap-3 tweetHead">
-			<Link
-				:href="route('profile.index', tweet.user.username)"
-				class="font-semibold text-gray-200 hover:underline transition"
-				v-text="tweet.user.full_name" />
-			<Link
-				:href="route('profile.index', tweet.user.username)"
-				class="font-semibold text-gray-400 hover:underline transition"
-				v-text="`@${tweet.user.username}`" />
+		<div class="tweetHead">
+			<div class="flex flex-col lg:flex-row lg:gap-4">
+				<Link
+					:href="route('profile.index', tweet.user.username)"
+					class="font-semibold text-gray-200"
+					v-text="tweet.user.full_name" />
+				<Link
+					:href="route('profile.index', tweet.user.username)"
+					class="text-gray-400 -mt-1 lg:-mt-0"
+					v-text="`@${tweet.user.username}`" />
+			</div>
 			<span class="text-gray-400">•</span>
 			<p
 				class="font-semibold text-gray-400"
@@ -62,6 +62,7 @@
 		@apply min-h-fit 
 		h-fit 
 		pt-5 
+		lg:pt-3
 		thinBorder-b;
 	}
 
@@ -72,6 +73,12 @@
 
 	.tweetHead {
 		grid-area: header;
+		@apply flex 
+		items-start 
+		gap-3 
+		text-sm
+		lg:text-base
+		lg:items-center;
 	}
 
 	.tweetBody {
