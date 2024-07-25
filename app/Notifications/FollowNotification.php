@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use App\Enums\NotificationType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -40,7 +41,7 @@ class FollowNotification extends Notification {
       'username'        => $follower->username,
       'full_name'       => $follower->full_name,
       'profile_picture' => $follower->profile_picture,
-      'type'            => "follow",
+      'type'            => NotificationType::Follow,
     ];
   }
 }

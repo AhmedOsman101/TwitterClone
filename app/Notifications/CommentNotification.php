@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use App\Enums\NotificationType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,7 +45,7 @@ class CommentNotification extends Notification {
             'full_name'       => $user->full_name,
             'profile_picture' => $user->profile_picture,
             'tweet_id'        => $this->tweet_id,
-            'type'            => "reply",
+            'type'            => NotificationType::Reply,
         ];
     }
 }
