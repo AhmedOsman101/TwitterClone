@@ -21,3 +21,5 @@ yarn-error.log
 UI-DESIGN-STEPS.md
 DB-Relations.md
 *.sql
+test.js
+test.ts
