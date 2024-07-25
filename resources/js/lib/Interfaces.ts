@@ -1,4 +1,4 @@
-import { NotificationType } from "./Enums";
+import { NotificationTypes } from "./Enums";
 
 export interface IUser {
 	id: number;
@@ -44,7 +44,7 @@ export interface INotifications {
 
 export interface INotification {
 	id: string;
-	type: NotificationType;
+	type: NotificationTypes;
 	username: string;
 	full_name: string;
 	message: string;

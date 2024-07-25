@@ -4,7 +4,7 @@ export enum ProfileOptions {
 	Replies,
 }
 
-export enum NotificationType {
+export enum NotificationTypes {
 	Like = "like",
 	Reply = "reply",
 	Follow = "follow",
