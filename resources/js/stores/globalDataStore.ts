@@ -1,28 +1,25 @@
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 import { createGlobalState } from "@vueuse/core";
+import { NotificationOptions, ProfileOptions } from "@/lib/Enums";
 
 export const useGlobalState = createGlobalState(() => {
-	const activeNotificationOption = ref("all");
-	const activeProfileOption = ref("posts");
+	const activeNotificationOption: Ref<NotificationOptions> = ref(
+		NotificationOptions.All
+	);
+	const activeProfileOption: Ref<ProfileOptions> = ref(ProfileOptions.Posts);
 
-	/**
-	 * The function `setActiveOption` sets the value of either the active notification or profile option
-	 * based on the specified type.
-	 * @param type - The `type` parameter is used to determine which active option to set.
-	 * @param value - The `value` parameter represents the new value that
-	 * you want to set for the active option based on the `type` specified.
-	 */
-	function setActiveOption(type: string, value: string): void {
-		if (type === "notification") {
-			activeNotificationOption.value = value;
-		} else if (type === "profile") {
-			activeProfileOption.value = value;
-		}
+	function setActiveProfileOption(value: ProfileOptions): void {
+		activeProfileOption.value = value;
+	}
+
+	function setActiveNotificationOption(value: NotificationOptions): void {
+		activeNotificationOption.value = value;
 	}
 
 	return {
 		activeNotificationOption,
 		activeProfileOption,
-		setActiveOption,
+		setActiveProfileOption,
+		setActiveNotificationOption,
 	};
 });
