@@ -20,10 +20,10 @@ class CommentResource extends JsonResource {
       "user_id"     => $this->user_id,
       "tweet_id"    => $this->tweet_id,
       "body"        => $this->body,
+      "liked"       => $this->liked,
       "likes_count" => $this->likes_count,
       "duration"    => $this->getDuration($this->created_at),
       "created_at"  => $this->created_at,
-      "liked"       => $this->liked,
       "user"        => (new TweetUserResource($this->user))->resolve(),
     ];
   }
