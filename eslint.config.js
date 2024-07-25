@@ -13,4 +13,7 @@ export default [
 		files: ["**/*.vue", "resources/js/**/*.ts", "resources/js/**/*.vue"],
 		languageOptions: { parserOptions: { parser: tseslint.parser } },
 	},
+	{
+		"vue/multi-word-component-names": [0],
+	},
 ];

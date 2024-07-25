@@ -8,15 +8,15 @@ return new class extends Migration {
   /**
    * Run the migrations.
    */
-  public function up (): void {
+  public function up(): void {
     Schema::create('users', function (Blueprint $table) {
       $table->id();
-      $table->string('full_name', 20);
+      $table->string('full_name', 50);
       $table->string('username')->unique();
       $table->string('email')->unique();
       $table->text('bio')->nullable();
-      $table->text('profile_picture')->default('https://picsum.photos/400');
-      $table->text('cover_photo')->default('https://picsum.photos/640/220');
+      $table->text('profile_picture')->default('/images/noavatar.png');
+      $table->text('cover_photo')->default('/images/nocover.png');
       $table->string('password');
       $table->timestamp('email_verified_at')->nullable();
       $table->rememberToken();
@@ -42,7 +42,7 @@ return new class extends Migration {
   /**
    * Reverse the migrations.
    */
-  public function down (): void {
+  public function down(): void {
     Schema::dropIfExists('users');
     Schema::dropIfExists('password_reset_tokens');
     Schema::dropIfExists('sessions');
