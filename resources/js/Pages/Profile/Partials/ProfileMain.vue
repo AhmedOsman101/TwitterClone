@@ -40,7 +40,7 @@
 						v-if="!$page.props.canEdit"
 						class="mr-2.5 mt-1.5">
 						<button
-							v-if="$page.props.isFollowing"
+							v-if="$page.props.targetIsFollowed"
 							class="bg-black text-lg text-gray-100 border border-gray-100 rounded-full px-3 py-1 font-bold"
 							@click="addFollow">
 							Following
@@ -50,7 +50,7 @@
 							class="bg-gray-100 text-lg text-black border border-gray-100 rounded-full px-5 py-1 font-bold"
 							@click="addFollow"
 							v-text="
-								$page.props.isFollowed
+								$page.props.targetIsFollowing
 									? 'Follow back'
 									: 'Follow'
 							" />
@@ -69,7 +69,7 @@
 				<h2 v-text="user.full_name" />
 				<div class="tab-2-handle">
 					<p v-text="`@${user.username}`" />
-					<FollowsYouLabel v-if="$page.props.isFollowed" />
+					<FollowsYouLabel v-if="$page.props.targetIsFollowing" />
 				</div>
 			</div>
 			<p
