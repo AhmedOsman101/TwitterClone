@@ -1,5 +1,4 @@
 <?php
-/** @noinspection ALL */
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
@@ -14,64 +13,92 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
+    //* Home route
+    Route::get(
+        '/',
+        [FeedController::class, 'HomeFeed']
+    )->name('Home');
 
-  Route::post('auth/user',
-    function () {
-      return response()->json(Auth::check() ? UserResource::collection([Auth::user()])->resolve()[0] : null);
-    })->name('auth.get');
+    //* Tweet routes
+    Route::prefix('tweet')->group(function () {
+        Route::get(
+            '/{id}',
+            [TweetController::class, 'show']
+        )->name('tweet.show');
 
-  Route::get('/',
-    [FeedController::class, 'HomeFeed']
-  )->name('Home');
+        Route::post(
+            '/',
+            [TweetController::class, 'store']
+        )->name('tweet.store');
+    });
 
-  Route::get('tweet/{id}',
-    [TweetController::class, 'show']
-  )->name('tweet.show');
+    //* Like routes
+    Route::post(
+        'like',
+        [LikeController::class, 'store']
+    )->name('like.store');
 
-  Route::post('tweet',
-    [TweetController::class, 'store']
-  )->name('tweet.store');
+    //* Comment routes
+    Route::post(
+        'comments',
+        [CommentController::class, 'store']
+    )->name('comment.store');
 
-  Route::post('like',
-    [LikeController::class, 'store']
-  )->name('like.store');
+    //* Follow routes
+    Route::post(
+        'follower',
+        [FollowerController::class, 'store']
+    )->name('follower.store');
 
-  Route::post('comments',
-    [CommentController::class, 'store']
-  )->name('comment.store');
 
-  Route::post('follower',
-    [FollowerController::class, 'store']
-  )->name('follower.store');
+    //* Profile routes
+    Route::prefix('profile')->group(function () {
+        Route::get(
+            "/{username}",
+            [ProfileController::class, 'index']
+        )->name('profile.index');
 
-  Route::get("/profile/{username}",
-    [ProfileController::class, 'index']
-  )->name('profile.index');
+        Route::get(
+            "/{username}/edit",
+            [ProfileController::class, 'edit']
+        )->name('profile.edit');
 
-  Route::get("/profile/{username}/edit",
-    [ProfileController::class, 'edit']
-  )->name('profile.edit');
+        Route::patch(
+            '/',
+            [ProfileController::class, 'update']
+        )->name('profile.update');
 
-  Route::patch('/profile',
-    [ProfileController::class, 'update']
-  )->name('profile.update');
+        Route::delete(
+            '/',
+            [ProfileController::class, 'destroy']
+        )->name('profile.destroy');
+    });
 
-  Route::delete('/profile',
-    [ProfileController::class, 'destroy']
-  )->name('profile.destroy');
+    //* Notification routes
+    Route::prefix('notifications')->group(function () {
+        Route::inertia(
+            '/',
+            'Notifications'
+        )->name('notifications');
 
-  Route::inertia('notifications',
-    'Notifications'
-  )->name('notifications');
+        Route::put(
+            '/',
+            [NotificationController::class, 'update']
+        )->name('notifications.update');
 
-  Route::put('notifications',
-    [NotificationController::class, 'update']
-  )->name('notifications.update');
+        Route::delete(
+            '/',
+            [NotificationController::class, 'destroy']
+        )->name('notifications.destroy');
+    });
 
-  Route::delete('notifications',
-    [NotificationController::class, 'destroy']
-  )->name('notifications.destroy');
-
+    //* Auth route
+    Route::post(
+        'auth/user',
+        function () {
+            return response()->json(Auth::check() ? UserResource::collection([Auth::user()])->resolve()[0] : null);
+        }
+    )->name('auth.get');
 });
 
 require __DIR__ . '/auth.php';
