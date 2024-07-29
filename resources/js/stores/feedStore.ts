@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { router } from "@inertiajs/vue3";
 import { useAuthStore } from "./authStore";
 import { ITweet } from "@/types";
+import { useAxios } from "@vueuse/integrations/useAxios";
 
 export const useFeedStore = defineStore("feed", {
 	state: () => {
@@ -17,7 +18,7 @@ export const useFeedStore = defineStore("feed", {
 		 * @param feed - An array of tweets.
 		 */
 		setFeed(feed: ITweet[]): void {
-			this.$patch((state: { feed: ITweet[] }) => (state.feed = feed));
+			this.$patch((state) => (state.feed = feed));
 		},
 
 		/**
@@ -41,34 +42,35 @@ export const useFeedStore = defineStore("feed", {
 
 		/**
 		 * Adds a new tweet and refreshes the home feed.
-		 * @param data - The data for the new tweet.
+		 * @param body - The data for the new tweet.
 		 */
-		addNewTweet(data: ITweet): void {
-			router.post(route("tweet.store"), data as any, {
-				onSuccess: () => this.getFeed(),
-			});
+		addNewTweet(body: string): void {
+			router.post(
+				route("tweet.store"),
+				{ body },
+				{
+					onSuccess: () => this.getFeed(),
+				}
+			);
 		},
 
 		/**
 		 * Updates a tweet in the feed.
 		 * @param tweet - The tweet to update.
 		 */
-		updateTweet(tweet: ITweet[]): void {
-			const target: ITweet = tweet[0];
+		updateTweet(tweet: ITweet): void {
+			console.log("update tweet", this.feed);
 			// find the tweet in the feed
 			let index = this.feed.findIndex(
-				(item: { id: number }) => item.id === target.id
+				(item: { id: number }) => item.id === tweet.id
 			);
 
 			// check if tweet is not found
 			if (index < 0) throw new Error("TWEET IS NOT FOUND!!!!!!!!!!!!!");
 
 			// check if tweets are not equal then continue and update the tweet
-			if (!isEqualObjects(target, this.feed[index])) {
-				this.$patch(
-					(state: { feed: { [id: number]: ITweet } }) =>
-						(state.feed[index] = target)
-				);
+			if (!isEqualObjects(tweet, this.feed[index])) {
+				this.$patch((state) => (state.feed[index] = tweet));
 			}
 		},
 
@@ -78,11 +80,14 @@ export const useFeedStore = defineStore("feed", {
 		 */
 		async fetchTweet(id: number): Promise<void> {
 			const authStore = useAuthStore();
-			const request = await axios.get(route("tweets.api.show", id), {
-				params: { user_id: authStore.user.id },
-			});
-			const response = await request.data;
-			this.updateTweet(response);
+			const { data: tweet } = await useAxios(
+				route("tweets.api.show", id),
+				{
+					params: { user_id: authStore.user.id },
+				}
+			);
+
+			this.updateTweet(tweet.value as ITweet);
 		},
 	},
 });

@@ -1,6 +1,6 @@
-import { Axios, AxiosInstance } from "axios";
+import axios from "axios";
 
-window.axios = new Axios({
+const AxiosInstance = axios.create({
 	baseURL: import.meta.env.APP_URL,
 	headers: {
 		"Content-Type": "application/json",
@@ -11,4 +11,6 @@ window.axios = new Axios({
 	},
 	withCredentials: true,
 	withXSRFToken: true,
-}) as AxiosInstance;
+});
+
+export default AxiosInstance;

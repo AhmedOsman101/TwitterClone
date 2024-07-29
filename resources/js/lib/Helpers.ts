@@ -99,3 +99,19 @@ export const StringLimit = (string: string, limit: number): string => {
 
 	return string;
 };
+
+/**
+ * Checks if an array is empty without using the length property.
+ *
+ * @param array - The array to check for emptiness.
+ * @returns Returns true if the array is empty, false otherwise.
+ */
+export const isEmptyArray = <T>(array: T[]): boolean => {
+	// Use a for...in loop to iterate over array indices
+	for (let i in array) {
+		// If we enter this loop, the array has at least one element
+		return false;
+	}
+	// If the loop never executed, the array is empty
+	return true;
+};

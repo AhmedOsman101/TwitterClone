@@ -42,12 +42,16 @@ export const useCommentStore = defineStore("comments", {
 		/**
 		 * The `addNewComment` function logs the tweet ID, sends a POST request to store a comment, and
 		 * then fetches and updates the comments and tweet in the feed.
-		 * @param {IComment} data - The `data` parameter in the `addNewComment` function likely contains information
+		 * @param data - The `data` parameter in the `addNewComment` function likely contains information
 		 * about the comment being added, such as the content of the comment, the user who posted it, and
 		 * the tweet ID to which the comment is being added. This data is used to make a POST request to
 		 * the server
 		 */
-		addNewComment(data: IComment) {
+		addNewComment(data: {
+			body: string;
+			tweet_id: number;
+			target_id: number;
+		}) {
 			router.post(route("comment.store"), data as any, {
 				onSuccess: () => {
 					this.getComments(data.tweet_id).then(() => {
