@@ -2,8 +2,13 @@
 	import { useCommentStore } from "@/stores/commentStore.js";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { formatNumber } from "@/lib/Helpers";
+	import axios from "axios";
+	import { IComment } from "@/types";
+	import { useAxios } from "@vueuse/integrations/useAxios";
 
-	defineProps({ comment: Object });
+	defineProps<{
+		comment: IComment;
+	}>();
 
 	const commentStore = useCommentStore();
 	const authStore = useAuthStore();
@@ -12,20 +17,26 @@
 	 * The `addLike` function is responsible for sending a POST request to the server to like a comment.
 	 *
 	 * It re-fetches the comment and the user to update comment's likes count and refresh notifications.
-	 * @param {number} user_id
-	 * @param {number} comment_id
+	 * @param comment_id
 	 */
-	const addLike = (user_id, comment_id) => {
+	const addLike = async (comment_id: number) => {
 		const data = {
-			user_id,
 			comment_id,
 			isComment: true,
 		};
 
-		axios.post(route("like.store"), data).then(() => {
+		await useAxios(route("like.store"), {
+			method: "POST",
+			data,
+		}).then(() => {
 			commentStore.fetchComment(comment_id);
 			authStore.fetchUser();
 		});
+
+		// await axios.post(route("like.store"), data).then(() => {
+		// 	commentStore.fetchComment(comment_id);
+		// 	authStore.fetchUser();
+		// });
 	};
 </script>
 
@@ -63,7 +74,7 @@
 		<div class="tweetFooter">
 			<p
 				class="footerItem text-gray-400 hover:text-pink-500"
-				@click.stop="addLike(authStore.user.id, comment.id)">
+				@click.stop="addLike(comment.id)">
 				<i
 					:class="{
 						'fa-regular': !comment.liked,
