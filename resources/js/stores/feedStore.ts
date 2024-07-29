@@ -3,7 +3,7 @@ import { isEqualObjects } from "@/lib/Helpers";
 import { defineStore } from "pinia";
 import { router } from "@inertiajs/vue3";
 import { useAuthStore } from "./authStore";
-import { ITweet } from "@/lib/Interfaces";
+import { ITweet } from "@/types";
 
 export const useFeedStore = defineStore("feed", {
 	state: () => {

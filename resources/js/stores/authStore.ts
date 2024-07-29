@@ -1,27 +1,11 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { IUser } from "@/lib/Interfaces";
+import { User } from "@/types";
 
 export const useAuthStore = defineStore("auth", {
 	state: () => {
 		return {
-			user: {
-				id: null,
-				full_name: null,
-				username: null,
-				email: null,
-				bio: null,
-				cover_photo: null,
-				profile_picture: null,
-				created_at: null,
-				following_count: null,
-				followers_count: null,
-				notifications: {
-					all: [],
-					read: [],
-					unread: [],
-				},
-			} as IUser,
+			user: {} as User,
 		};
 	},
 
@@ -33,9 +17,9 @@ export const useAuthStore = defineStore("auth", {
 		 * @param data The data to update the user
 		 * @returns A promise that resolves when the user data is fetched and updated.
 		 */
-		updateAuthenticatedUser(data: IUser): void {
+		updateAuthenticatedUser(data: User): void {
 			this.$patch(
-				(state: { user: IUser }) =>
+				(state: { user: User }) =>
 					(state.user = { ...state.user, ...data })
 			);
 		},
@@ -45,8 +29,8 @@ export const useAuthStore = defineStore("auth", {
 		 * @param data - The user data to set.
 		 * @returns
 		 */
-		setAuthenticatedUser(data: IUser): void {
-			this.$patch((state: { user: IUser }) => (state.user = data));
+		setAuthenticatedUser(data: User): void {
+			this.$patch((state: { user: User }) => (state.user = data));
 		},
 		/**
 		 * Logs out the user by resetting the state.

@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { router } from "@inertiajs/vue3";
 import { useAuthStore } from "./authStore";
 import { useFeedStore } from "@/stores/feedStore.js";
-import { IComment } from "@/lib/Interfaces";
+import { IComment } from "@/types";
 
 export const useCommentStore = defineStore("comments", {
 	state: () => {

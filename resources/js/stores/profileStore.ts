@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import { ProfileOptions } from "@/lib/Enums";
-import { ITweet } from "@/lib/Interfaces";
+import { ProfileOptions } from "@/types/Enums";
+import { IProfileUser, ITweet } from "@/types";
 import axios from "axios";
 
 export const useProfileStore = defineStore("profile", {
 	state: () => {
 		return {
+			user: {} as IProfileUser,
 			posts: [] as ITweet[],
 			liked: [] as ITweet[],
 			replies: [] as ITweet[],

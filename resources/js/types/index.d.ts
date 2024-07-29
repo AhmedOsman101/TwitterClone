@@ -135,6 +135,7 @@ export type FeedStore = Store<
 export type ProfileStore = Store<
 	"profile",
 	{
+		user: IProfileUser;
 		posts: ITweet[];
 		liked: ITweet[];
 		replies: ITweet[];
