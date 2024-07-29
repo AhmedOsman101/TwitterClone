@@ -6,6 +6,7 @@
 	import { storeToRefs } from "pinia";
 	import TweetModal from "@/Components/TweetModal.vue";
 	import { getComponent } from "@/lib/Helpers";
+	import { ISidebarLink } from "@/types";
 
 	const page = usePage();
 
@@ -13,8 +14,10 @@
 
 	const { user } = storeToRefs(authStore);
 
+	console.log(user.value);
+
 	// Define links as a reactive object
-	const links = reactive({
+	const links: Record<string, ISidebarLink> = reactive({
 		home: {
 			href: route("Home"),
 			label: "Home",
@@ -95,18 +98,13 @@
 				<div class="relative inline-block">
 					<i :class="links.notifications.icon" />
 					<div
-						v-show="user.notifications.unread.length !== 0"
+						v-show="user.unreadCount !== 0"
+						class="absolute -top-1.5 flex h-4 aspect-square items-center justify-center rounded-full bg-red-500 text-xs text-white"
 						:class="{
-							'absolute -top-1.5 -right-3 flex h-4 w-6 aspect-square items-center justify-center rounded-full bg-red-500 text-xs text-white':
-								user.notifications.unread.length >= 100,
-							'absolute -top-1.5 -right-1 flex h-4 w-4 aspect-square items-center justify-center rounded-full bg-red-500 text-xs text-white':
-								user.notifications.unread.length < 100,
+							' -right-3 w-6': user.unreadCount >= 100,
+							' -right-1 w-4': user.unreadCount < 100,
 						}">
-						{{
-							user.notifications.unread.length < 100
-								? user.notifications.unread.length
-								: "99+"
-						}}
+						{{ user.unreadCount < 100 ? user.unreadCount : "99+" }}
 					</div>
 				</div>
 				<span class="lg:block hidden">{{

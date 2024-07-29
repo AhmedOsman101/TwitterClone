@@ -5,8 +5,7 @@
 	import Layout from "@/Layouts/AuthenticatedLayout.vue";
 	import { Head } from "@inertiajs/vue3";
 	import { useFeedStore } from "@/stores/feedStore.js";
-	import { ITweet } from "@/lib/Interfaces";
-	import { FeedStore } from "@/lib/Types";
+	import { ITweet, FeedStore } from "@/types";
 
 	const feedStore: FeedStore = useFeedStore();
 

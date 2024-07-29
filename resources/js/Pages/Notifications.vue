@@ -9,9 +9,8 @@
 	import OptionsBar from "@/Components/OptionsBar.vue";
 	import { useGlobalState } from "@/stores/globalDataStore.js";
 	import { storeToRefs } from "pinia";
-	import { INotifications } from "@/lib/Interfaces";
-	import { AuthStore } from "@/lib/Types";
-	import { NotificationOptions } from "@/lib/Enums";
+	import { INotifications, AuthStore } from "@/types";
+	import { NotificationOptions } from "@/types/Enums";
 
 	defineOptions({ layout: AuthenticatedLayout });
 

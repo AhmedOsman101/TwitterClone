@@ -12,9 +12,8 @@
 	import { useGlobalState } from "@/stores/globalDataStore.js";
 	import { useProfileStore } from "@/stores/profileStore.js";
 	import { computed } from "vue";
-	import { ProfileOptions } from "@/lib/Enums";
-	import { ProfileStore } from "@/lib/Types";
-	import { ITweet, IUser } from "@/lib/Interfaces";
+	import { ProfileOptions } from "@/types/Enums";
+	import { ProfileStore, ITweet, User } from "@/types";
 
 	const page = usePage();
 
@@ -31,7 +30,7 @@
 		page.props.replies as ITweet[]
 	);
 
-	const user = computed(() => page.props.user as IUser);
+	const user = computed(() => page.props.user as User);
 
 	console.log(user.value, "user");
 

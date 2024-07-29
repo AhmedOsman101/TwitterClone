@@ -3,12 +3,13 @@
 	import { usePage } from "@inertiajs/vue3";
 	import SideBar from "../Components/SideBar.vue";
 	import FollowBar from "@/Components/FollowBar.vue";
+	import { User } from "@/types";
 
 	const page = usePage();
 
 	const authStore = useAuthStore();
 
-	authStore.setAuthenticatedUser(page.props.auth.user);
+	authStore.setAuthenticatedUser(page.props.auth.user as unknown as User);
 </script>
 
 <template>

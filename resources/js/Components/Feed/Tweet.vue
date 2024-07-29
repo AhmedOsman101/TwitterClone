@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 	import TweetFooter from "@/Components/Feed/TweetFooter.vue";
-	import { ITweet } from "@/lib/Interfaces";
+	import { ITweet } from "@/types";
 
 	const props = withDefaults(
 		defineProps<{

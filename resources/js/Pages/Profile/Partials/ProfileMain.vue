@@ -4,8 +4,7 @@
 	import { router, usePage } from "@inertiajs/vue3";
 	import { computed } from "vue";
 	import { useAuthStore } from "@/stores/authStore.js";
-	import { IProfileUser } from "@/lib/Interfaces";
-	import { AuthStore } from "@/lib/Types";
+	import { IProfileUser, AuthStore } from "@/types/";
 
 	const page = usePage();
 

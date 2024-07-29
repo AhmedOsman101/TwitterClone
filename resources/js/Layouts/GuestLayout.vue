@@ -12,7 +12,7 @@
 		</div>
 
 		<div
-			class="w-full max-w-lg sm:max-w-lg mt-6 px-5 py-4 bg-white dark:bg-black thinBorder shadow-md overflow-hidden sm:rounded-lg">
+			class="w-full max-w-lg sm:max-w-lg mt-6 px-5 py-4 bg-white dark:bg-black border shadow-md overflow-hidden sm:rounded-lg">
 			<slot />
 		</div>
 	</div>

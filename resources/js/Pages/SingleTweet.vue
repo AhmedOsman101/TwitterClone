@@ -6,8 +6,7 @@
 	import TweetSingle from "@/Components/TweetSingle.vue";
 	import { useFeedStore } from "@/stores/feedStore";
 	import CommentSection from "@/Components/CommentSection.vue";
-	import { ITweet } from "@/lib/Interfaces";
-	import { FeedStore } from "@/lib/Types";
+	import { ITweet, FeedStore } from "@/types";
 
 	defineOptions({ layout: AuthenticatedLayout });
 

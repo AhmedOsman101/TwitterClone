@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { NotificationOptions, ProfileOptions } from "@/lib/Enums";
+	import { NotificationOptions, ProfileOptions } from "@/types/Enums";
 	import { useGlobalState } from "@/stores/globalDataStore.js";
 	import { computed } from "vue";
 

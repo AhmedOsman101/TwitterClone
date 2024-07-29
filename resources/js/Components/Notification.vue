@@ -4,9 +4,8 @@
 	import { router } from "@inertiajs/vue3";
 	import axios from "axios";
 	import { useAuthStore } from "@/stores/authStore.js";
-	import { NotificationTypes } from "@/lib/Enums";
-	import { INotification } from "@/lib/Interfaces";
-	import { AuthStore } from "@/lib/Types";
+	import { NotificationTypes } from "@/types/Enums";
+	import { INotification, AuthStore } from "@/types";
 	import { ParameterValue } from "../../../vendor/tightenco/ziggy/src/js";
 
 	const props = defineProps<{

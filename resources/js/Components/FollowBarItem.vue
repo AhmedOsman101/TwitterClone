@@ -2,8 +2,7 @@
 	import { router } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { ref } from "vue";
-	import { IShortUser } from "@/lib/Interfaces";
-	import { AuthStore } from "@/lib/Types";
+	import { IShortUser, AuthStore } from "@/types";
 	import { StringLimit } from "@/lib/Helpers";
 
 	const props = defineProps<{
