@@ -43,9 +43,7 @@
 		<p
 			class="tweetBody"
 			v-text="tweet.body" />
-		<TweetFooter
-			:tweet="tweet"
-			:tweet_id="tweet.id" />
+		<TweetFooter :tweet="tweet" />
 	</Link>
 </template>
 
