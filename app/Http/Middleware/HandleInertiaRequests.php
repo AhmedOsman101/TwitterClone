@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AuthUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -18,7 +18,7 @@ class HandleInertiaRequests extends Middleware {
   /**
    * Determine the current asset version.
    */
-  public function version (Request $request): string|null {
+  public function version(Request $request): string|null {
     return parent::version($request);
   }
 
@@ -27,11 +27,12 @@ class HandleInertiaRequests extends Middleware {
    *
    * @return array<string, mixed>
    */
-  public function share (Request $request): array {
+  public function share(Request $request): array {
+
     return [
       ...parent::share($request),
       'auth' => [
-        'user' => Auth::check() ? UserResource::collection([Auth::user()])->resolve()[0] : null,
+        'user' => Auth::check() ? AuthUserResource::make(Auth::user())->resolve() : null,
       ],
     ];
   }

@@ -22,16 +22,11 @@ class UserFactory extends Factory {
    */
   public function definition(): array {
 
-    $profile_picture = "https://picsum.photos/id/" . random_int(1, 95) . "/400";
-    $cover_photo     = "https://picsum.photos/id/" . random_int(1, 95) . "/640/220";
-
     return [
       'full_name'         => Str::limit(fake()->name(), 50),
       'username'          => fake()->unique()->userName(),
       'email'             => fake()->unique()->safeEmail(),
       'bio'               => $this->faker->bs(),
-      'profile_picture'   => $this->faker->randomElement([$profile_picture, "/images/noavatar.png"]),
-      'cover_photo'       => $this->faker->randomElement([$cover_photo, "/images/nocover.png"]),
       'email_verified_at' => now(),
       'password'          => static::$password ??= Hash::make('123'),
     ];

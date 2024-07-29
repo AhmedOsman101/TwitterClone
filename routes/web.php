@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
     Route::post(
         'auth/user',
         function () {
-            return response()->json(Auth::check() ? UserResource::collection([Auth::user()])->resolve()[0] : null);
+            return response()->json(Auth::check() ? UserResource::make(Auth::user())->resolve() : null);
         }
     )->name('auth.get');
 });

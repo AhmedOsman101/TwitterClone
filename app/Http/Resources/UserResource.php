@@ -12,7 +12,7 @@ class UserResource extends JsonResource {
    *
    * @return array<string, mixed>
    */
-  public function toArray (Request $request): array {
+  public function toArray(Request $request): array {
     $allNotifications = NotificationResource::collection($this->notifications)->resolve();
     $unreadNotifications = NotificationResource::collection($this->unreadNotifications)->resolve();
 
