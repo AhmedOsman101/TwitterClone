@@ -1,5 +1,5 @@
 import { Store } from "pinia";
-import { NotificationTypes } from "./Enums";
+import { NotificationOptions, NotificationTypes } from "./Enums";
 
 export interface User {
 	id: number;
@@ -9,7 +9,7 @@ export interface User {
 	unreadCount: number;
 }
 
-export interface IProfileUser {
+export interface IFullUser {
 	id: number;
 	full_name: string;
 	username: string;
@@ -23,6 +23,7 @@ export interface IProfileUser {
 
 	following?: IShortUser[];
 	followers?: IShortUser[];
+	email_verified_at: string;
 }
 
 export interface IShortUser {
@@ -33,9 +34,9 @@ export interface IShortUser {
 }
 
 export interface INotifications {
-	all: INotification[] | null;
-	read: INotification[] | null;
-	unread: INotification[] | null;
+	all: INotification[];
+	read: INotification[];
+	unread: INotification[];
 }
 
 export interface INotification {
@@ -97,7 +98,6 @@ export type AuthStore = Store<
 	{
 		updateAuthenticatedUser(data: User): void;
 		setAuthenticatedUser(data: User): void;
-		logout(): void;
 		fetchUser(): void;
 	}
 >;
@@ -126,8 +126,8 @@ export type FeedStore = Store<
 	{
 		setFeed(feed: ITweet[]): void;
 		getFeed(): Promise<void>;
-		addNewTweet(data: ITweet): void;
-		updateTweet(tweet: ITweet[]): void;
+		addNewTweet(body: string): void;
+		updateTweet(tweet: ITweet): void;
 		fetchTweet(id: number): Promise<void>;
 	}
 >;
@@ -135,7 +135,7 @@ export type FeedStore = Store<
 export type ProfileStore = Store<
 	"profile",
 	{
-		user: IProfileUser;
+		user: IFullUser;
 		posts: ITweet[];
 		liked: ITweet[];
 		replies: ITweet[];
@@ -150,3 +150,10 @@ export type ProfileStore = Store<
 		): Promise<void>;
 	}
 >;
+
+export type GlobalDataStore = {
+	activeNotificationOption: Ref<NotificationOptions>;
+	activeProfileOption: Ref<ProfileOptions>;
+	setActiveProfileOption: (value: ProfileOptions) => void;
+	setActiveNotificationOption: (value: NotificationOptions) => void;
+};

@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { ProfileOptions } from "@/types/Enums";
-import { IProfileUser, ITweet } from "@/types";
+import { IFullUser, ITweet } from "@/types";
 import axios from "axios";
 
 export const useProfileStore = defineStore("profile", {
 	state: () => {
 		return {
-			user: {} as IProfileUser,
+			user: {} as IFullUser,
 			posts: [] as ITweet[],
 			liked: [] as ITweet[],
 			replies: [] as ITweet[],
@@ -43,7 +43,7 @@ export const useProfileStore = defineStore("profile", {
 		 * Fetches the selected feed from the server.
 		 * @param type - Which feed to get.
 		 * @param target_id - Which user we want to fetch his feed.
-		 * @param user_id - Currently authenticated user id.
+		 * @param user_id - Currently Viewed user id.
 		 */
 		async getFeed(
 			type: ProfileOptions,

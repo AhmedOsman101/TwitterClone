@@ -7,12 +7,15 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
 Route::middleware('auth')->group(function () {
+
+    Route::inertia(
+        '/test',
+        'Test'
+    )->name('test');
+
     //* Home route
     Route::get(
         '/',
@@ -91,14 +94,6 @@ Route::middleware('auth')->group(function () {
             [NotificationController::class, 'destroy']
         )->name('notifications.destroy');
     });
-
-    //* Auth route
-    Route::post(
-        'auth/user',
-        function () {
-            return response()->json(Auth::check() ? UserResource::make(Auth::user())->resolve() : null);
-        }
-    )->name('auth.get');
 });
 
 require __DIR__ . '/auth.php';
