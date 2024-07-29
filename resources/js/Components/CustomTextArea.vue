@@ -4,18 +4,23 @@
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { storeToRefs } from "pinia";
 	import InputError from "./InputError.vue";
-	import EmojiPicker from "vue3-emoji-picker";
+	import EmojiPicker, { EmojiExt } from "vue3-emoji-picker";
+	import { set } from "@vueuse/core";
 
 	//events
 	const emit = defineEmits(["closeModal"]);
 
 	//props
-	const props = defineProps({
-		action: { type: Function, required: true },
-		maxLength: { type: Number, required: true },
-		placeHolder: { type: String, default: "What is happening?!" },
-		label: String,
-	});
+
+	const props = withDefaults(
+		defineProps<{
+			action: Function;
+			maxLength: number;
+			placeHolder?: string;
+			Label?: string;
+		}>(),
+		{ placeHolder: "What is happening?!" }
+	);
 
 	// hooks
 	const page = usePage();
@@ -23,7 +28,7 @@
 
 	// refs & variables
 	const { user } = storeToRefs(authStore);
-	const input = ref(null);
+	const input = ref(null as any);
 	const body = ref("");
 	const showEmojiPicker = ref(false);
 	const progress = ref("");
@@ -36,8 +41,8 @@
 	const errors = computed(() => page.props.errors);
 
 	// methods
-	const create = (data) => {
-		body.value = "";
+	const create = (data: string) => {
+		set(body, "");
 
 		props.action(data);
 
@@ -46,11 +51,11 @@
 		input.value.style.height = `auto`;
 	};
 
-	const autoResize = (element) => {
+	const autoResize = (element: HTMLTextAreaElement) => {
 		// Reset the height to auto to calculate the new scroll height
 		element.style.height = "auto";
 
-		let scHeight = element.scrollHeight;
+		const scHeight = element.scrollHeight;
 
 		// Update state
 		body.value = element.value;
@@ -59,11 +64,12 @@
 		element.style.height = `${scHeight}px`;
 	};
 
-	const showProgress = (maxLength, element) => {
+	const showProgress = (maxLength: number, element: HTMLTextAreaElement) => {
 		const progressPercentage =
 			((maxLength - element.value.length) / maxLength) * 100;
 
-		const progressElements = document.querySelectorAll(".progress");
+		const progressElements: NodeListOf<HTMLDivElement> =
+			document.querySelectorAll(".progress");
 
 		progress.value = `${progressPercentage.toFixed(2)}%`;
 
@@ -78,7 +84,7 @@
 		showEmojiPicker.value = !showEmojiPicker.value;
 	};
 
-	const addEmoji = (emoji) => {
+	const addEmoji = (emoji: EmojiExt) => {
 		body.value += emoji.i;
 	};
 
@@ -150,7 +156,7 @@
 					v-if="showEmojiPicker"
 					:native="true"
 					:theme="'dark'"
-					class="border absolute top-8 left-0"
+					class="border absolute top-8 left-0 z-50"
 					@select="addEmoji"
 					@click.stop />
 			</div>
@@ -162,8 +168,8 @@
 			<button
 				:disabled="!body.length"
 				class="bg-sky-500 px-5 py-2 rounded-3xl opacity-100 text-white font-semibold disabled:opacity-80"
-				@click="() => create({ user_id: user.id, body })"
-				v-text="label ?? 'Tweet'" />
+				@click="() => create(body)"
+				v-text="Label ?? 'Tweet'" />
 		</div>
 	</section>
 </template>
