@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { User } from "@/types";
+import { useAxios } from "@vueuse/integrations/useAxios.mjs";
+import AxiosInstance from "@/Axios";
 
 export const useAuthStore = defineStore("auth", {
 	state: () => {
@@ -32,20 +34,18 @@ export const useAuthStore = defineStore("auth", {
 		setAuthenticatedUser(data: User): void {
 			this.$patch((state: { user: User }) => (state.user = data));
 		},
-		/**
-		 * Logs out the user by resetting the state.
-		 */
-		logout(): void {
-			this.$reset();
-		},
 
 		/**
 		 * Fetches the authenticated user data from the server and updates the store.
 		 */
-		fetchUser(): void {
-			axios
-				.post(route("auth.get"))
-				.then((res) => this.setAuthenticatedUser(res.data));
+		async fetchUser(): Promise<void> {
+			// await axios
+			// 	.post(route("auth.user"))
+			// 	.then((res) => this.setAuthenticatedUser(res.data));
+
+			await useAxios(route("auth.user"), AxiosInstance).then((res) =>
+				this.setAuthenticatedUser(res.data as unknown as User)
+			);
 		},
 	},
 });

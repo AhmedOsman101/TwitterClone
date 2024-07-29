@@ -49,7 +49,7 @@
 					method="post"
 					as="button"
 					class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md"
-					>Log Out</Link
+					>Logout</Link
 				>
 			</div>
 		</form>
