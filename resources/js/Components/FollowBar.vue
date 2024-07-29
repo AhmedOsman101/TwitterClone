@@ -1,19 +1,18 @@
 <script lang="ts" setup>
 	import FollowBarItem from "@/Components/FollowBarItem.vue";
-	import { onMounted, ref } from "vue";
-	import axios from "axios";
-	import { useAuthStore } from "@/stores/authStore.js";
+	import { ref } from "vue";
 	import NoSuggestions from "@/Components/Placeholders/NoSuggestions.vue";
+	import { useAxios } from "@vueuse/integrations/useAxios";
+	import AxiosInstance from "@/Axios";
+	import { IShortUser } from "@/types";
+	import { isEmptyArray } from "@/lib/Helpers";
 
-	const users = ref([]);
+	const { data, isLoading } = useAxios(
+		route("follower.suggest"),
+		AxiosInstance
+	);
 
-	const authStore = useAuthStore();
-
-	onMounted(() => {
-		axios
-			.get(route("follower.suggest", authStore.user.id))
-			.then((res) => (users.value = res.data));
-	});
+	const users = ref(data as unknown as IShortUser[]);
 </script>
 
 <template>
@@ -22,12 +21,12 @@
 			<h3 class="text-lg font-semibold mb-3">Who to Follow</h3>
 			<div class="space-y-5">
 				<FollowBarItem
-					v-if="users.length > 0"
+					v-if="!isEmptyArray(users)"
 					v-for="user in users"
 					:key="user.id"
 					:user="user" />
 
-				<NoSuggestions v-else />
+				<NoSuggestions v-if="isEmptyArray(users) || isLoading" />
 			</div>
 		</div>
 	</div>
