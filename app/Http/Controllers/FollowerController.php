@@ -33,8 +33,10 @@ class FollowerController extends Controller {
   }
 
   public function randomFollowers(Request $request) {
+
+
     // Get the ID of the authenticated user
-    $authUserId = $request->id;
+    $authUserId = $request->user()->id;
 
     // Use a subquery to get the IDs of the followed users and combine it with the authenticated user's ID
     $subQuery = Follower::where('follower_id', $authUserId)
