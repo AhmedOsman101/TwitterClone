@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Resources\ProfileUserResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -30,7 +30,7 @@ class ProfileController extends Controller {
       ->withCount(['following', 'followers'])
       ->firstOrFail(); // Throw an exception if the user is not found
 
-    $user = (new ProfileUserResource($temp))->resolve();
+    $user = (new UserResource($temp))->resolve();
 
     $canEdit = $username === Auth::user()->username;
 
