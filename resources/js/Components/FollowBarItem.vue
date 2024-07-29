@@ -11,7 +11,7 @@
 
 	const authStore: AuthStore = useAuthStore();
 
-	const status = ref(false);
+	const isFollowed = ref(false);
 
 	/**
 	 * The `addFollow` function is a method that sends a POST request using the
@@ -28,7 +28,7 @@
 		router.post(route("follower.store"), data, {
 			preserveScroll: true,
 			onSuccess: () => {
-				status.value = !status.value;
+				isFollowed.value = !isFollowed.value;
 			},
 		});
 	};
@@ -65,13 +65,13 @@
 		</div>
 		<div class="FollowBtn w-full">
 			<button
-				v-if="!status"
+				v-if="!isFollowed"
 				class="bg-gray-100 rounded-3xl lg:px-6 px-3.5 py-1.5 grid items-center font-bold text-sm text-black w-fit h-fit border"
 				@click="addFollow(user.id)">
 				Follow
 			</button>
 			<button
-				v-if="status"
+				v-if="isFollowed"
 				class="bg-black rounded-3xl lg:px-3.5 px-3 py-1.5 grid items-center font-bold text-sm text-gray-100 w-fit h-fit border"
 				@click="addFollow(user.id)">
 				Following
