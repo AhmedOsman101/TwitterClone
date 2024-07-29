@@ -14,7 +14,7 @@ class LoginRequest extends FormRequest {
   /**
    * Determine if the user is authorized to make this request.
    */
-  public function authorize (): bool {
+  public function authorize(): bool {
     return true;
   }
 
@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest {
    *
    * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
    */
-  public function rules (): array {
+  public function rules(): array {
     return [
       'login'    => ['required', 'string'],
       'password' => ['required', 'string'],
@@ -35,10 +35,10 @@ class LoginRequest extends FormRequest {
    *
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function authenticate (): void {
+  public function authenticate(): void {
     $this->ensureIsNotRateLimited();
 
-// Retrieve the 'login' input from the request.
+    // Retrieve the 'login' input from the request.
     $login = $this->only('login');
 
     $validator = Validator::make($login, [
@@ -48,8 +48,6 @@ class LoginRequest extends FormRequest {
     // Determine if the input is an email or username.
     if ($validator->fails()) $fieldType = 'username';
     else $fieldType = 'email';
-
-//    [$fieldType => $this->input('login'), 'password' => $this->input('password')]
 
 
     if (
@@ -73,7 +71,7 @@ class LoginRequest extends FormRequest {
    *
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function ensureIsNotRateLimited (): void {
+  public function ensureIsNotRateLimited(): void {
     if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
       return;
     }
@@ -93,7 +91,7 @@ class LoginRequest extends FormRequest {
   /**
    * Get the rate limiting throttle key for the request.
    */
-  public function throttleKey (): string {
+  public function throttleKey(): string {
     return Str::transliterate(Str::lower($this->string('login')) . '|' . $this->ip());
   }
 }
