@@ -1,30 +1,27 @@
--- Active: 1721839829348@@127.0.0.1@3306
 <script lang="ts" setup>
 	import { useAuthStore } from "@/stores/authStore.js";
 	import { storeToRefs } from "pinia";
 	import { useFeedStore } from "@/stores/feedStore.js";
 	import { computed } from "vue";
 	import { formatNumber } from "@/lib/Helpers";
+	import { AuthStore, FeedStore, ITweet } from "@/types";
+	import { useAxios } from "@vueuse/integrations/useAxios";
 
-	const props = defineProps({
-		tweet: {
-			type: Object,
-			required: true,
-		},
-		isProfile: {
-			type: Boolean,
-			default: false,
-		},
-	});
+	const props = withDefaults(
+		defineProps<{
+			tweet: ITweet;
+			isProfile?: boolean;
+		}>(),
+		{ isProfile: false }
+	);
 
-	const authStore = useAuthStore();
-	const feedStore = useFeedStore();
+	const authStore: AuthStore = useAuthStore();
+	const feedStore: FeedStore = useFeedStore();
 
-	const { user } = storeToRefs(authStore);
 	const { feed } = storeToRefs(feedStore);
 
 	const tweetIndex = computed(() => {
-		return feed.value.findIndex((item) => item.id === props.tweet_id);
+		return feed.value.findIndex((item) => item.id === props.tweet.id);
 	});
 
 	const tweet = computed(() => feed.value[tweetIndex.value] || props.tweet);
@@ -33,17 +30,17 @@
 	 * The `addLike` function is responsible for sending a POST request to the server to like a tweet.
 	 *
 	 * It re-fetches the tweet and the user to update tweet's likes count and refresh notifications.
-	 * @param {number} user_id
 	 * @param {number} tweet_id
 	 */
-	const addLike = (user_id, tweet_id) => {
+	const addLike = (tweet_id: number) => {
 		const data = {
-			user_id,
 			tweet_id,
 			isTweet: true,
 		};
-
-		axios.post(route("like.store"), data).then(() => {
+		useAxios(route("like.store"), {
+			data,
+			method: "POST",
+		}).then(() => {
 			feedStore.fetchTweet(tweet_id);
 			authStore.fetchUser();
 		});
@@ -59,9 +56,9 @@
 				v-text="formatNumber(tweet.comments_count)" />
 		</p>
 
-		<p
+		<button
 			class="footerItem text-gray-400 hover:text-pink-500"
-			@click.prevent="addLike(user.id, $props.tweet.id)">
+			@click.prevent="addLike(tweet.id)">
 			<i
 				:class="{
 					'fa-regular': !tweet.liked,
@@ -71,26 +68,20 @@
 			<span
 				v-if="tweet.likes_count"
 				v-text="formatNumber(tweet.likes_count)" />
-		</p>
+		</button>
 	</div>
 </template>
 
 <style scoped>
 	.tweetFooter {
 		grid-area: footer;
-		@apply flex gap-5 items-center relative pl-5 thinBorder-t;
+		@apply flex 
+		gap-5 
+		items-center 
+		relative 
+		pl-5 
+		thinBorder-t;
 	}
-
-	/* .tweetFooter::after {
-		content: "";
-		position: absolute;
-		width: calc(100% + 21px);
-		height: 1px;
-		top: 0;
-		left: -21px;
-		@apply thinBorder-t;
-		border-color: #6b7280 !important;
-	} */
 
 	.footerItem {
 		@apply flex 
