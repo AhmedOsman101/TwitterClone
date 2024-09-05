@@ -7,42 +7,42 @@
  * of their keys and values, and `false` otherwise.
  */
 export const isEqualObjects = (
-	firstObject: Record<string, any>,
-	secondObject: Record<string, any>
+  firstObject: Record<string, any>,
+  secondObject: Record<string, any>
 ): boolean => {
-	// If both are strictly equal, return true
-	if (firstObject === secondObject) return true;
+  // If both are strictly equal, return true
+  if (firstObject === secondObject) return true;
 
-	// If either is not an object or is null, return false
-	if (
-		typeof firstObject !== "object" ||
-		firstObject === null ||
-		typeof secondObject !== "object" ||
-		secondObject === null
-	) {
-		return false;
-	}
+  // If either is not an object or is null, return false
+  if (
+    typeof firstObject !== "object" ||
+    firstObject === null ||
+    typeof secondObject !== "object" ||
+    secondObject === null
+  ) {
+    return false;
+  }
 
-	// Get keys of both objects
-	const keys1 = Object.keys(firstObject);
+  // Get keys of both objects
+  const keys1 = Object.keys(firstObject);
 
-	// Check if all keys and their values are equal
-	return keys1.every((key) => {
-		// If the key does not exist in secondObject, return false
-		if (!secondObject.hasOwnProperty(key)) return false;
+  // Check if all keys and their values are equal
+  return keys1.every((key) => {
+    // If the key does not exist in secondObject, return false
+    if (!secondObject.hasOwnProperty(key)) return false;
 
-		const val1 = firstObject[key];
-		const val2 = secondObject[key];
+    const val1 = firstObject[key];
+    const val2 = secondObject[key];
 
-		// Check if both values are objects and recursively compare
-		const areBothObjects =
-			typeof val1 === "object" &&
-			val1 !== null &&
-			typeof val2 === "object" &&
-			val2 !== null;
+    // Check if both values are objects and recursively compare
+    const areBothObjects =
+      typeof val1 === "object" &&
+      val1 !== null &&
+      typeof val2 === "object" &&
+      val2 !== null;
 
-		return areBothObjects ? isEqualObjects(val1, val2) : val1 === val2;
-	});
+    return areBothObjects ? isEqualObjects(val1, val2) : val1 === val2;
+  });
 };
 
 /**
@@ -54,15 +54,15 @@ export const isEqualObjects = (
  * shortened format with a suffix indicating the magnitude.
  */
 export const formatNumber = (num: number): string => {
-	if (num >= 1000000000) {
-		return (num / 1000000000).toFixed(num % 1000000000 === 0 ? 0 : 1) + "B";
-	} else if (num >= 1000000) {
-		return (num / 1000000).toFixed(num % 1000000 === 0 ? 0 : 1) + "M";
-	} else if (num >= 1000) {
-		return (num / 1000).toFixed(num % 1000 === 0 ? 0 : 1) + "K";
-	} else {
-		return num.toString();
-	}
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(num % 1000000000 === 0 ? 0 : 1) + "B";
+  } else if (num >= 1000000) {
+    return (num / 1000000).toFixed(num % 1000000 === 0 ? 0 : 1) + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(num % 1000 === 0 ? 0 : 1) + "K";
+  } else {
+    return num.toString();
+  }
 };
 
 /**
@@ -75,15 +75,15 @@ export const formatNumber = (num: number): string => {
  * by "/".
  */
 export const getComponent = (page: { component: string }): string => {
-	const component = page.component;
+  const component = page.component;
 
-	const splittedComponent = component.split("/");
+  const splittedComponent = component.split("/");
 
-	const index = splittedComponent.length - 1;
+  const index = splittedComponent.length - 1;
 
-	const result = splittedComponent[index];
+  const result = splittedComponent[index];
 
-	return result;
+  return result;
 };
 
 /**
@@ -93,11 +93,11 @@ export const getComponent = (page: { component: string }): string => {
  * @returns The truncated string or the original string if length is below limit.
  */
 export const StringLimit = (string: string, limit: number): string => {
-	if (string.length > limit) {
-		return `${string.substring(0, limit - 3)}...`;
-	}
+  if (string.length > limit) {
+    return `${string.substring(0, limit - 3)}...`;
+  }
 
-	return string;
+  return string;
 };
 
 /**
@@ -107,11 +107,11 @@ export const StringLimit = (string: string, limit: number): string => {
  * @returns Returns true if the array is empty, false otherwise.
  */
 export const isEmptyArray = <T>(array: T[]): boolean => {
-	// Use a for...in loop to iterate over array indices
-	for (let i in array) {
-		// If we enter this loop, the array has at least one element
-		return false;
-	}
-	// If the loop never executed, the array is empty
-	return true;
+  // Use a for...in loop to iterate over array indices
+  for (let i in array) {
+    // If we enter this loop, the array has at least one element
+    return false;
+  }
+  // If the loop never executed, the array is empty
+  return true;
 };
