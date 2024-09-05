@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 11.17.0.
+ * Generated for Laravel 11.22.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1364,6 +1364,17 @@ namespace Illuminate\Support\Facades {
                         return $instance->build($concrete);
         }
                     /**
+         * Resolve a dependency based on an attribute.
+         *
+         * @param \ReflectionAttribute $attribute
+         * @return mixed 
+         * @static 
+         */        public static function resolveFromAttribute($attribute)
+        {            //Method inherited from \Illuminate\Container\Container         
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        return $instance->resolveFromAttribute($attribute);
+        }
+                    /**
          * Register a new before resolving callback for all types.
          *
          * @param \Closure|string $abstract
@@ -1410,6 +1421,18 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Container\Container         
                         /** @var \Illuminate\Foundation\Application $instance */
                         $instance->afterResolvingAttribute($attribute, $callback);
+        }
+                    /**
+         * Fire all of the after resolving attribute callbacks.
+         *
+         * @param \ReflectionAttribute[] $abstract
+         * @param mixed $object
+         * @return void 
+         * @static 
+         */        public static function fireAfterResolvingAttributeCallbacks($attributes, $object)
+        {            //Method inherited from \Illuminate\Container\Container         
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        $instance->fireAfterResolvingAttributeCallbacks($attributes, $object);
         }
                     /**
          * Get the container's bindings.
@@ -3558,12 +3581,22 @@ namespace Illuminate\Support\Facades {
                         /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
                         return $instance->serializeAndRestore($serializeAndRestore);
         }
+                    /**
+         * Get the batches that have been dispatched.
+         *
+         * @return array 
+         * @static 
+         */        public static function dispatchedBatches()
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
+                        return $instance->dispatchedBatches();
+        }
             }
             /**
      * 
      *
      * @see \Illuminate\Cache\CacheManager
-     * @mixin \Illuminate\Cache\Repository
+     * @see \Illuminate\Cache\Repository
      */        class Cache {
                     /**
          * Get a cache store instance by name, wrapped in a repository.
@@ -4688,6 +4721,34 @@ namespace Illuminate\Support\Facades {
                         return $instance->pushHidden($key, ...$values);
         }
                     /**
+         * Determine if the given value is in the given stack.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param bool $strict
+         * @return bool 
+         * @throws \RuntimeException
+         * @static 
+         */        public static function stackContains($key, $value, $strict = false)
+        {
+                        /** @var \Illuminate\Log\Context\Repository $instance */
+                        return $instance->stackContains($key, $value, $strict);
+        }
+                    /**
+         * Determine if the given value is in the given hidden stack.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param bool $strict
+         * @return bool 
+         * @throws \RuntimeException
+         * @static 
+         */        public static function hiddenStackContains($key, $value, $strict = false)
+        {
+                        /** @var \Illuminate\Log\Context\Repository $instance */
+                        return $instance->hiddenStackContains($key, $value, $strict);
+        }
+                    /**
          * Determine if the repository is empty.
          *
          * @return bool 
@@ -5517,6 +5578,16 @@ namespace Illuminate\Support\Facades {
                         return $instance->macroCall($method, $parameters);
         }
                     /**
+         * Get a human-readable name for the given connection driver.
+         *
+         * @return string 
+         * @static 
+         */        public static function getDriverTitle()
+        {
+                        /** @var \Illuminate\Database\SQLiteConnection $instance */
+                        return $instance->getDriverTitle();
+        }
+                    /**
          * Get a schema builder instance for the connection.
          *
          * @return \Illuminate\Database\Schema\SQLiteBuilder 
@@ -5738,6 +5809,16 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Database\Connection         
                         /** @var \Illuminate\Database\SQLiteConnection $instance */
                         return $instance->unprepared($query);
+        }
+                    /**
+         * Get the number of open connections for the database.
+         *
+         * @return int|null 
+         * @static 
+         */        public static function threadCount()
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\SQLiteConnection $instance */
+                        return $instance->threadCount();
         }
                     /**
          * Execute the given callback in "dry run" mode.
@@ -6420,8 +6501,8 @@ namespace Illuminate\Support\Facades {
                     /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Closure|string|array $events
-         * @param \Closure|string|array|null $listener
+         * @param \Illuminate\Events\Queued\Closure|\Closure|string|array $events
+         * @param \Illuminate\Events\Queued\Closure|\Closure|string|array|null $listener
          * @return void 
          * @static 
          */        public static function listen($events, $listener = null)
@@ -6852,7 +6933,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $path
          * @param string $algorithm
-         * @return string 
+         * @return string|false 
          * @static 
          */        public static function hash($path, $algorithm = 'md5')
         {
@@ -7794,6 +7875,18 @@ namespace Illuminate\Support\Facades {
                         return $instance->getDefaultDriver();
         }
                     /**
+         * Verifies that the configuration is less than or equal to what is configured.
+         *
+         * @param array $value
+         * @return bool 
+         * @internal 
+         * @static 
+         */        public static function verifyConfiguration($value)
+        {
+                        /** @var \Illuminate\Hashing\HashManager $instance */
+                        return $instance->verifyConfiguration($value);
+        }
+                    /**
          * Get a driver instance.
          *
          * @param string|null $driver
@@ -7896,7 +7989,7 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest throw(callable|null $callback = null)
      * @method static \Illuminate\Http\Client\PendingRequest throwIf(callable|bool $condition)
-     * @method static \Illuminate\Http\Client\PendingRequest throwUnless(bool $condition)
+     * @method static \Illuminate\Http\Client\PendingRequest throwUnless(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest dump()
      * @method static \Illuminate\Http\Client\PendingRequest dd()
      * @method static \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
@@ -10767,7 +10860,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param mixed $parameters
          * @param int $status
          * @param array $headers
@@ -10781,7 +10874,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a signed named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param mixed $parameters
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param int $status
@@ -10796,7 +10889,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a signed named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param mixed $parameters
          * @param int $status
@@ -13250,10 +13343,10 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Routing\RouteRegistrar whereIn(array|string $parameters, array $values)
      * @method static \Illuminate\Routing\RouteRegistrar as(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar controller(string $controller)
-     * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar domain(\BackedEnum|string $value)
      * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
      * @method static \Illuminate\Routing\RouteRegistrar missing(\Closure $missing)
-     * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar name(\BackedEnum|string $value)
      * @method static \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
      * @method static \Illuminate\Routing\RouteRegistrar prefix(string $prefix)
      * @method static \Illuminate\Routing\RouteRegistrar scopeBindings()
@@ -16468,7 +16561,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a signed route URL for a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param mixed $parameters
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param bool $absolute
@@ -16483,7 +16576,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a temporary signed route URL for a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param \DateTimeInterface|\DateInterval|int $expiration
          * @param array $parameters
          * @param bool $absolute
@@ -16546,11 +16639,11 @@ namespace Illuminate\Support\Facades {
                     /**
          * Get the URL to a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param mixed $parameters
          * @param bool $absolute
          * @return string 
-         * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+         * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException|\InvalidArgumentException
          * @static 
          */        public static function route($name, $parameters = [], $absolute = true)
         {
@@ -18027,6 +18120,50 @@ namespace Illuminate\Support\Facades {
         {
                         /** @var \Illuminate\Foundation\Vite $instance */
                         return $instance->usePreloadTagAttributes($attributes);
+        }
+                    /**
+         * Eagerly prefetch assets.
+         *
+         * @param int|null $concurrency
+         * @param string $event
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function prefetch($concurrency = null, $event = 'load')
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->prefetch($concurrency, $event);
+        }
+                    /**
+         * Use the "waterfall" prefetching strategy.
+         *
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function useWaterfallPrefetching($concurrency = null)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->useWaterfallPrefetching($concurrency);
+        }
+                    /**
+         * Use the "aggressive" prefetching strategy.
+         *
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function useAggressivePrefetching()
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->useAggressivePrefetching();
+        }
+                    /**
+         * Set the prefetching strategy.
+         *
+         * @param \Illuminate\Foundation\'waterfall'|\Illuminate\Foundation\'aggressive'|null $strategy
+         * @param array $config
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function usePrefetchStrategy($strategy, $config = [])
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->usePrefetchStrategy($strategy, $config);
         }
                     /**
          * Generate React refresh runtime script.
@@ -20120,7 +20257,7 @@ namespace  {
                             /**
              * Add a "where like" clause to the query.
              *
-             * @param string $column
+             * @param \Illuminate\Contracts\Database\Query\Expression|string $column
              * @param string $value
              * @param bool $caseSensitive
              * @param string $boolean
@@ -20135,7 +20272,7 @@ namespace  {
                             /**
              * Add an "or where like" clause to the query.
              *
-             * @param string $column
+             * @param \Illuminate\Contracts\Database\Query\Expression|string $column
              * @param string $value
              * @param bool $caseSensitive
              * @return \Illuminate\Database\Query\Builder 
@@ -20148,7 +20285,7 @@ namespace  {
                             /**
              * Add a "where not like" clause to the query.
              *
-             * @param string $column
+             * @param \Illuminate\Contracts\Database\Query\Expression|string $column
              * @param string $value
              * @param bool $caseSensitive
              * @param string $boolean
@@ -20162,7 +20299,7 @@ namespace  {
                             /**
              * Add an "or where not like" clause to the query.
              *
-             * @param string $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression|string $column
              * @param string $value
              * @param bool $caseSensitive
              * @return \Illuminate\Database\Query\Builder 
@@ -20897,7 +21034,7 @@ namespace  {
                             /**
              * Add a "where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -20911,8 +21048,8 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -20922,10 +21059,10 @@ namespace  {
                                 return $instance->orWhereAll($columns, $operator, $value);
             }
                             /**
-             * Add an "where" clause to the query for multiple columns with "or" conditions between them.
+             * Add a "where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
@@ -20938,8 +21075,8 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -20947,6 +21084,33 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->orWhereAny($columns, $operator, $value);
+            }
+                            /**
+             * Add a "where not" clause to the query for multiple columns where none of the conditions should be true.
+             *
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
+             * @param mixed $operator
+             * @param mixed $value
+             * @param string $boolean
+             * @return \Illuminate\Database\Query\Builder 
+             * @static 
+             */            public static function whereNone($columns, $operator = null, $value = null, $boolean = 'and')
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->whereNone($columns, $operator, $value, $boolean);
+            }
+                            /**
+             * Add an "or where not" clause to the query for multiple columns where none of the conditions should be true.
+             *
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
+             * @param mixed $operator
+             * @param mixed $value
+             * @return \Illuminate\Database\Query\Builder 
+             * @static 
+             */            public static function orWhereNone($columns, $operator = null, $value = null)
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->orWhereNone($columns, $operator, $value);
             }
                             /**
              * Add a "group by" clause to the query.
