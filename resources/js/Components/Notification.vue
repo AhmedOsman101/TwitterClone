@@ -7,10 +7,14 @@
 	import { NotificationTypes } from "@/types/Enums";
 	import { INotification, AuthStore } from "@/types";
 	import { ParameterValue } from "../../../vendor/tightenco/ziggy/src/js";
+	import { useAxios } from "@vueuse/integrations/useAxios";
+	import AxiosInstance from "@/Axios";
 
 	const props = defineProps<{
 		notification: INotification;
 	}>();
+
+	const emit = defineEmits(["updateNotifications"]);
 
 	const authStore: AuthStore = useAuthStore();
 
@@ -99,16 +103,23 @@
 			{ id },
 			{
 				onSuccess: () => {
-					authStore.fetchUser();
+					emit("updateNotifications");
 				},
 			}
 		);
 	};
 
 	const dismiss = (id: string) => {
-		axios
-			.delete(route("notifications.destroy"), { data: { id } })
-			.then(() => authStore.fetchUser());
+		useAxios(
+			route("notifications.destroy"),
+			{
+				method: "DELETE",
+				data: { id },
+			},
+			AxiosInstance
+		).then(() => {
+			emit("updateNotifications");
+		});
 	};
 </script>
 
