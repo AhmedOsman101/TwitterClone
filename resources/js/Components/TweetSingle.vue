@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 	import TweetFooter from "@/Components/Feed/TweetFooter.vue";
-	import { computed } from "vue";
+	import { ITweet } from "@/types";
 
-	const props = defineProps({ tweet: Object });
-
-	const tweet = computed(() => props.tweet);
+	defineProps<{
+		tweet: ITweet;
+	}>();
 </script>
 
 <template>
