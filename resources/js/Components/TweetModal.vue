@@ -3,6 +3,7 @@
 	import Modal from "./Modal.vue";
 	import HomeTweet from "./CustomTextArea.vue";
 	import { useFeedStore } from "@/stores/feedStore.js";
+	import { FeedStore } from "@/types";
 
 	const showModal = ref(false);
 
@@ -14,10 +15,10 @@
 		showModal.value = false;
 	};
 
-	const feedStore = useFeedStore();
+	const feedStore: FeedStore = useFeedStore();
 
-	const createTweet = (data) => {
-		feedStore.addNewTweet(data);
+	const createTweet = (body: string) => {
+		feedStore.addNewTweet(body);
 	};
 </script>
 
