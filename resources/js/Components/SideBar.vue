@@ -14,8 +14,6 @@
 
 	const { user } = storeToRefs(authStore);
 
-	console.log(user.value);
-
 	// Define links as a reactive object
 	const links: Record<string, ISidebarLink> = reactive({
 		home: {
@@ -47,6 +45,7 @@
 	// Function to update active status based on the current page component
 	const updateActiveLinks = () => {
 		const component = getComponent(page);
+
 		for (const key in links) {
 			if (Object.hasOwn(links, key)) {
 				const link = links[key];
@@ -62,10 +61,7 @@
 	};
 
 	// Call the function initially to set the active link
-	onMounted(() => {
-		updateActiveLinks();
-		authStore.setAuthenticatedUser(page.props.auth.user);
-	});
+	onMounted(() => updateActiveLinks());
 
 	// Watch for changes in the page component and update active links
 	watch(() => page.component, updateActiveLinks);
