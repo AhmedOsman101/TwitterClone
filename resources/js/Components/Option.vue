@@ -11,9 +11,11 @@
 	const GlobalState = useGlobalState();
 
 	const activeOption = computed(() => {
-		return props.type === "notification"
-			? GlobalState.activeNotificationOption
-			: GlobalState.activeProfileOption;
+		if (props.type === "notification") {
+			return GlobalState.activeNotificationOption;
+		} else {
+			return GlobalState.activeProfileOption;
+		}
 	});
 
 	const handleClick = () => {
