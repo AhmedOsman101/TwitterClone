@@ -23,4 +23,5 @@ DB-Relations.md
 *.sql
 test.js
 test.ts
+Test.vue
 diff.txt
