@@ -12,21 +12,21 @@
 
 	const page = usePage();
 
-	const tweet = computed(() => page.props.tweet as ITweet[]);
+	const tweet = computed(() => page.props.tweet as ITweet);
 
 	const feedStore: FeedStore = useFeedStore();
 
-	feedStore.setFeed(tweet.value);
+	feedStore.setFeed([tweet.value]);
 </script>
 
 <template>
-	<Head :title="`${tweet[0].user.full_name} on Twitter`" />
+	<Head :title="`${tweet.user.full_name} on Twitter`" />
 	<Header
 		:backable="true"
 		:title="'Post'"
 		class="Header" />
 	<section>
-		<TweetSingle :tweet="tweet[0]" />
+		<TweetSingle :tweet="tweet" />
 		<CommentSection />
 	</section>
 </template>
