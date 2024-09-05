@@ -4,11 +4,11 @@
 	import { router, usePage } from "@inertiajs/vue3";
 	import { computed } from "vue";
 	import { useAuthStore } from "@/stores/authStore.js";
-	import { IProfileUser, AuthStore } from "@/types/";
+	import { IFullUser, AuthStore } from "@/types/";
 
 	const page = usePage();
 
-	const user = computed(() => page.props.user as IProfileUser);
+	const user = computed(() => page.props.user as IFullUser);
 
 	const authStore: AuthStore = useAuthStore();
 
