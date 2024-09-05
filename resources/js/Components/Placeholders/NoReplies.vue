@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 	defineProps({ full_name: String });
 </script>
 
