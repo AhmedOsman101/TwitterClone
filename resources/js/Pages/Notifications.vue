@@ -1,28 +1,46 @@
 <script lang="ts" setup>
 	import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-	import { Head } from "@inertiajs/vue3";
+	import AxiosInstance from "@/Axios";
 	import Header from "@/Components/Header.vue";
 	import Notification from "@/Components/Notification.vue";
-	import { useAuthStore } from "@/stores/authStore.js";
-	import { computed, toRaw } from "vue";
 	import NoNotifications from "@/Components/Placeholders/NoNotifications.vue";
 	import OptionsBar from "@/Components/OptionsBar.vue";
+	import { Head } from "@inertiajs/vue3";
+	import { onMounted, Reactive, reactive, toRaw } from "vue";
 	import { useGlobalState } from "@/stores/globalDataStore.js";
-	import { storeToRefs } from "pinia";
-	import { INotifications, AuthStore } from "@/types";
+	import { GlobalDataStore, INotifications } from "@/types";
 	import { NotificationOptions } from "@/types/Enums";
+	import { useAxios } from "@vueuse/integrations/useAxios";
+	import { isEmptyArray } from "@/lib/Helpers";
 
 	defineOptions({ layout: AuthenticatedLayout });
 
-	const authStore: AuthStore = useAuthStore();
+	const notifications: INotifications = reactive({} as INotifications);
 
-	const { user } = storeToRefs(authStore);
+	const fetchNotifications = async () => {
+		const { data } = await useAxios(
+			route("auth.user.notifications"),
+			AxiosInstance
+		);
 
-	const notifications = computed(() =>
-		toRaw(user.value.notifications as INotifications)
-	);
+		let temp = toRaw(data).value;
 
-	const globalState = useGlobalState();
+		notifications.all = temp.all;
+		notifications.read = temp.read;
+		notifications.unread = temp.unread;
+
+		console.log("I Ran");
+	};
+
+	const updateNotification = async () => {
+		await fetchNotifications();
+	};
+
+	onMounted(async () => {
+		await fetchNotifications();
+	});
+
+	const globalState: GlobalDataStore = useGlobalState();
 </script>
 
 <template>
@@ -31,25 +49,27 @@
 		backable
 		class="Header" />
 
-	<section class="min-h-fit">
+	<section
+		class="min-h-fit"
+		@updateNotifications="() => console.log('I Ran')">
 		<OptionsBar
 			:options="['all', 'read', 'unread']"
 			type="notification" />
 		<div
-			v-for="notification in notifications.all"
-			v-if="
-				notifications.all.length !== 0 &&
+			v-show="
+				!isEmptyArray(notifications.all) &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.All
 			"
+			v-for="notification in notifications.all"
 			:key="notification.id">
 			<Notification :notification="notification" />
 		</div>
 
 		<div
-			v-for="notification in notifications.read"
-			v-if="
-				notifications.read.length !== 0 &&
+			v-for="notification in notifications?.read"
+			v-show="
+				notifications?.read?.length !== 0 &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.Read
 			"
@@ -58,9 +78,9 @@
 		</div>
 
 		<div
-			v-for="notification in notifications.unread"
-			v-if="
-				notifications.unread.length !== 0 &&
+			v-for="notification in notifications?.unread"
+			v-show="
+				notifications?.unread?.length !== 0 &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.Unread
 			"
@@ -69,22 +89,22 @@
 		</div>
 
 		<NoNotifications
-			v-if="
-				notifications.all.length === 0 &&
+			v-show="
+				isEmptyArray(notifications.all) &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.All
 			"
 			class="mt-16" />
 		<NoNotifications
-			v-if="
-				notifications.read.length === 0 &&
+			v-show="
+				isEmptyArray(notifications.read) &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.Read
 			"
 			class="mt-16" />
 		<NoNotifications
-			v-if="
-				notifications.unread.length === 0 &&
+			v-show="
+				isEmptyArray(notifications.unread) &&
 				globalState.activeNotificationOption.value ===
 					NotificationOptions.Unread
 			"
