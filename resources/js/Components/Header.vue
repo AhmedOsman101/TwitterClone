@@ -1,7 +1,6 @@
-<script lang="ts" setup>
+<script setup>
 	import { computed, onMounted, onUnmounted, ref } from "vue";
 	import { usePage } from "@inertiajs/vue3";
-	import { useAuthStore } from "@/stores/authStore";
 	import { getComponent } from "@/lib/Helpers";
 
 	defineProps({ title: String, backable: Boolean });
@@ -12,7 +11,7 @@
 	const component = computed(() => getComponent(page));
 
 	onMounted(() => {
-		head.value.focus();
+		head?.value.focus();
 		// Attach the scroll event listener when the component is mounted
 		window.addEventListener("scroll", handleScroll);
 	});
@@ -40,11 +39,7 @@
 	/**
 	 * Go back to the previous page and re-fetch user to update notifications.
 	 */
-	const back = () => {
-		const authStore = useAuthStore();
-		window.history.back();
-		authStore.fetchUser();
-	};
+	const back = () => window.history.back();
 </script>
 
 <template>
