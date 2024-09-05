@@ -5,6 +5,9 @@
 	import TextInput from "@/Components/TextInput.vue";
 	import { Link, useForm, usePage } from "@inertiajs/vue3";
 	import { useAuthStore } from "@/stores/authStore.js";
+	import { useAxios } from "@vueuse/integrations/useAxios";
+	import { IFullUser } from "@/types";
+	import AxiosInstance from "@/Axios";
 
 	defineProps<{
 		mustVerifyEmail?: Boolean;
@@ -13,7 +16,9 @@
 
 	const authStore = useAuthStore();
 
-	const user = authStore.user;
+	const { data } = useAxios(route("auth.user.full"), AxiosInstance);
+
+	const user = data as unknown as IFullUser;
 
 	const form = useForm({
 		full_name: user.full_name,
@@ -23,12 +28,7 @@
 
 	const updateProfile = () => {
 		form.patch(route("profile.update"), {
-			onSuccess: () =>
-				authStore.updateAuthenticatedUser({
-					full_name: form.full_name,
-					username: form.username,
-					email: form.email,
-				}),
+			onSuccess: () => authStore.fetchUser(),
 		});
 	};
 </script>
