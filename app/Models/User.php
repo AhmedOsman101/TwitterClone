@@ -22,8 +22,8 @@ class User extends Authenticatable {
     'username',
     'email',
     'bio',
-    'profile_picture',
-    'cover_photo',
+    'profilePicture',
+    'coverPhoto',
     'password',
   ];
 
@@ -37,26 +37,26 @@ class User extends Authenticatable {
     'remember_token',
   ];
 
-  public function tweets (): HasMany {
+  public function tweets(): HasMany {
     return $this->hasMany(Tweet::class);
   }
 
-  public function comments (): HasMany {
+  public function comments(): HasMany {
     return $this->hasMany(Comment::class);
   }
 
-  public function likes (): HasMany {
+  public function likes(): HasMany {
     return $this->hasMany(Like::class);
   }
 
   // Users this user is following
-  public function following (): HasMany {
-    return $this->hasMany(Follower::class, 'follower_id');
+  public function following(): HasMany {
+    return $this->hasMany(Follower::class, 'followerId');
   }
 
   // Users that are following this user
-  public function followers (): HasMany {
-    return $this->hasMany(Follower::class, 'followed_user_id');
+  public function followers(): HasMany {
+    return $this->hasMany(Follower::class, 'followedUserId');
   }
 
   /**
@@ -64,7 +64,7 @@ class User extends Authenticatable {
    *
    * @return array<string, string>
    */
-  protected function casts (): array {
+  protected function casts(): array {
     return [
       'email_verified_at' => 'datetime',
       'password'          => 'hashed',

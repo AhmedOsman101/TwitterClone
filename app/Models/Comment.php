@@ -13,20 +13,20 @@ class Comment extends Model {
   public const null UPDATED_AT = null;
 
   protected $fillable = [
-    'user_id',
-    'tweet_id',
+    'userId',
+    'tweetId',
     'body',
   ];
 
-  public function user (): BelongsTo {
+  public function user(): BelongsTo {
     return $this->belongsTo(User::class);
   }
 
-  public function tweet (): BelongsTo {
+  public function tweet(): BelongsTo {
     return $this->belongsTo(Tweet::class);
   }
 
-  public function likes (): HasMany {
+  public function likes(): HasMany {
     return $this->hasMany(Like::class);
   }
 }

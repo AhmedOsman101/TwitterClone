@@ -12,13 +12,13 @@ class LikeNotification extends Notification {
 
 
   public string $message;
-  public int $tweet_id;
+  public int $tweetId;
 
   /**
    * Create a new notification instance.
    */
-  public function __construct(string $message, int $tweet_id) {
-    $this->tweet_id = $tweet_id;
+  public function __construct(string $message, int $tweetId) {
+    $this->tweetId = $tweetId;
     $this->message = $message;
   }
 
@@ -28,7 +28,7 @@ class LikeNotification extends Notification {
    * @return array<int, string>
    */
   public function via(object $notifiable): array {
-    return ['database'];
+    return [ 'database' ];
   }
 
 
@@ -41,12 +41,12 @@ class LikeNotification extends Notification {
     $user = Auth::user();
 
     return [
-      'message'         => $this->message,
-      'username'        => $user->username,
-      'full_name'       => $user->full_name,
-      'profile_picture' => $user->profile_picture,
-      'tweet_id'        => $this->tweet_id,
-      'type'            => NotificationType::Like,
+      'message'        => $this->message,
+      'username'       => $user->username,
+      'fullName'       => $user->fullName,
+      'profilePicture' => $user->profilePicture,
+      'tweetId'        => $this->tweetId,
+      'type'           => NotificationType::Like,
     ];
   }
 }

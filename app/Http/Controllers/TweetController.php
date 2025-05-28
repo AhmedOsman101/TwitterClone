@@ -21,11 +21,11 @@ class TweetController extends Controller {
    */
   public function store(Request $request): RedirectResponse {
 
-    $request->validate(['body' => 'required|max:280']);
+    $request->validate([ 'body' => 'required|max:280' ]);
 
     Tweet::create([
-      "user_id" => Auth::id(),
-      "body" => $request->body,
+      "userId" => Auth::id(),
+      "body"   => $request->body,
     ]);
 
     return redirect()->route('Home');
@@ -37,13 +37,13 @@ class TweetController extends Controller {
   public function ApiShow($id, Request $request): JsonResponse {
     $tweet = Tweet::find($id)
       ->with('user')
-      ->withCount(['likes', 'comments'])
+      ->withCount([ 'likes', 'comments' ])
       ->first();
 
     if (!empty($tweet)) {
-      $likedTweetsIds = Like::select(['id', 'tweet_id'])
-        ->where('user_id', $request->user()->id)
-        ->whereNotNull('tweet_id')
+      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+        ->where('userId', $request->user()->id)
+        ->whereNotNull('tweetId')
         ->get()
         ->toArray();
 
@@ -51,7 +51,7 @@ class TweetController extends Controller {
 
       $tweet->liked = $this->isLiked(
         needle: $tweet->id,
-        column_key: "tweet_id"
+        column_key: "tweetId"
       );
     }
 
@@ -66,13 +66,13 @@ class TweetController extends Controller {
   public function show(Request $request): Response {
     $tweet = Tweet::find($request->id)
       ->with('user')
-      ->withCount(['likes', 'comments'])
+      ->withCount([ 'likes', 'comments' ])
       ->first();
 
     if (!empty($tweet)) {
-      $likedTweetsIds = Like::select(['id', 'tweet_id'])
-        ->where('user_id', $request->user()->id)
-        ->whereNotNull('tweet_id')
+      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+        ->where('userId', $request->user()->id)
+        ->whereNotNull('tweetId')
         ->get()
         ->toArray();
 
@@ -80,7 +80,7 @@ class TweetController extends Controller {
 
       $tweet->liked = $this->isLiked(
         needle: $tweet->id,
-        column_key: "tweet_id"
+        column_key: "tweetId"
       );
     }
 

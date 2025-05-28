@@ -14,10 +14,10 @@ class TweetFactory extends Factory {
    *
    * @return array<string, mixed>
    */
-  public function definition (): array {
+  public function definition(): array {
     return [
-      'user_id' => User::inRandomOrder()->first()->id,
-      'body'    => $this->faker->paragraph(),
+      'userId' => User::inRandomOrder()->first()->id,
+      'body'   => $this->faker->paragraph(),
     ];
   }
 }

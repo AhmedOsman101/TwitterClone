@@ -13,15 +13,15 @@ class Tweet extends Model {
   public const null UPDATED_AT = null;
   protected $guarded = [];
 
-  public function user (): BelongsTo {
+  public function user(): BelongsTo {
     return $this->belongsTo(User::class);
   }
 
-  public function comments (): HasMany {
+  public function comments(): HasMany {
     return $this->hasMany(Comment::class);
   }
 
-  public function likes (): HasMany {
+  public function likes(): HasMany {
     return $this->hasMany(Like::class);
   }
 }

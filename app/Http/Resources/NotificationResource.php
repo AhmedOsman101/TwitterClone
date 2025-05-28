@@ -16,15 +16,15 @@ class NotificationResource extends JsonResource {
    */
   public function toArray(Request $request): array {
     return [
-      "id"              => $this->id,
-      "type"            => $this->data['type'],
-      "username"        => $this->data['username'],
-      "full_name"       => $this->data['full_name'],
-      "message"         => $this->data['message'],
-      "profile_picture" => $this->data['profile_picture'],
-      "tweet_id"        => $this->data['tweet_id'] ?? null,
-      "created_at"      => $this->getDuration($this->created_at),
-      "read_at"         => $this->read_at !== null ? $this->getDuration($this->read_at) : null,
+      "id"             => $this->id,
+      "type"           => $this->data['type'],
+      "username"       => $this->data['username'],
+      "full_name"      => $this->data['full_name'],
+      "message"        => $this->data['message'],
+      "profilePicture" => $this->data['profilePicture'],
+      "tweetId"        => $this->data['tweetId'] ?? null,
+      "created_at"     => $this->getDuration($this->created_at),
+      "read_at"        => $this->read_at !== null ? $this->getDuration($this->read_at) : null,
     ];
   }
 }

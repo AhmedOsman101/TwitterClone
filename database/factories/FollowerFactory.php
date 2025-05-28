@@ -14,10 +14,10 @@ class FollowerFactory extends Factory {
    *
    * @return array<string, mixed>
    */
-  public function definition (): array {
+  public function definition(): array {
     return [
-      'follower_id'      => User::inRandomOrder()->first()->id,
-      'followed_user_id' => User::inRandomOrder()->first()->id,
+      'followerId'     => User::inRandomOrder()->first()->id,
+      'followedUserId' => User::inRandomOrder()->first()->id,
     ];
   }
 }

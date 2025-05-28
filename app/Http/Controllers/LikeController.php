@@ -17,66 +17,66 @@ class LikeController extends Controller {
 
     // dd($request->all(), $request->user());
 
-    $user_id = $request->user()->id;
+    $userId = $request->user()->id;
     if ($request->isTweet) {
-      $like = Like::where('user_id', $user_id)
-        ->where('tweet_id', $request->tweet_id)
-        ->whereNotNull('tweet_id')
+      $like = Like::where('userId', $userId)
+        ->where('tweetId', $request->tweetId)
+        ->whereNotNull('tweetId')
         ->first();
 
       // If like exists delete its notification then delete the like
       if ($like !== null) {
-        $deleted = DB::delete('DELETE FROM notifications WHERE id = ?', [$like->notification_id]);
+        $deleted = DB::delete('DELETE FROM notifications WHERE id = ?', [ $like->notificationId ]);
         if ($deleted === 1) $like->delete();
       }
 
       // Else create a new like and notify the target user with it
       else {
         $createdLike = Like::create([
-          "user_id"  => $user_id,
-          "tweet_id" => $request->tweet_id
+          "userId"  => $userId,
+          "tweetId" => $request->tweetId,
         ]);
 
         $targetUser = $createdLike->tweet->user;
 
         $targetUser->notify(new LikeNotification(
-          message: "{$createdLike->user->full_name} liked your tweet",
-          tweet_id: $createdLike->tweet_id
+          message: "{$createdLike->user->fullName} liked your tweet",
+          tweetId: $createdLike->tweetId
         ));
 
-        $createdLike->notification_id = $targetUser->notifications[0]->id; // Store notification UUID
+        $createdLike->notificationId = $targetUser->notifications[0]->id; // Store notification UUID
         $createdLike->save();
       }
     }
 
     if ($request->isComment) {
 
-      $like = Like::where('user_id', $user_id)
-        ->where('comment_id', $request->comment_id)
-        ->whereNotNull('comment_id')
+      $like = Like::where('userId', $userId)
+        ->where('commentId', $request->commentId)
+        ->whereNotNull('commentId')
         ->first();
 
       // If like exists delete its notification then delete the like
       if ($like !== null) {
-        $deleted = DB::delete('DELETE FROM notifications WHERE id = ?', [$like->notification_id]);
+        $deleted = DB::delete('DELETE FROM notifications WHERE id = ?', [ $like->notificationId ]);
         if ($deleted === 1) $like->delete();
       }
 
       // Else create a new like and notify the target user with it
       else {
         $createdLike = Like::create([
-          "user_id"    => $user_id,
-          "comment_id" => $request->comment_id
+          "userId"    => $userId,
+          "commentId" => $request->commentId,
         ]);
 
         $targetUser = $createdLike->comment->user;
 
         $targetUser->notify(new LikeNotification(
-          message: "{$createdLike->user->full_name} liked your comment",
-          tweet_id: $createdLike->comment->tweet_id
+          message: "{$createdLike->user->fullName} liked your comment",
+          tweetId: $createdLike->comment->tweetId
         ));
 
-        $createdLike->notification_id = $targetUser->notifications[0]->id; // Store notification UUID
+        $createdLike->notificationId = $targetUser->notifications[0]->id; // Store notification UUID
         $createdLike->save();
       }
     }

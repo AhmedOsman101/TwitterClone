@@ -27,7 +27,7 @@ class ProfileController extends Controller {
           $query->with('follower');
         }
       ])
-      ->withCount(['following', 'followers'])
+      ->withCount([ 'following', 'followers' ])
       ->firstOrFail(); // Throw an exception if the user is not found
 
     $user = (new UserResource($temp))->resolve();
@@ -39,7 +39,7 @@ class ProfileController extends Controller {
       $targetIsFollowing = false;
     } else {
       // I'm following the user or not
-      $followedByUserIDs = array_column(Auth::user()->following->toArray(), 'followed_user_id');
+      $followedByUserIDs = array_column(Auth::user()->following->toArray(), 'followedUserId');
 
       $targetIsFollowed = in_array($user['id'], $followedByUserIDs, true);
 
@@ -94,7 +94,7 @@ class ProfileController extends Controller {
 
     return Redirect::route(
       'profile.edit',
-      ['username' => $request->user()->username]
+      [ 'username' => $request->user()->username ]
     );
   }
 
@@ -103,7 +103,7 @@ class ProfileController extends Controller {
    */
   public function destroy(Request $request): RedirectResponse {
     $request->validate([
-      'password' => ['required', 'current_password'],
+      'password' => [ 'required', 'current_password' ],
     ]);
 
     $user = $request->user();

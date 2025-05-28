@@ -19,7 +19,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
   public function toArray(Request $request): array {
     return [
       "id"             => $this->id,
-      "user_id"        => $this->user_id,
+      "userId"         => $this->userId,
       "body"           => $this->body,
       "likes_count"    => $this->likes_count,
       "comments_count" => $this->comments_count,

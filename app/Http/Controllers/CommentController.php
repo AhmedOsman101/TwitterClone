@@ -18,16 +18,16 @@ class CommentController extends Controller {
    * Display a listing of the resource.
    */
   public function index(): string {
-    $temp = Comment::where('tweet_id', request('tweet_id'))
+    $temp = Comment::where('tweetId', request('tweetId'))
       ->with('user')
       ->withCount('likes')
       ->orderBy('id', 'desc') // Sort chronologically in descending order
       ->get();
 
     if ($temp !== null) {
-      $likedCommentsIds = Like::select(['id', 'comment_id'])
-        ->where('user_id', request('user_id'))
-        ->whereNotNull('comment_id')
+      $likedCommentsIds = Like::select([ 'id', 'commentId' ])
+        ->where('userId', request('userId'))
+        ->whereNotNull('commentId')
         ->get()
         ->toArray();
 
@@ -36,7 +36,7 @@ class CommentController extends Controller {
       foreach ($temp as &$comment) {
         $comment->liked = $this->isLiked(
           needle: $comment->id,
-          column_key: "comment_id"
+          column_key: "commentId"
         );
       }
     }
@@ -44,9 +44,9 @@ class CommentController extends Controller {
     return CommentResource::collection($temp)->toJson();
   }
 
-  public function getProfileReplies(int $user_id): array {
+  public function getProfileReplies(int $userId): array {
 
-    $temp = Comment::where('user_id', $user_id)
+    $temp = Comment::where('userId', $userId)
       ->with('user')
       ->withCount('likes')
       ->orderBy('id', 'desc') // Sort chronologically in descending order
@@ -54,9 +54,9 @@ class CommentController extends Controller {
 
 
     if ($temp !== null) {
-      $likedCommentsIds = Like::select(['id', 'comment_id'])
-        ->where('user_id', $user_id)
-        ->whereNotNull('comment_id')
+      $likedCommentsIds = Like::select([ 'id', 'commentId' ])
+        ->where('userId', $userId)
+        ->whereNotNull('commentId')
         ->get()
         ->toArray();
 
@@ -65,7 +65,7 @@ class CommentController extends Controller {
       foreach ($temp as &$comment) {
         $comment->liked = $this->isLiked(
           needle: $comment->id,
-          column_key: "comment_id"
+          column_key: "commentId"
         );
       }
     }
@@ -77,19 +77,19 @@ class CommentController extends Controller {
    * Store a newly created resource in storage.
    */
   public function store(Request $request): void {
-    $request->validate(['body' => 'required|max:255|string']);
+    $request->validate([ 'body' => 'required|max:255|string' ]);
 
-    // user_id, tweet_id, body
+    // userId, tweetId, body
     Comment::create([
-      "user_id" => Auth::id(),
-      "tweet_id" => $request->tweet_id,
-      "body" => $request->body
+      "userId"  => Auth::id(),
+      "tweetId" => $request->tweetId,
+      "body"    => $request->body,
     ]);
 
 
-    $targetUser = User::find($request->target_id);
+    $targetUser = User::find($request->targetId);
 
-    $targetUser->notify(new CommentNotification($request->tweet_id));
+    $targetUser->notify(new CommentNotification($request->tweetId));
   }
 
   /**
@@ -103,9 +103,9 @@ class CommentController extends Controller {
       ->get();
 
     if ($comment->isNotEmpty()) {
-      $likedCommentsIds = Like::select(['id', 'comment_id'])
-        ->where('user_id', $request->user_id ?? Auth::user()->id)
-        ->whereNotNull('comment_id')
+      $likedCommentsIds = Like::select([ 'id', 'commentId' ])
+        ->where('userId', $request->userId ?? Auth::user()->id)
+        ->whereNotNull('commentId')
         ->get()
         ->toArray();
 
@@ -114,7 +114,7 @@ class CommentController extends Controller {
       foreach ($comment as &$item) {
         $item->liked = $this->isLiked(
           needle: $item->id,
-          column_key: "comment_id"
+          column_key: "commentId"
         );
       }
     }

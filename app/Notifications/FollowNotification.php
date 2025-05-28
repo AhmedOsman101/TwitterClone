@@ -10,13 +10,13 @@ use Illuminate\Notifications\Notification;
 class FollowNotification extends Notification {
   use Queueable;
 
-  private int $follower_id;
+  private int $followerId;
 
   /**
    * Create a new notification instance.
    */
-  public function __construct(int $follower_id) {
-    $this->follower_id = $follower_id;
+  public function __construct(int $followerId) {
+    $this->followerId = $followerId;
   }
 
   /**
@@ -25,7 +25,7 @@ class FollowNotification extends Notification {
    * @return array<int, string>
    */
   public function via(object $notifiable): array {
-    return ['database'];
+    return [ 'database' ];
   }
 
   /**
@@ -34,14 +34,14 @@ class FollowNotification extends Notification {
    * @return array<string, mixed>
    */
   public function toArray(object $notifiable): array {
-    $follower = User::find($this->follower_id);
+    $follower = User::find($this->followerId);
 
     return [
-      'message'         => "{$follower->full_name} started following you",
-      'username'        => $follower->username,
-      'full_name'       => $follower->full_name,
-      'profile_picture' => $follower->profile_picture,
-      'type'            => NotificationType::Follow,
+      'message'        => "{$follower->fullName} started following you",
+      'username'       => $follower->username,
+      'fullName'       => $follower->fullName,
+      'profilePicture' => $follower->profilePicture,
+      'type'           => NotificationType::Follow,
     ];
   }
 }

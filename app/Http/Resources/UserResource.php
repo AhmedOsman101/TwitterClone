@@ -12,8 +12,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $username
  * @property string $email
  * @property string $bio
- * @property string $cover_photo
- * @property string $profile_picture
+ * @property string $coverPhoto
+ * @property string $profilePicture
  * @property int $followers_count
  * @property int $following_count
  * @property string $created_at
@@ -33,8 +33,8 @@ class UserResource extends JsonResource {
       "username"        => $this->username,
       "email"           => $this->email,
       "bio"             => $this->bio,
-      "cover_photo"     => $this->cover_photo,
-      "profile_picture" => $this->profile_picture,
+      "coverPhoto"      => $this->coverPhoto,
+      "profilePicture"  => $this->profilePicture,
       // "followers"       => ShortUserResource::collection($this->followers->pluck('follower'))->resolve(),
       "followers_count" => $this->followers_count,
       // "following"       => ShortUserResource::collection($this->following->pluck('followed'))->resolve(),

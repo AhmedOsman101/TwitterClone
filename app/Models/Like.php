@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Like extends Model {
   use HasFactory;
 
-  public $timestamps = false;
+  public $timestamps = true;
   protected $guarded = [];
 
-  public function user (): BelongsTo {
+  public function user(): BelongsTo {
     return $this->belongsTo(User::class);
   }
 
-  public function tweet (): BelongsTo {
+  public function tweet(): BelongsTo {
     return $this->belongsTo(Tweet::class);
   }
 
-  public function comment (): BelongsTo {
+  public function comment(): BelongsTo {
     return $this->belongsTo(Comment::class);
   }
 }
