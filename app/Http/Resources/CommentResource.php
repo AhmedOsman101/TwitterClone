@@ -16,15 +16,15 @@ class CommentResource extends JsonResource {
    */
   public function toArray(Request $request): array {
     return [
-      "id"          => $this->id,
-      "userId"      => $this->userId,
-      "tweetId"     => $this->tweetId,
-      "body"        => $this->body,
-      "liked"       => $this->liked,
-      "likes_count" => $this->likes_count,
-      "duration"    => $this->getDuration($this->created_at),
-      "created_at"  => $this->created_at,
-      "user"        => (new ShortUserResource($this->user))->resolve(),
+      "id"         => $this->id,
+      "userId"     => $this->userId,
+      "tweetId"    => $this->tweetId,
+      "body"       => $this->body,
+      "liked"      => $this->liked,
+      "likesCount" => $this->likesCount,
+      "duration"   => $this->getDuration($this->createdAt),
+      "createdAt"  => $this->createdAt,
+      "user"       => (new ShortUserResource($this->user))->resolve(),
     ];
   }
 }

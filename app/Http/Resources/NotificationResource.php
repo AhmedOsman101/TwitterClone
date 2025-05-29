@@ -19,12 +19,12 @@ class NotificationResource extends JsonResource {
       "id"             => $this->id,
       "type"           => $this->data['type'],
       "username"       => $this->data['username'],
-      "full_name"      => $this->data['full_name'],
+      "fullName"       => $this->data['fullName'],
       "message"        => $this->data['message'],
       "profilePicture" => $this->data['profilePicture'],
       "tweetId"        => $this->data['tweetId'] ?? null,
-      "created_at"     => $this->getDuration($this->created_at),
-      "read_at"        => $this->read_at !== null ? $this->getDuration($this->read_at) : null,
+      "createdAt"      => $this->getDuration($this->createdAt),
+      "readAt"         => $this->readAt !== null ? $this->getDuration($this->readAt) : null,
     ];
   }
 }

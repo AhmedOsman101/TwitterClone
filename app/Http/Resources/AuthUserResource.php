@@ -16,7 +16,7 @@ class AuthUserResource extends JsonResource {
 
     return [
       "id"             => $this->id,
-      "full_name"      => $this->full_name,
+      "fullName"       => $this->fullName,
       "username"       => $this->username,
       "profilePicture" => $this->profilePicture,
       "unreadCount"    => $unreadNotificationsCount,
