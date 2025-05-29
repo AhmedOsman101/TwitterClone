@@ -1,49 +1,43 @@
-import AxiosInstance from "@/Axios";
-import { User } from "@/types";
 import { useAxios } from "@vueuse/integrations/useAxios.mjs";
 import { defineStore } from "pinia";
+import { ref } from "vue";
+import AxiosInstance from "@/lib/axios";
+import type { User } from "@/types";
 
-export const useAuthStore = defineStore("auth", {
-  state: () => {
-    return {
-      user: {} as User,
-    };
-  },
+export const useAuthStore = defineStore("auth", () => {
+  const user = ref<User>({} as User);
 
-  actions: {
-    /**
-     * Fetches the authenticated user data from the API and updates the user state if not already authenticated.
-     * @async
-     * @function updateAuthenticatedUser
-     * @param data The data to update the user
-     * @returns A promise that resolves when the user data is fetched and updated.
-     */
-    updateAuthenticatedUser(data: User): void {
-      this.$patch(
-        (state: { user: User }) => (state.user = { ...state.user, ...data })
-      );
-    },
+  /**
+   * Fetches the authenticated user data from the API and updates the user state if not already authenticated.
+   * @param {User} data The data to update the user
+   */
+  function updateAuthenticatedUser(data: User): void {
+    user.value = { ...user.value, ...data };
+  }
 
-    /**
-     * Sets the authenticated user in the store.
-     * @param data - The user data to set.
-     * @returns
-     */
-    setAuthenticatedUser(data: User): void {
-      this.$patch((state: { user: User }) => (state.user = data));
-    },
+  /**
+   * Sets the authenticated user in the store.
+   * @param {User} data - The user data to set.
+   */
+  function setAuthenticatedUser(data: User): void {
+    user.value = data;
+  }
 
-    /**
-     * Fetches the authenticated user data from the server and updates the store.
-     */
-    async fetchUser(): Promise<void> {
-      // await axios
-      // 	.post(route("auth.user"))
-      // 	.then((res) => this.setAuthenticatedUser(res.data));
+  /**
+   * Fetches the authenticated user data from the server and updates the store.
+   */
+  async function fetchUser(): Promise<void> {
+    // await axios
+    // 	.post(route("auth.user"))
+    // 	.then((res) => this.setAuthenticatedUser(res.data));
 
-      await useAxios(route("auth.user"), AxiosInstance).then((res) =>
-        this.setAuthenticatedUser(res.data as unknown as User)
-      );
-    },
-  },
+    const { isFinished, data } = await useAxios<User>(
+      route("auth.user"),
+      AxiosInstance
+    );
+
+    if (isFinished.value) setAuthenticatedUser(data.value);
+  }
+
+  return { user, updateAuthenticatedUser, setAuthenticatedUser, fetchUser };
 });

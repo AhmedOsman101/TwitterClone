@@ -1,18 +1,23 @@
-import { NotificationOptions, ProfileOptions } from "@/types/Enums";
 import { createGlobalState } from "@vueuse/core";
-import { Ref, ref } from "vue";
+import { ref } from "vue";
+import {
+  type NotificationOption,
+  NotificationOptions,
+  type ProfileOption,
+  ProfileOptions,
+} from "@/types/enums";
 
 export const useGlobalState = createGlobalState(() => {
-  const activeNotificationOption: Ref<NotificationOptions> = ref(
+  const activeNotificationOption = ref<NotificationOption>(
     NotificationOptions.All
   );
-  const activeProfileOption: Ref<ProfileOptions> = ref(ProfileOptions.Posts);
+  const activeProfileOption = ref<ProfileOption>(ProfileOptions.Posts);
 
-  function setActiveProfileOption(value: ProfileOptions): void {
+  function setActiveProfileOption(value: ProfileOption): void {
     activeProfileOption.value = value;
   }
 
-  function setActiveNotificationOption(value: NotificationOptions): void {
+  function setActiveNotificationOption(value: NotificationOption): void {
     activeNotificationOption.value = value;
   }
 
