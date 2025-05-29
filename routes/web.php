@@ -5,95 +5,98 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {
 
-    Route::inertia(
-        '/test',
-        'Test'
-    )->name('test');
+  Route::get(
+    '/test',
+    fn() => Inertia::render('Test')
+  )->name('test');
 
-    //* Home route
+  //* Home route
+  Route::get(
+    '/',
+    [FeedController::class, 'HomeFeed']
+  )->name('home');
+
+  //* Tweet routes
+  Route::prefix('tweet')->group(function () {
     Route::get(
-        '/',
-        [FeedController::class, 'HomeFeed']
-    )->name('Home');
+      '/{id}',
+      [TweetController::class, 'show']
+    )->name('tweet.show');
 
-    //* Tweet routes
-    Route::prefix('tweet')->group(function () {
-        Route::get(
-            '/{id}',
-            [TweetController::class, 'show']
-        )->name('tweet.show');
-
-        Route::post(
-            '/',
-            [TweetController::class, 'store']
-        )->name('tweet.store');
-    });
-
-    //* Like routes
     Route::post(
-        'like',
-        [LikeController::class, 'store']
-    )->name('like.store');
+      '/',
+      [TweetController::class, 'store']
+    )->name('tweet.store');
+  });
 
-    //* Comment routes
-    Route::post(
-        'comments',
-        [CommentController::class, 'store']
-    )->name('comment.store');
+  //* Like routes
+  Route::post(
+    'like',
+    [LikeController::class, 'store']
+  )->name('like.store');
 
-    //* Follow routes
-    Route::post(
-        'follower',
-        [FollowerController::class, 'store']
-    )->name('follower.store');
+  //* Comment routes
+  Route::post(
+    'comments',
+    [CommentController::class, 'store']
+  )->name('comment.store');
+
+  //* Follow routes
+  Route::post(
+    'follower',
+    [FollowerController::class, 'store']
+  )->name('follower.store');
 
 
-    //* Profile routes
-    Route::prefix('profile')->group(function () {
-        Route::get(
-            "/{username}",
-            [ProfileController::class, 'index']
-        )->name('profile.index');
+  //* Profile routes
+  Route::prefix('profile')->group(function () {
+    Route::get(
+      "/{username}",
+      [ProfileController::class, 'index']
+    )->name('profile.index');
 
-        Route::get(
-            "/{username}/edit",
-            [ProfileController::class, 'edit']
-        )->name('profile.edit');
+    Route::get(
+      "/{username}/edit",
+      [ProfileController::class, 'edit']
+    )->name('profile.edit');
 
-        Route::patch(
-            '/',
-            [ProfileController::class, 'update']
-        )->name('profile.update');
+    Route::patch(
+      '/',
+      [ProfileController::class, 'update']
+    )->name('profile.update');
 
-        Route::delete(
-            '/',
-            [ProfileController::class, 'destroy']
-        )->name('profile.destroy');
-    });
+    Route::delete(
+      '/',
+      [ProfileController::class, 'destroy']
+    )->name('profile.destroy');
+  });
 
-    //* Notification routes
-    Route::prefix('notifications')->group(function () {
-        Route::inertia(
-            '/',
-            'Notifications'
-        )->name('notifications');
+  //* Notification routes
+  Route::prefix('notifications')->group(function () {
+    Route::get(
+      '/',
+      fn() => Inertia::render('Notifications')
+    )->name('notifications');
 
-        Route::put(
-            '/',
-            [NotificationController::class, 'update']
-        )->name('notifications.update');
 
-        Route::delete(
-            '/',
-            [NotificationController::class, 'destroy']
-        )->name('notifications.destroy');
-    });
+    Route::put(
+      '/',
+      [NotificationController::class, 'update']
+    )->name('notifications.update');
+
+    Route::delete(
+      '/',
+      [NotificationController::class, 'destroy']
+    )->name('notifications.destroy');
+  });
 });
 
+require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
