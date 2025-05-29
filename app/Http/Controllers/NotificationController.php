@@ -28,9 +28,9 @@ class NotificationController extends Controller {
     });
 
     return response()->json([
-      'all' => $allNotifications,
+      'all'    => $allNotifications,
       'unread' => $unreadNotifications,
-      'read' => $readNotifications,
+      'read'   => $readNotifications,
     ]);
   }
 

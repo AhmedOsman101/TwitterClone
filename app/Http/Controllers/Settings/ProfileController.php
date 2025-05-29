@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\FeedController;
+use App\Http\Requests\Settings\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller {
   public function index($username): Response {
@@ -27,7 +30,7 @@ class ProfileController extends Controller {
           $query->with('follower');
         }
       ])
-      ->withCount([ 'following', 'followers' ])
+      ->withCount(['following', 'followers'])
       ->firstOrFail(); // Throw an exception if the user is not found
 
     $user = (new UserResource($temp))->resolve();
@@ -59,7 +62,7 @@ class ProfileController extends Controller {
     $replies = (new CommentController())->getProfileReplies($user['id']);
 
 
-    return Inertia::render('Profile/Profile', compact(
+    return Inertia::render('settings/Profile', compact(
       "canEdit",
       "user",
       "targetIsFollowed",
@@ -71,12 +74,12 @@ class ProfileController extends Controller {
   }
 
   /**
-   * Display the user's profile form.
+   * Show the user's profile settings page.
    */
   public function edit(Request $request): Response {
-    return Inertia::render('Profile/Edit', [
+    return Inertia::render('settings/Profile', [
       'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-      'status'          => session('status'),
+      'status'          => $request->session()->get('status'),
     ]);
   }
 
@@ -94,16 +97,17 @@ class ProfileController extends Controller {
 
     return Redirect::route(
       'profile.edit',
-      [ 'username' => $request->user()->username ]
+      ['username' => $request->user()->username]
     );
   }
 
+
   /**
-   * Delete the user's account.
+   * Delete the user's profile.
    */
   public function destroy(Request $request): RedirectResponse {
     $request->validate([
-      'password' => [ 'required', 'current_password' ],
+      'password' => ['required', 'current_password'],
     ]);
 
     $user = $request->user();
@@ -115,6 +119,6 @@ class ProfileController extends Controller {
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return Redirect::to('/');
+    return redirect('/');
   }
 }

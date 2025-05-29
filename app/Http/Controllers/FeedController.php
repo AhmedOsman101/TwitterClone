@@ -19,20 +19,20 @@ class FeedController extends Controller {
 
     $feed = $this->getHomeFeed();
 
-    return Inertia::render('Home', compact('feed'));
+    return Inertia::render('home', compact('feed'));
   }
 
-  public function getHomeFeed(int $id = null): array {
+  public function getHomeFeed(int|null $id = null): array {
 
     $tweets = Tweet::with('user')
       ->orderBy('id', 'desc') // Sort chronologically in descending order
-      ->withCount([ 'likes', 'comments' ])
+      ->withCount(['likes', 'comments'])
       ->get();
 
     $feed = TweetResource::collection($tweets);
 
     if ($feed !== null) {
-      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+      $likedTweetsIds = Like::select(['id', 'tweetId'])
         ->where('userId', $id ?? Auth::id())
         ->where('tweetId', '!=', null)
         ->get()->toArray();
@@ -54,13 +54,13 @@ class FeedController extends Controller {
     $tweets = Tweet::with('user')
       ->where('userId', $id)
       ->orderBy('id', 'desc') // Sort chronologically in descending order
-      ->withCount([ 'likes', 'comments' ])
+      ->withCount(['likes', 'comments'])
       ->get();
 
     $feed = TweetResource::collection($tweets);
 
     if ($feed !== null) {
-      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+      $likedTweetsIds = Like::select(['id', 'tweetId'])
         ->where('userId', $id)
         ->where('tweetId', '!=', null)
         ->get()->toArray();
@@ -91,13 +91,13 @@ class FeedController extends Controller {
     })
       ->with('user')
       ->orderBy('id', 'desc') // Sort chronologically in descending order
-      ->withCount([ 'likes', 'comments' ])
+      ->withCount(['likes', 'comments'])
       ->get();
 
     $tweets = TweetResource::collection($tweets);
 
     if ($tweets !== null) {
-      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+      $likedTweetsIds = Like::select(['id', 'tweetId'])
         ->where('userId', Auth::id())
         ->whereNotNull('tweetId')
         ->get()
@@ -122,13 +122,13 @@ class FeedController extends Controller {
     })
       ->with('user')
       ->orderBy('id', 'desc') // Sort chronologically in descending order
-      ->withCount([ 'likes', 'comments' ])
+      ->withCount(['likes', 'comments'])
       ->get();
 
     $tweets = TweetResource::collection($tweets);
 
     if ($tweets !== null) {
-      $likedTweetsIds = Like::select([ 'id', 'tweetId' ])
+      $likedTweetsIds = Like::select(['id', 'tweetId'])
         ->where('userId', Auth::id())
         ->whereNotNull('tweetId')
         ->get()
