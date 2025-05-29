@@ -1,159 +1,102 @@
-import { Store } from "pinia";
-import { NotificationOptions, NotificationTypes } from "./Enums";
+import type { PageProps } from "@inertiajs/core";
+import type { LucideIcon } from "lucide-vue-next";
+import type { Config } from "ziggy-js";
+import type { NotificationType } from "./enums";
 
-export interface User {
-	id: number;
-	username: string;
-	full_name: string;
-	profilePicture: string;
-	unreadCount: number;
+export interface Auth {
+  user: User;
 }
 
-export interface IFullUser {
-	id: number;
-	full_name: string;
-	username: string;
-	email: string;
-	bio?: string | null;
-	coverPhoto?: string;
-	profilePicture: string;
-	followers_count?: number;
-	following_count?: number;
-	created_at: string;
-
-	following?: IShortUser[];
-	followers?: IShortUser[];
-	email_verified_at: string;
+export interface BreadcrumbItem {
+  title: string;
+  href: string;
 }
 
+export interface NavItem {
+  title: string;
+  href: string;
+  icon?: LucideIcon;
+  isActive?: boolean;
+}
+
+// TODO: replace this type with the `NavItem` type
+export interface ISidebarLink {
+  href: string;
+  label: string;
+  icon: string;
+  active: boolean;
+}
+
+export interface SharedData extends PageProps {
+  name: string;
+  quote: { message: string; author: string };
+  auth: Auth;
+  ziggy: Config & { location: string };
+  sidebarOpen: boolean;
+}
+
+// NOTE: My type definitions
 export interface IShortUser {
-	id: number;
-	username: string;
-	full_name: string;
-	profilePicture: string;
+  id: number;
+  username: string;
+  fullName: string;
+  profilePicture: string;
 }
+
+export type User = IShortUser & { unreadCount: number };
+
+export type FullUser = IShortUser & {
+  email: string;
+  bio?: string | null;
+  coverPhoto?: string;
+  followersCount?: number;
+  followingCount?: number;
+  following?: IShortUser[];
+  followers?: IShortUser[];
+  createdAt: string;
+  updatedAt: string;
+  email_verified_at: string;
+};
 
 export interface INotifications {
-	all: INotification[];
-	read: INotification[];
-	unread: INotification[];
+  all: INotification[];
+  read: INotification[];
+  unread: INotification[];
 }
 
 export interface INotification {
-	id: string;
-	type: NotificationTypes;
-	username: string;
-	full_name: string;
-	message: string;
-	profilePicture: string;
-	tweetId: number | null;
-	created_at: string;
-	read_at: string | null;
+  id: string;
+  type: NotificationType;
+  username: string;
+  fullName: string;
+  message: string;
+  profilePicture: string;
+  tweetId: number | null;
+  createdAt: string;
+  readAt: string | null;
 }
 
 export interface IComment {
-	id: number;
-	userId: number;
-	tweetId: number;
-	body: string;
-	liked: boolean;
-	likes_count: number;
-	duration: string;
-	user: IShortUser;
+  id: number;
+  userId: number;
+  tweetId: number;
+  body: string;
+  liked: boolean;
+  likesCount: number;
+  duration: string;
+  user: IShortUser;
 }
 
 export interface ITweet {
-	id: number;
-	userId: number;
-	body: string;
-	likes_count?: number;
-	comments_count?: number;
-	liked?: boolean;
-	created_at?: string;
-	duration?: string;
-	user: IShortUser;
+  id: number;
+  userId: number;
+  body: string;
+  likesCount?: number;
+  commentsCount?: number;
+  liked?: boolean;
+  createdAt?: string;
+  duration?: string;
+  user: IShortUser;
 }
 
-export interface ISidebarLink {
-	href: string;
-	label: string;
-	icon: string;
-	active: boolean;
-}
-
-export type PageProps<
-	T extends Record<string, unknown> = Record<string, unknown>,
-> = T & {
-	auth: {
-		user: User;
-	};
-};
-
-export type AuthStore = Store<
-	"auth",
-	{
-		user: User;
-	},
-	{},
-	{
-		updateAuthenticatedUser(data: User): void;
-		setAuthenticatedUser(data: User): void;
-		fetchUser(): void;
-	}
->;
-
-export type CommentStore = Store<
-	"comments",
-	{
-		comments: IComment[];
-	},
-	{},
-	{
-		setComments(comments: IComment[]): void;
-		getComments(id: number): Promise<void>;
-		addNewComment(data: IComment): void;
-		updateComment(comment: IComment[]): void;
-		fetchComment(id: number): Promise<void>;
-	}
->;
-
-export type FeedStore = Store<
-	"feed",
-	{
-		feed: ITweet[];
-	},
-	{},
-	{
-		setFeed(feed: ITweet[]): void;
-		getFeed(): Promise<void>;
-		addNewTweet(body: string): void;
-		updateTweet(tweet: ITweet): void;
-		fetchTweet(id: number): Promise<void>;
-	}
->;
-
-export type ProfileStore = Store<
-	"profile",
-	{
-		user: IFullUser;
-		posts: ITweet[];
-		liked: ITweet[];
-		replies: IComment[];
-	},
-	{},
-	{
-		setFeed(type: ProfileOptions, value: ITweet[] | IComment[]): void;
-		getFeed(
-			type: ProfileOptions,
-			targetId: number,
-			userId: number,
-		): Promise<void>;
-	}
->;
-
-export type GlobalDataStore = {
-	activeNotificationOption: Ref<NotificationOptions>;
-	activeProfileOption: Ref<ProfileOptions>;
-	setActiveProfileOption: (value: ProfileOptions) => void;
-	setActiveNotificationOption: (value: NotificationOptions) => void;
-};
+export type BreadcrumbItemType = BreadcrumbItem;
