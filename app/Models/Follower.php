@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Follower extends Model {
+  /** @use HasFactory<\Database\Factories\FollowerFactory> */
   use HasFactory;
 
   public $timestamps = false;
@@ -25,4 +26,5 @@ class Follower extends Model {
   public function followed(): BelongsTo {
     return $this->belongsTo(User::class, 'followedUserId');
   }
+
 }

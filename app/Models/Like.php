@@ -7,20 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Like extends Model {
+  /** @use HasFactory<\Database\Factories\LikeFactory> */
   use HasFactory;
 
-  public $timestamps = true;
+  public const string CREATED_AT = 'createdAt';
+  public const null UPDATED_AT = null;
   protected $guarded = [];
 
   public function user(): BelongsTo {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class, "userId");
   }
 
   public function tweet(): BelongsTo {
-    return $this->belongsTo(Tweet::class);
+    return $this->belongsTo(Tweet::class, "tweetId");
   }
 
   public function comment(): BelongsTo {
-    return $this->belongsTo(Comment::class);
+    return $this->belongsTo(Comment::class, "commentId");
   }
+
 }

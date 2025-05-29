@@ -15,6 +15,7 @@ return new class extends Migration
       $table->foreignId('userId');
       $table->string('body', 300);
       $table->timestamp('createdAt')->useCurrent();
+      $table->timestamp('updatedAt')->useCurrent();
     });
   }
 

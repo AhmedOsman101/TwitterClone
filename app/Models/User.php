@@ -10,15 +10,19 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable {
+  /** @use HasFactory<\Database\Factories\UserFactory> */
   use HasFactory, Notifiable, HasApiTokens;
+
+  public const string CREATED_AT = 'createdAt';
+  public const string UPDATED_AT = 'updatedAt';
 
   /**
    * The attributes that are mass assignable.
    *
-   * @var array<int, string>
+   * @var list<string>
    */
   protected $fillable = [
-    'full_name',
+    'fullName',
     'username',
     'email',
     'bio',
@@ -30,7 +34,7 @@ class User extends Authenticatable {
   /**
    * The attributes that should be hidden for serialization.
    *
-   * @var array<int, string>
+   * @var list<string>
    */
   protected $hidden = [
     'password',
@@ -38,15 +42,15 @@ class User extends Authenticatable {
   ];
 
   public function tweets(): HasMany {
-    return $this->hasMany(Tweet::class);
+    return $this->hasMany(Tweet::class, "userId");
   }
 
   public function comments(): HasMany {
-    return $this->hasMany(Comment::class);
+    return $this->hasMany(Comment::class, "userId");
   }
 
   public function likes(): HasMany {
-    return $this->hasMany(Like::class);
+    return $this->hasMany(Like::class, "userId");
   }
 
   // Users this user is following
