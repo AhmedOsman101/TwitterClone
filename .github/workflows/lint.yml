@@ -11,13 +11,22 @@ on:
       - main
 # change to write if auto committing
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
+      - name: Enable Git long paths
+        run: git config --global core.longpaths true
+
+      - name: Configure Git to handle symlinks
+        run: git config --global core.symlinks false
+
       - uses: actions/checkout@v4
+        with:
+          path: repo
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -28,19 +37,24 @@ jobs:
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
+        working-directory: repo
 
       - name: Run Pint
         run: vendor/bin/pint
+        working-directory: repo
 
       - name: Check Frontend Formatting
         run: npm run format:check
+        working-directory: repo
 
       - name: Lint Frontend
         run: npm run lint
+        working-directory: repo
 
       # Uncomment if auto committing is enabled
       # - name: Format Frontend
       #   run: npm run format
+      #   working-directory: repo
 
       # - name: Commit Changes
       #   uses: stefanzweifel/git-auto-commit-action@v5
