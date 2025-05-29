@@ -6,7 +6,7 @@ namespace App\Traits;
 trait Helpers {
   public array $haystack = [];
 
-  public function getDuration ($date): string {
+  public function getDuration($date): string {
     // calculate the difference, displays in two parts e.g: '1w 2d from now'
     $diff = now()->shortRelativeToNowDiffForHumans($date, 2);
     // separate the parts
@@ -47,14 +47,14 @@ trait Helpers {
     return $diffFirst;
   }
 
-  public function isLiked ($needle, $column_key): bool {
+  public function isLiked($needle, $column_key): bool {
 
     $haystack = array_column($this->haystack, $column_key);
 
     return in_array($needle, $haystack, true);
   }
 
-  public function setHaystack ($data): void {
+  public function setHaystack($data): void {
     if ($this->haystack === $data) return;
 
     $this->haystack = $data;
