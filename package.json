@@ -5,11 +5,12 @@
     "build": "vite build",
     "build:ssr": "vite build && vite build --ssr",
     "dev": "vite",
-    "format": "prettier --write resources/",
-    "format:check": "prettier --check resources/",
-    "lint": "eslint . --fix"
+    "format": "npx @biomejs/biome check --write resources/",
+    "format:check": "npx @biomejs/biome check resources/ --reporter=github",
+    "lint": "npx @biomejs/biome ci resources/ --reporter=github"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.0.0-beta.5",
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.5",
     "@vue/eslint-config-typescript": "^14.3.0",
