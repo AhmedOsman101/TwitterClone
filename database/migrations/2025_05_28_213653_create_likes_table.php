@@ -16,6 +16,7 @@ return new class extends Migration
       $table->foreignId('tweetId')->nullable();
       $table->foreignId('commentId')->nullable();
       $table->uuid('notificationId')->nullable();
+      $table->timestamp('createdAt')->useCurrent();
     });
   }
 

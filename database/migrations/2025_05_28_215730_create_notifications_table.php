@@ -23,9 +23,10 @@ return new class extends Migration
 
       $table->text('data');
 
-      $table->timestamp('read_at')->nullable();
+      $table->timestamp('readAt')->nullable();
 
-      $table->timestamps();
+      $table->timestamp('createdAt')->useCurrent();
+      $table->timestamp('updatedAt')->useCurrent();
     });
   }
 

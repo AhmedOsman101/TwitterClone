@@ -15,9 +15,8 @@ return new class extends Migration
       $table->foreignId('userId');  // the user who made the comment
       $table->foreignId('tweetId'); // the tweet the comment belongs to
       $table->string('body', 255);
-      $table->uuid('notificationId')->nullable()
-        ->comment("UUID of the notification related to this comment action");
-      $table->timestamp('created_at')->useCurrent();
+      $table->timestamp('createdAt')->useCurrent();
+      $table->uuid('notificationId')->nullable();
     });
   }
 

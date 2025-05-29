@@ -17,9 +17,7 @@ return new class extends Migration
         ->comment("the user who follows");
       $table->foreignIdFor(User::class, 'followedUserId')
         ->comment("the user being followed");
-      $table->uuid('notificationId')->nullable()
-        ->comment("UUID of the notification related to this follow action");
-      ;
+      $table->uuid('notificationId')->nullable();
     });
   }
 
