@@ -4,12 +4,13 @@ namespace App\Notifications;
 
 use App\Enums\NotificationType;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class LikeNotification extends Notification {
   use Queueable;
-
 
   public string $message;
   public int $tweetId;
@@ -28,9 +29,8 @@ class LikeNotification extends Notification {
    * @return array<int, string>
    */
   public function via(object $notifiable): array {
-    return [ 'database' ];
+    return ['database'];
   }
-
 
   /**
    * Get the array representation of the notification.

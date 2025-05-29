@@ -2,8 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Enums\NotificationType;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -25,7 +25,7 @@ class FollowNotification extends Notification {
    * @return array<int, string>
    */
   public function via(object $notifiable): array {
-    return [ 'database' ];
+    return ['database'];
   }
 
   /**

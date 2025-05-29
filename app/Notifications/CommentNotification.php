@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Enums\NotificationType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,7 +27,7 @@ class CommentNotification extends Notification {
    * @return array<int, string>
    */
   public function via(object $notifiable): array {
-    return [ 'database' ];
+    return ['database'];
   }
 
   /**
@@ -42,7 +41,7 @@ class CommentNotification extends Notification {
     return [
       'message'        => "{$user->fullName} replied to your tweet",
       'username'       => $user->username,
-      'full_name'      => $user->fullName,
+      'fullName'       => $user->fullName,
       'profilePicture' => $user->profilePicture,
       'tweetId'        => $this->tweetId,
       'type'           => NotificationType::Reply,
